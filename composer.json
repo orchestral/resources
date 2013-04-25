@@ -1,0 +1,34 @@
+{
+	"name": "orchestra/resources",
+	"description": "Orchestra Platform Resources Component",
+	"keywords": ["orchestra-platform", "laravel"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Mior Muhammad Zaki",
+			"email": "crynobone@gmail.com"
+		}
+	],
+	"autoload": {
+		"psr-0": { 
+			"Orchestra\\Resources" : "src/" 
+		}
+	},
+	"require": {
+		"php": ">=5.3.3",
+		"orchestra/support": "2.0.*"
+	},
+	"require-dev": {
+		"mockery/mockery": "0.8.0"
+	},
+	"suggest": {
+		"laravel/framework": "Allow using orchestra/resources component outside of Orchestra Platform",
+		"orchestra/foundation": "Allow using orchestra/resources with Orchestra Platform"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "2.0.x-dev"
+		}
+	},
+	"minimum-stability": "dev"
+}
