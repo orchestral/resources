@@ -1,5 +1,7 @@
 <?php namespace Orchestra\Resources\Tests;
 
+use Mockery as m;
+
 class EnvironmentTest extends \PHPUnit_Framework_TestCase {
 
 	/**
@@ -7,7 +9,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function tearDown()
 	{
-		\Mockery::close();
+		m::close();
 	}
 
 	/**
