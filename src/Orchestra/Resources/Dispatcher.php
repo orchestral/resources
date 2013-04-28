@@ -49,12 +49,12 @@ class Dispatcher {
 		// case.
 		if (is_null($uses)) return false;
 
-		list($type, $controller) = explode(':', $uses, 2);
+		$controller = $uses;
+		$type       = 'restful';
 
-		if (is_null($controller))
+		if (false !== strpos($uses, ':'))
 		{
-			$controller = $type;
-			$type       = 'restful';
+			list($type, $controller) = explode(':', $uses, 2);
 		}
 
 		$controller = $this->app->make($controller);
