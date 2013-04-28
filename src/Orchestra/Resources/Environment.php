@@ -13,6 +13,20 @@ class Environment {
 	protected $app = null;
 
 	/**
+	 * Dispatcher instance.
+	 *
+	 * @var Orchestra\Resources\Dispatcher
+	 */
+	protected $dispatcher = null;
+
+	/**
+	 * Response instance.
+	 *
+	 * @var Orchestra\Resources\Response
+	 */
+	protected $response = null;
+
+	/**
 	 * The array of created "drivers".
 	 *
 	 * @var array
@@ -26,9 +40,11 @@ class Environment {
 	 * @param  Illuminate\Foundation\Application    $app
 	 * @return void
 	 */
-	public function __construct($app)
+	public function __construct($app, Dispatcher $dispatcher, Response $response)
 	{
-		$this->app = $app;
+		$this->app        = $app;
+		$this->dispatcher = $dispatcher;
+		$this->response   = $response;
 	}
 
 	/**
@@ -111,9 +127,7 @@ class Environment {
 		// to return 404 abort status.
 		if ( ! isset($this->drivers[$name])) return false;
 
-		$dispatcher = new Dispatcher($this->app);
-
-		return $dispatcher->call($this->drivers[$name], $child, $parameters);
+		return $this->dispatcher->call($this->drivers[$name], $child, $parameters);
 	}
 
 	/**
@@ -126,9 +140,7 @@ class Environment {
 	 */
 	public function response($content, Closure $callback = null)
 	{
-		$response = new Response($this->app);
-
-		return $response->call($content, $callback);
+		return $this->response->call($content, $callback);
 	}
 
 	/**
