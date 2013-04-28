@@ -37,7 +37,7 @@ class Container {
 	 * @param  string $uses
 	 * @return self
 	 */
-	public function dispatch($name, $uses)
+	public function route($name, $uses)
 	{
 		if (in_array($name, $this->reserved))
 		{
