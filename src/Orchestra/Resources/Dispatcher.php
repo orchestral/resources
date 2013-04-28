@@ -51,6 +51,12 @@ class Dispatcher {
 
 		list($type, $controller) = explode(':', $uses, 2);
 
+		if (is_null($controller))
+		{
+			$controller = $type;
+			$type       = 'restful';
+		}
+
 		$controller = $this->app->make($controller);
 		$method     = $this->app['request']->getMethod();
 
