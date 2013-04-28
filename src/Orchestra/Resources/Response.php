@@ -2,6 +2,7 @@
 
 use Closure;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response as IlluminateResponse;
 use Orchestra\Facile\Response as FacileResponse;
 
@@ -37,13 +38,13 @@ class Response {
 	public function call($content, Closure $callback = null)
 	{
 		$response = null;
-
+		
 		switch (true)
 		{
 			case ( ! $content) :
 				return $this->app->abort(404);
 			
-			case ($content instanceof RedirectResponse) :
+			case ($content instanceof RedirectResponse or $content instanceof JsonResponse) :
 				return $content;
 
 			case ($content instanceof FacileResponse) :
