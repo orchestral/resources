@@ -29,15 +29,26 @@ class Dispatcher {
 	 *
 	 * @access public
 	 * @param  array    $driver
-	 * @param  string   $child
+	 * @param  string   $name
 	 * @param  array    $parameters
 	 * @return void
 	 */
-	public function call($driver, $child = null, $parameters)
+	public function call($driver, $name = null, $parameters)
 	{
-		if ( ! is_null($child))
+		$nested     = $this->getNestedParameters($name, $parameters);		
+		$nestedName = implode('.', array_keys($nested));
+
+		if ( ! is_null($name))
 		{
-			$uses = isset($driver->childs[$child]) ? $driver->childs[$child] : null;
+			if (isset($driver->childs[$nestedName]) 
+				and starts_with($driver->childs[$nestedName], 'resource:'))
+			{
+				$uses = $driver->childs[$nestedName];
+			}
+			else 
+			{
+				$uses = (isset($driver->childs[$name]) ? $driver->childs[$name] : null);
+			}
 		}
 		else
 		{
@@ -60,9 +71,40 @@ class Dispatcher {
 		$controller = $this->app->make($controller);
 		$method     = $this->app['request']->getMethod();
 
-		list($action, $parameters) = $this->findRoutableAttributes($type, $method, $parameters);
+		list($action, $parameters) = $this->findRoutableAttributes($type, $nested, $method, $parameters);
 
 		return $controller->callAction($this->app, $this->app['router'], $action, $parameters);
+	}
+
+	/**
+	 * Find nested parameters from route.
+	 *
+	 * @access protected
+	 * @param  string   $name
+	 * @param  array    $parameters
+	 * @return array
+	 */
+	protected function getNestedParameters($name, $parameters)
+	{
+		$reserved = array('create', 'show', 'index', 'delete', 'destroy', 'edit');
+		$nested = array();
+
+		if (($nestedCount = count($parameters)) > 0)
+		{
+			$nested = array($name => $parameters[0]);
+
+			for ($index = 1; $index < $nestedCount; $index += 2)
+			{
+				$value = null;
+				
+				if (($index + 1) < $nestedCount) $value = $parameters[($index + 1)];
+				$key = $parameters[$index];
+				
+				! in_array($key, $reserved) and $nested[$key] = $value;
+			}
+		}
+
+		return $nested;
 	}
 
 	/**
@@ -71,23 +113,53 @@ class Dispatcher {
 	 *
 	 * @access protected
 	 * @param  string   $type       Either 'restful' or 'resource'
+	 * @param  integer  $nested
 	 * @param  string   $method
 	 * @param  array    $parameters
 	 * @return array
 	 */
-	protected function findRoutableAttributes($type = 'restful', $method = null, $parameters)
+	protected function findRoutableAttributes($type = 'restful', $nested = array(), $method = null, $parameters)
 	{
 		$action = null;
 		$method = Str::lower($method);
 
-		if ($type === 'restful')
+		switch ($type)
 		{
-			$action = (count($parameters) > 0 ? array_shift($parameters) : 'index');
-			$action = Str::camel("{$method}_{$action}");
-		} 
-		else 
-		{
-			throw new InvalidArgumentException("Type [{$type}] not implemented.");
+			case 'restful' :
+				$action = (count($parameters) > 0 ? array_shift($parameters) : 'index');
+				$action = Str::camel("{$method}_{$action}");
+				break;
+			case 'resource' :
+				$resources     = array_keys($nested);
+				$lastParameter = array_pop($parameters);
+				$parameters = array_values($nested);
+
+				switch ($method)
+				{
+					case 'get' : 
+						if (in_array($lastParameter, array('edit', 'create')))
+						{
+							$action = $lastParameter;
+						}
+						elseif ( ! in_array($lastParameter, $resources)) $action = 'show';
+						else $action = 'index';
+						break;
+
+					case 'post' : 
+						$action = 'store'; 
+						break;
+					case 'put' :
+					case 'patch' : 
+						$action = 'update'; 
+						break;
+					case 'delete' : 
+						$action = 'destroy'; 
+						break;
+				}
+
+				break;
+			default :
+				throw new InvalidArgumentException("Type [{$type}] not implemented.");
 		}
 
 		return array($action, $parameters);
