@@ -7,8 +7,6 @@ Orchestra\Resources is an adhoc routing manager that allow extension developer t
 
 ## Quick Installation
 
-## Quick Installation
-
 To install through composer, simply put the following in your `composer.json` file:
 
 ```json
