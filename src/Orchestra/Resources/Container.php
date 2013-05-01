@@ -1,8 +1,9 @@
 <?php namespace Orchestra\Resources;
 
 use InvalidArgumentException;
+use ArrayAccess;
 
-class Container {
+class Container implements ArrayAccess {
 
 	/**
 	 * Resource attributes.
@@ -113,5 +114,50 @@ class Container {
 		}
 
 		return $this->attributes[$method] ?: null;
+	}
+
+	/**
+	 * Determine if a given offset exists.
+	 *
+	 * @param  string  $key
+	 * @return bool
+	 */
+	public function offsetExists($key)
+	{
+		return isset($this->bindings[$key]);
+	}
+
+	/**
+	 * Get the value at a given offset.
+	 *
+	 * @param  string  $key
+	 * @return mixed
+	 */
+	public function offsetGet($key)
+	{
+		return $this->attributes['childs'][$key];
+	}
+
+	/**
+	 * Set the value at a given offset.
+	 *
+	 * @param  string  $key
+	 * @param  mixed   $value
+	 * @return void
+	 */
+	public function offsetSet($key, $value)
+	{
+		$this->route($key, $value);
+	}
+
+	/**
+	 * Unset the value at a given offset.
+	 *
+	 * @param  string  $key
+	 * @return void
+	 */
+	public function offsetUnset($key)
+	{
+		unset($this->attributes['childs'][$key]);
 	}
 }
