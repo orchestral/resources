@@ -1,6 +1,8 @@
 <?php namespace Orchestra\Resources;
 
 use InvalidArgumentException;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Router;
 use Orchestra\Support\Str;
 
 class Dispatcher {
@@ -13,15 +15,33 @@ class Dispatcher {
 	protected $app = null;
 
 	/**
+	 * Router instance.
+	 *
+	 * @var Illuminate\Routing\Router
+	 */
+	protected $router = null;
+
+	/**
+	 * Request instance.
+	 *
+	 * @var Illuminate\Http\Request
+	 */
+	protected $request = null;
+
+	/**
 	 * Construct a new Resources instance.
 	 *
 	 * @access public
 	 * @param  Illuminate\Foundation\Application    $app
+	 * @param  Illuminate\Routing\Router            $router
+	 * @param  Illuminate\Http\Request              $request
 	 * @return void
 	 */
-	public function __construct($app)
+	public function __construct($app, Router $router, Request $request)
 	{
-		$this->app = $app;
+		$this->app     = $app;
+		$this->router  = $router;
+		$this->request = $request;
 	}
 	
 	/**
@@ -67,13 +87,14 @@ class Dispatcher {
 		{
 			list($type, $controller) = explode(':', $uses, 2);
 		}
-
-		$controller = $this->app->make($controller);
-		$method     = $this->app['request']->getMethod();
+		
+		$method = $this->request->getMethod();
 
 		list($action, $parameters) = $this->findRoutableAttributes($type, $nested, $method, $parameters);
 
-		return $controller->callAction($this->app, $this->app['router'], $action, $parameters);
+		$controller = $this->app->make($controller);
+
+		return $controller->callAction($this->app, $this->router, $action, $parameters);
 	}
 
 	/**

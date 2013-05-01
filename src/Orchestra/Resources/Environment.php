@@ -1,7 +1,6 @@
 <?php namespace Orchestra\Resources;
 
 use Closure;
-use Orchestra\Support\Str;
 
 class Environment {
 
@@ -52,36 +51,12 @@ class Environment {
 	 *
 	 * @access public
 	 * @param  string   $name
-	 * @param  mixed    $options
+	 * @param  mixed    $attributes
 	 * @return Orchestra\Resources\Container
 	 */
-	public function make($name, $options)
+	public function make($name, $attributes)
 	{
-		$schema = array(
-			'name'    => '',
-			'uses'    => '',
-			'childs'  => array(),
-			'visible' => true,
-		);
-
-		if ( ! is_array($options))
-		{
-			$uses    = $options;
-			$options = array(
-				'name' => Str::title($name),
-				'uses' => $uses,
-			);
-		}
-
-		$options['id'] = $name;
-		$options       = array_merge($schema, $options);
-
-		if (empty($options['name']) or empty($options['uses']))
-		{
-			throw new InvalidArgumentException("Required `name` and `uses` are missing.");
-		}
-
-		return $this->drivers[$name] = new Container($options);
+		return $this->drivers[$name] = new Container($name, $attributes);
 	}
 
 	/**
@@ -89,14 +64,14 @@ class Environment {
 	 *
 	 * @access public
 	 * @param  string   $name
-	 * @param  mixed    $options
+	 * @param  mixed    $attributes
 	 * @return self
 	 */
-	public function of($name, $options = null)
+	public function of($name, $attributes = null)
 	{
 		if ( ! isset($this->drivers[$name]))
 		{
-			return $this->make($name, $options ?: '#');
+			return $this->make($name, $attributes);
 		}
 
 		return $this->drivers[$name];

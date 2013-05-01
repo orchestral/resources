@@ -2,6 +2,7 @@
 
 use InvalidArgumentException;
 use ArrayAccess;
+use Orchestra\Support\Str;
 
 class Container implements ArrayAccess {
 
@@ -23,10 +24,37 @@ class Container implements ArrayAccess {
 	 * Construct a new Resouce container.
 	 *
 	 * @access public
+	 * @param  string   $name
+	 * @param  mixed    $attributes
 	 * @return void
 	 */
-	public function __construct(array $attributes)
+	public function __construct($name, $attributes)
 	{
+		$schema = array(
+			'name'    => '',
+			'uses'    => '',
+			'childs'  => array(),
+			'visible' => true,
+		);
+
+		if ( ! is_array($attributes))
+		{
+			$uses    = $attributes;
+			$attributes = array(
+				'name' => Str::title($name),
+				'uses' => $uses,
+			);
+		}
+
+		$attributes['id'] = $name;
+
+		$attributes = array_merge($schema, $attributes);
+
+		if (empty($attributes['name']) or empty($attributes['uses']))
+		{
+			throw new InvalidArgumentException("Required `name` and `uses` are missing.");
+		}
+
 		$this->attributes = $attributes;
 	}
 
@@ -57,8 +85,13 @@ class Container implements ArrayAccess {
 	 * @param  boolean  $value
 	 * @return self
 	 */
-	public function visibility(boolean $value)
+	public function visibility($value)
 	{
+		if ( ! is_bool($value))
+		{
+			throw new InvalidArgumentException("Inpecting a boolean, [{$value}] given.");
+		}
+		
 		$this->attributes['visible'] = $value;
 		return $this;
 	}
@@ -71,8 +104,7 @@ class Container implements ArrayAccess {
 	 */
 	public function show()
 	{
-		$this->attributes['visible'] = true;
-		return $this;
+		return $this->visibility(true);
 	}
 
 	/**
@@ -83,8 +115,7 @@ class Container implements ArrayAccess {
 	 */
 	public function hide()
 	{
-		$this->attributes['visible'] = false;
-		return $this;
+		return $this->visibility(false);
 	}
 
 	/**
@@ -124,7 +155,7 @@ class Container implements ArrayAccess {
 	 */
 	public function offsetExists($key)
 	{
-		return isset($this->bindings[$key]);
+		return isset($this->attributes['childs'][$key]);
 	}
 
 	/**

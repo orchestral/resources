@@ -53,12 +53,12 @@ class Response {
 			case ($content instanceof IlluminateResponse) :
 				$statusCode  = $content->getStatusCode();
 				$response    = $content->getContent();
-				$contentType = $content->headers->get('content-type');
+				$contentType = $content->headers->get('Content-Type');
 				$isHtml      = starts_with($contentType, 'text/html');
 				
 				if ($response instanceof FacileResponse and $response->format !== 'html')
 				{
-					return $response->getContent()->render();
+					return $response->render();
 				}
 				elseif ( ! is_null($contentType) and ! $isHtml)
 				{
@@ -71,7 +71,7 @@ class Response {
 
 				break;
 			default :
-				// nothing to do here.
+				$response = $content;
 		}
 
 		if ($callback instanceof Closure) $response = call_user_func($callback, $response);
