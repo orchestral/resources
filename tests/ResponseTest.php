@@ -110,9 +110,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
 		$content = m::mock('\Illuminate\Http\Response');
 		$content->headers = $headers = m::mock('HeaderBag');
 		$facile = m::mock('\Orchestra\Facile\Response');
-		$facile->shouldReceive('format')->andReturn('json')
+		$facile->shouldReceive('getFormat')->andReturn('json')
 			->shouldReceive('render')->once()->andReturn('foo');
-
 		$content->shouldReceive('getStatusCode')->once()->andReturn(200)
 			->shouldReceive('getContent')->once()->andReturn($facile)
 			->shouldReceive('isSuccessful')->never()->andReturn(true);

@@ -56,7 +56,7 @@ class Response {
 				$contentType = $content->headers->get('Content-Type');
 				$isHtml      = starts_with($contentType, 'text/html');
 				
-				if ($response instanceof FacileResponse and $response->format !== 'html')
+				if ($response instanceof FacileResponse and $response->getFormat() !== 'html')
 				{
 					return $response->render();
 				}
