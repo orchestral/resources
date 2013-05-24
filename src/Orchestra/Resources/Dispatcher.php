@@ -153,16 +153,14 @@ class Dispatcher {
 			case 'resource' :
 				$resources     = array_keys($nested);
 				$lastParameter = array_pop($parameters);
-				$parameters = array_values($nested);
+				$parameters    = array_values($nested);
 
 				switch ($method)
 				{
 					case 'get' : 
-						if (in_array($lastParameter, array('edit', 'create')))
-						{
-							$action = $lastParameter;
-						}
-						elseif ( ! in_array($lastParameter, $resources)) $action = 'show';
+						if (in_array($lastParameter, array('edit', 'create'))) $action = $lastParameter;
+						elseif ( ! in_array($lastParameter, $resources) 
+							and ! empty($nested)) $action = 'show';
 						else $action = 'index';
 						break;
 
