@@ -158,7 +158,7 @@ class Dispatcher {
 				switch ($method)
 				{
 					case 'get' : 
-						if (in_array($lastParameter, array('edit', 'create'))) $action = $lastParameter;
+						if (in_array($lastParameter, array('edit', 'create', 'delete'))) $action = $lastParameter;
 						elseif ( ! in_array($lastParameter, $resources) 
 							and ! empty($nested)) $action = 'show';
 						else $action = 'index';
