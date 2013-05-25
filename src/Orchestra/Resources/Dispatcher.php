@@ -142,20 +142,20 @@ class Dispatcher {
 	protected function findRoutableAttributes($type = 'restful', $nested = array(), $verb = null, $parameters)
 	{
 		$action = null;
-		$verb   = Str::lower($method);
+		$verb   = Str::lower($verb);
 
 		switch ($type)
 		{
 			case 'restful' :
 				$action = (count($parameters) > 0 ? array_shift($parameters) : 'index');
-				$action = Str::camel("{$method}_{$action}");
+				$action = Str::camel("{$verb}_{$action}");
 				break;
 			case 'resource' :
 				$last       = array_pop($parameters);
 				$resources  = array_keys($nested);
 				$parameters = array_values($nested);
 
-				switch ($method)
+				switch ($verb)
 				{
 					case 'get' : 
 						if (in_array($last, array('edit', 'create', 'delete'))) $action = $last;
