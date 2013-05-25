@@ -88,9 +88,9 @@ class Dispatcher {
 			list($type, $controller) = explode(':', $uses, 2);
 		}
 		
-		$method = $this->request->getMethod();
+		$verb = $this->request->getMethod();
 
-		list($action, $parameters) = $this->findRoutableAttributes($type, $nested, $method, $parameters);
+		list($action, $parameters) = $this->findRoutableAttributes($type, $nested, $verb, $parameters);
 
 		$controller = $this->app->make($controller);
 
@@ -108,7 +108,7 @@ class Dispatcher {
 	protected function getNestedParameters($name, $parameters)
 	{
 		$reserved = array('create', 'show', 'index', 'delete', 'destroy', 'edit');
-		$nested = array();
+		$nested   = array();
 
 		if (($nestedCount = count($parameters)) > 0)
 		{
@@ -135,14 +135,14 @@ class Dispatcher {
 	 * @access protected
 	 * @param  string   $type       Either 'restful' or 'resource'
 	 * @param  integer  $nested
-	 * @param  string   $method
+	 * @param  string   $verb
 	 * @param  array    $parameters
 	 * @return array
 	 */
-	protected function findRoutableAttributes($type = 'restful', $nested = array(), $method = null, $parameters)
+	protected function findRoutableAttributes($type = 'restful', $nested = array(), $verb = null, $parameters)
 	{
 		$action = null;
-		$method = Str::lower($method);
+		$verb   = Str::lower($method);
 
 		switch ($type)
 		{
@@ -151,16 +151,15 @@ class Dispatcher {
 				$action = Str::camel("{$method}_{$action}");
 				break;
 			case 'resource' :
-				$resources     = array_keys($nested);
-				$lastParameter = array_pop($parameters);
-				$parameters    = array_values($nested);
+				$last       = array_pop($parameters);
+				$resources  = array_keys($nested);
+				$parameters = array_values($nested);
 
 				switch ($method)
 				{
 					case 'get' : 
-						if (in_array($lastParameter, array('edit', 'create', 'delete'))) $action = $lastParameter;
-						elseif ( ! in_array($lastParameter, $resources) 
-							and ! empty($nested)) $action = 'show';
+						if (in_array($last, array('edit', 'create', 'delete'))) $action = $last;
+						elseif ( ! in_array($last, $resources) and ! empty($nested)) $action = 'show';
 						else $action = 'index';
 						break;
 
