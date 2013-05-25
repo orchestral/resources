@@ -88,10 +88,15 @@ class Dispatcher {
 			list($type, $controller) = explode(':', $uses, 2);
 		}
 		
+		// Get HTTP verb used in this request.
 		$verb = $this->request->getMethod();
 
+		// Next we need to the action and parameters before we can call 
+		// the destination controller, the resolver would determine both 
+		// restful and resource controller.
 		list($action, $parameters) = $this->findRoutableAttributes($type, $nested, $verb, $parameters);
 
+		// Resolve the controller from container.
 		$controller = $this->app->make($controller);
 
 		return $controller->callAction($this->app, $this->router, $action, $parameters);
