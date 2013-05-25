@@ -151,29 +151,7 @@ class Dispatcher {
 				$action = Str::camel("{$verb}_{$action}");
 				break;
 			case 'resource' :
-				$last       = array_pop($parameters);
-				$resources  = array_keys($nested);
-				$parameters = array_values($nested);
-
-				switch ($verb)
-				{
-					case 'get' : 
-						if (in_array($last, array('edit', 'create', 'delete'))) $action = $last;
-						elseif ( ! in_array($last, $resources) and ! empty($nested)) $action = 'show';
-						else $action = 'index';
-						break;
-
-					case 'post' : 
-						$action = 'store'; 
-						break;
-					case 'put' :
-					case 'patch' : 
-						$action = 'update'; 
-						break;
-					case 'delete' : 
-						$action = 'destroy'; 
-						break;
-				}
+				$action = $this->findResourceRoutable($verb, $parameters, $nested);
 
 				break;
 			default :
@@ -181,5 +159,53 @@ class Dispatcher {
 		}
 
 		return array($action, $parameters);
+	}
+
+	/**
+	 * Resolve action from resource controller.
+	 * 
+	 * @access protected
+	 * @param  string   $verb
+	 * @param  array    $parameters
+	 * @param  array    $nested
+	 * @return string
+	 */
+	protected function findResourceRoutable($verb, $parameters = array(), $nested = array())
+	{
+		$last       = array_pop($parameters);
+		$resources  = array_keys($nested);
+		$parameters = array_values($nested);
+
+		switch ($verb)
+		{
+			case 'get' : 
+				switch (true)
+				{
+					case in_array($last, array('edit', 'create', 'delete')) : 
+						$action = $last;
+						break;
+					case ( ! in_array($last, $resources) and ! empty($nested)) :
+						$action = 'show';
+						break;
+					default :
+						$action = 'index';
+						break;
+				}
+				
+				break;
+
+			case 'post' : 
+				$action = 'store'; 
+				break;
+			case 'put' :
+			case 'patch' : 
+				$action = 'update'; 
+				break;
+			case 'delete' : 
+				$action = 'destroy'; 
+				break;
+		}
+
+		return $action;
 	}
 }

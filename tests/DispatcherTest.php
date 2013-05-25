@@ -65,7 +65,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase {
 		$requestDelete = $this->request;
 		$stubDelete    = new Dispatcher($this->app, $this->router, $requestDelete);
 
-		$requestGet->shouldReceive('getMethod')->times(4)->andReturn('GET');
+		$requestGet->shouldReceive('getMethod')->times(5)->andReturn('GET');
 		$requestPost->shouldReceive('getMethod')->times(1)->andReturn('POST');
 		$requestPut->shouldReceive('getMethod')->times(1)->andReturn('PUT');
 		$requestDelete->shouldReceive('getMethod')->times(1)->andReturn('DELETE');
@@ -76,10 +76,10 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$app->shouldReceive('make')->with('AppController')->once()->andReturn($useApp)
 			->shouldReceive('make')->with('FooController')->once()->andReturn($useFoo)
-			->shouldReceive('make')->with('FoobarController')->times(5)->andReturn($useFoobar);
+			->shouldReceive('make')->with('FoobarController')->times(6)->andReturn($useFoobar);
 		$useApp->shouldReceive('callAction')->once()->andReturn('useApp');
 		$useFoo->shouldReceive('callAction')->once()->andReturn('useFoo');
-		$useFoobar->shouldReceive('callAction')->times(5)->andReturn('useFoobar');
+		$useFoobar->shouldReceive('callAction')->times(6)->andReturn('useFoobar');
 
 		$driver = (object) array(
 			'uses'   => 'AppController',
@@ -93,6 +93,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('useFoo', $stubGet->call($driver, 'foo', array('edit')));
 		$this->assertEquals('useFoobar', $stubGet->call($driver, 'foo', array(1, 'bar', 2, 'edit')));
 		$this->assertEquals('useFoobar', $stubGet->call($driver, 'foo', array(1, 'bar')));
+		$this->assertEquals('useFoobar', $stubGet->call($driver, 'foo', array(1, 'bar', 2)));
 		$this->assertEquals('useFoobar', $stubPost->call($driver, 'foo', array(1, 'bar', 2)));
 		$this->assertEquals('useFoobar', $stubPut->call($driver, 'foo', array(1, 'bar', 2)));
 		$this->assertEquals('useFoobar', $stubDelete->call($driver, 'foo', array(1, 'bar', 2)));
