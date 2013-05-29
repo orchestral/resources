@@ -16,12 +16,12 @@
 	},
 	"require": {
 		"php": ">=5.3.3",
-		"orchestra/facile": "2.0.*"
+		"orchestra/facile": "2.1.*"
 	},
 	"require-dev": {
 		"mockery/mockery": "0.8.0",
-		"illuminate/http": "4.0.*",
-		"illuminate/routing": "4.0.*"
+		"illuminate/http": "4.1.*",
+		"illuminate/routing": "4.1.*"
 	},
 	"suggest": {
 		"laravel/framework": "Allow using orchestra/resources component outside of Orchestra Platform",
@@ -29,7 +29,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "2.0.x-dev"
+			"dev-master": "2.1-dev"
 		}
 	},
 	"minimum-stability": "dev"
