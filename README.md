@@ -31,5 +31,5 @@ Next add the following service provider in `app/config/app.php`.
 
 ## Resources
 
-* [Documentation](http://docs.orchestraplatform.com/pages/components/resources)
+* [Documentation](http://orchestraplatform.com/docs/2.0/components/resources)
 * [Change Logs](https://github.com/orchestral/resources/wiki/Change-Logs)
