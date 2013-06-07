@@ -21,7 +21,8 @@
 	"require-dev": {
 		"mockery/mockery": "0.8.0",
 		"illuminate/http": "4.1.*",
-		"illuminate/routing": "4.1.*"
+		"illuminate/routing": "4.1.*",
+		"satooshi/php-coveralls": "~0.6"
 	},
 	"suggest": {
 		"laravel/framework": "Allow using orchestra/resources component outside of Orchestra Platform",

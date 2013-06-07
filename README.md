@@ -3,7 +3,7 @@ Orchestra Platform Resources Component
 
 Orchestra\Resources is an adhoc routing manager that allow extension developer to add CRUD interface without touching Orchestra Platform.
 
-[![Build Status](https://travis-ci.org/orchestral/resources.png?branch=master)](https://travis-ci.org/orchestral/resources)
+[![Build Status](https://travis-ci.org/orchestral/resources.png?branch=2.0)](https://travis-ci.org/orchestral/resources) [![Coverage Status](https://coveralls.io/repos/orchestral/resources/badge.png?branch=2.0)](https://coveralls.io/r/orchestral/resources?branch=2.0)
 
 ## Quick Installation
 
