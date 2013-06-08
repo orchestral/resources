@@ -62,7 +62,7 @@ class Response {
 				}
 				elseif ( ! is_null($contentType) and ! $isHtml)
 				{
-					return $response;
+					return $content;
 				}
 				elseif ( ! $content->isSuccessful())
 				{
