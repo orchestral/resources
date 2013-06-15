@@ -11,7 +11,7 @@ class Response {
 	/**
 	 * Application instance.
 	 *
-	 * @var Illuminate\Foundation\Application
+	 * @var \Illuminate\Foundation\Application
 	 */
 	protected $app = null;
 
@@ -19,7 +19,7 @@ class Response {
 	 * Construct a new Resources instance.
 	 *
 	 * @access public
-	 * @param  Illuminate\Foundation\Application    $app
+	 * @param  \Illuminate\Foundation\Application   $app
 	 * @return void
 	 */
 	public function __construct($app)
@@ -32,8 +32,8 @@ class Response {
 	 *
 	 * @access public
 	 * @param  mixed    $content
-	 * @param  Closure  $callback
-	 * @return Illuminate\Http\Response
+	 * @param  \Closure $callback
+	 * @return mixed
 	 */
 	public function call($content, Closure $callback = null)
 	{

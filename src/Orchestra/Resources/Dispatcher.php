@@ -10,21 +10,21 @@ class Dispatcher {
 	/**
 	 * Application instance.
 	 *
-	 * @var Illuminate\Foundation\Application
+	 * @var \Illuminate\Foundation\Application
 	 */
 	protected $app = null;
 
 	/**
 	 * Router instance.
 	 *
-	 * @var Illuminate\Routing\Router
+	 * @var \Illuminate\Routing\Router
 	 */
 	protected $router = null;
 
 	/**
 	 * Request instance.
 	 *
-	 * @var Illuminate\Http\Request
+	 * @var \Illuminate\Http\Request
 	 */
 	protected $request = null;
 
@@ -32,9 +32,9 @@ class Dispatcher {
 	 * Construct a new Resources instance.
 	 *
 	 * @access public
-	 * @param  Illuminate\Foundation\Application    $app
-	 * @param  Illuminate\Routing\Router            $router
-	 * @param  Illuminate\Http\Request              $request
+	 * @param  \Illuminate\Foundation\Application   $app
+	 * @param  \Illuminate\Routing\Router           $router
+	 * @param  \Illuminate\Http\Request             $request
 	 * @return void
 	 */
 	public function __construct($app, Router $router, Request $request)
@@ -51,7 +51,7 @@ class Dispatcher {
 	 * @param  array    $driver
 	 * @param  string   $name
 	 * @param  array    $parameters
-	 * @return void
+	 * @return mixed
 	 */
 	public function call($driver, $name = null, $parameters)
 	{
@@ -155,10 +155,11 @@ class Dispatcher {
 				$action = (count($parameters) > 0 ? array_shift($parameters) : 'index');
 				$action = Str::camel("{$verb}_{$action}");
 				break;
+			
 			case 'resource' :
 				$action = $this->findResourceRoutable($verb, $parameters, $nested);
-
 				break;
+
 			default :
 				throw new InvalidArgumentException("Type [{$type}] not implemented.");
 		}
@@ -203,6 +204,7 @@ class Dispatcher {
 				$action = 'store'; 
 				break;
 			case 'put' :
+				# passthru;
 			case 'patch' : 
 				$action = 'update'; 
 				break;
