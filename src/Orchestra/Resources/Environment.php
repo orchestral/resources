@@ -7,21 +7,21 @@ class Environment {
 	/**
 	 * Application instance.
 	 *
-	 * @var Illuminate\Foundation\Application
+	 * @var \Illuminate\Foundation\Application
 	 */
 	protected $app = null;
 
 	/**
 	 * Dispatcher instance.
 	 *
-	 * @var Orchestra\Resources\Dispatcher
+	 * @var \Orchestra\Resources\Dispatcher
 	 */
 	protected $dispatcher = null;
 
 	/**
 	 * Response instance.
 	 *
-	 * @var Orchestra\Resources\Response
+	 * @var \Orchestra\Resources\Response
 	 */
 	protected $response = null;
 
@@ -36,7 +36,9 @@ class Environment {
 	 * Construct a new Resources instance.
 	 *
 	 * @access public
-	 * @param  Illuminate\Foundation\Application    $app
+	 * @param  \Illuminate\Foundation\Application    $app
+	 * @param  \Orchestra\Resources\Dispatcher       $dispatcher
+	 * @param  \Orchestra\Resources\Response         $response
 	 * @return void
 	 */
 	public function __construct($app, Dispatcher $dispatcher, Response $response)
@@ -47,12 +49,12 @@ class Environment {
 	}
 
 	/**
-	 * Register a new resource
+	 * Register a new resource.
 	 *
 	 * @access public
 	 * @param  string   $name
 	 * @param  mixed    $attributes
-	 * @return Orchestra\Resources\Container
+	 * @return \Orchestra\Resources\Container
 	 */
 	public function make($name, $attributes)
 	{
@@ -65,7 +67,7 @@ class Environment {
 	 * @access public
 	 * @param  string   $name
 	 * @param  mixed    $attributes
-	 * @return self
+	 * @return \Orchestra\Resources\Container
 	 */
 	public function of($name, $attributes = null)
 	{
@@ -83,7 +85,7 @@ class Environment {
 	 * @access public
 	 * @param  string   $name
 	 * @param  array    $parameters
-	 * @return Response
+	 * @return \Orchestra\Resources\Response
 	 */
 	public function call($name, $parameters = array())
 	{
@@ -111,7 +113,7 @@ class Environment {
 	 * @access public
 	 * @param  mixed    $content
 	 * @param  Closure  $callback
-	 * @return Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function response($content, Closure $callback = null)
 	{

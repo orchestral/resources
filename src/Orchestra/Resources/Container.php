@@ -27,6 +27,7 @@ class Container implements ArrayAccess {
 	 * @param  string   $name
 	 * @param  mixed    $attributes
 	 * @return void
+	 * @throws \InvalidArgumentException
 	 */
 	public function __construct($name, $attributes)
 	{
@@ -59,12 +60,13 @@ class Container implements ArrayAccess {
 	}
 
 	/**
-	 * Map a child resource attributes
+	 * Map a child resource attributes.
 	 *
 	 * @access public
-	 * @param  string $name
-	 * @param  string $uses
+	 * @param  string   $name
+	 * @param  string   $uses
 	 * @return self
+	 * @throws \InvalidArgumentException
 	 */
 	public function route($name, $uses)
 	{
@@ -79,11 +81,12 @@ class Container implements ArrayAccess {
 	}
 
 	/**
-	 * Set visibility state based on parameter
+	 * Set visibility state based on parameter.
 	 *
 	 * @access public
 	 * @param  boolean  $value
 	 * @return self
+	 * @throws \InvalidArgumentException
 	 */
 	public function visibility($value)
 	{
@@ -93,11 +96,12 @@ class Container implements ArrayAccess {
 		}
 		
 		$this->attributes['visible'] = $value;
+		
 		return $this;
 	}
 
 	/**
-	 * Set visibility state to show
+	 * Set visibility state to show.
 	 * 
 	 * @access public
 	 * @return self
@@ -108,7 +112,7 @@ class Container implements ArrayAccess {
 	}
 
 	/**
-	 * Set visibility state to hidden
+	 * Set visibility state to hidden.
 	 *
 	 * @access public
 	 * @return self
@@ -150,8 +154,9 @@ class Container implements ArrayAccess {
 	/**
 	 * Determine if a given offset exists.
 	 *
-	 * @param  string  $key
-	 * @return bool
+	 * @access public
+	 * @param  string   $key
+	 * @return boolean
 	 */
 	public function offsetExists($key)
 	{
@@ -161,7 +166,8 @@ class Container implements ArrayAccess {
 	/**
 	 * Get the value at a given offset.
 	 *
-	 * @param  string  $key
+	 * @access public
+	 * @param  string   $key
 	 * @return mixed
 	 */
 	public function offsetGet($key)
@@ -172,8 +178,9 @@ class Container implements ArrayAccess {
 	/**
 	 * Set the value at a given offset.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $value
+	 * @access public
+	 * @param  string   $key
+	 * @param  mixed    $value
 	 * @return void
 	 */
 	public function offsetSet($key, $value)
@@ -184,7 +191,8 @@ class Container implements ArrayAccess {
 	/**
 	 * Unset the value at a given offset.
 	 *
-	 * @param  string  $key
+	 * @access public
+	 * @param  string   $key
 	 * @return void
 	 */
 	public function offsetUnset($key)
