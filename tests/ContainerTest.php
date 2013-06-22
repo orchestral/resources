@@ -78,18 +78,28 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse(isset($stub['ten']));
 		unset($stub['first']);
 		$this->assertFalse(isset($stub['first']));
-
 	}
 
 	/**
-	 * Test Orchestra\Resources\Container::route() method 
-	 * throws exception.
+	 * Test Orchestra\Resources\Container::route() method given reserved 
+	 * name throws exception.
 	 *
 	 * @expectedException \InvalidArgumentException
 	 */
-	public function testRouteMethodThrowsException()
+	public function testRouteMethodGivenReservedNameThrowsException()
 	{
-		with(new Container('foo', 'FooController'))->route('visible', 'FoobarController');
+		with(new Container('foo', 'FooController'))->route('visible', 'FirstController');
+	}
+
+	/**
+	 * Test Orchestra\Resources\Container::route() method given name with 
+	 * "/" throws exception.
+	 *
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testRouteMethodGivenNameWithSlashesThrowsException()
+	{
+		with(new Container('foo', 'FooController'))->route('first/foo', 'FirstController');
 	}
 
 	/**

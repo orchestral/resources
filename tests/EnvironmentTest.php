@@ -69,6 +69,32 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Test Orchestra\Resources\Environment::make() method given name with 
+	 * "." throw exceptions.
+	 *
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testMakeMethodGivenNameWithDottedThrowsException()
+	{
+		$stub = new Environment($this->app, $this->dispatcher, $this->response);
+
+		$stub->make('foo.bar', 'FooController');
+	}
+
+	/**
+	 * Test Orchestra\Resources\Environment::make() method given name with 
+	 * "/" throw exceptions.
+	 *
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testMakeMethodGivenNameWithSlashesThrowsException()
+	{
+		$stub = new Environment($this->app, $this->dispatcher, $this->response);
+
+		$stub->make('foo/bar', 'FooController');
+	}
+
+	/**
 	 * Test Orchestra\Resources\Environment::make() method.
 	 *
 	 * @expectedException \InvalidArgumentException
