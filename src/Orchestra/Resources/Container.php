@@ -75,6 +75,11 @@ class Container implements ArrayAccess {
 			throw new InvalidArgumentException("Unable to use reserved keyword [{$name}].");
 		}
 
+		if (Str::contains($name, '/'))
+		{
+			throw new InvalidArgumentException("Invalid character in resource name [{$name}].");
+		}
+
 		$this->attributes['childs'][$name] = $uses;
 
 		return $this;

@@ -1,6 +1,8 @@
 <?php namespace Orchestra\Resources;
 
 use Closure;
+use InvalidArgumentException;
+use Orchestra\Support\Str;
 
 class Environment {
 
@@ -58,6 +60,11 @@ class Environment {
 	 */
 	public function make($name, $attributes)
 	{
+		if (Str::contains($name, '.') or Str::contains($name, '/'))
+		{
+			throw new InvalidArgumentException("Invalid character in resource name [{$name}].");
+		}
+
 		return $this->drivers[$name] = new Container($name, $attributes);
 	}
 
