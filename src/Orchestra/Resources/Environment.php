@@ -37,7 +37,6 @@ class Environment {
 	/**
 	 * Construct a new Resources instance.
 	 *
-	 * @access public
 	 * @param  \Illuminate\Foundation\Application    $app
 	 * @param  \Orchestra\Resources\Dispatcher       $dispatcher
 	 * @param  \Orchestra\Resources\Response         $response
@@ -53,7 +52,6 @@ class Environment {
 	/**
 	 * Register a new resource.
 	 *
-	 * @access public
 	 * @param  string   $name
 	 * @param  mixed    $attributes
 	 * @return \Orchestra\Resources\Container
@@ -71,7 +69,6 @@ class Environment {
 	/**
 	 * Get resource by given name, or create a new one.
 	 *
-	 * @access public
 	 * @param  string   $name
 	 * @param  mixed    $attributes
 	 * @return \Orchestra\Resources\Container
@@ -89,7 +86,6 @@ class Environment {
 	/**
 	 * Call a resource controller and action.
 	 *
-	 * @access public
 	 * @param  string   $name
 	 * @param  array    $parameters
 	 * @return \Orchestra\Resources\Response
@@ -117,7 +113,6 @@ class Environment {
 	/**
 	 * Handle response from resources.
 	 *
-	 * @access public
 	 * @param  mixed    $content
 	 * @param  Closure  $callback
 	 * @return mixed
@@ -130,7 +125,6 @@ class Environment {
 	/**
 	 * Get all registered resources.
 	 *
-	 * @access public
 	 * @return array
 	 */
 	public function all()
