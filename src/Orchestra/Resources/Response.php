@@ -18,7 +18,6 @@ class Response {
 	/**
 	 * Construct a new Resources instance.
 	 *
-	 * @access public
 	 * @param  \Illuminate\Foundation\Application   $app
 	 * @return void
 	 */
@@ -30,7 +29,6 @@ class Response {
 	/**
 	 * Handle response from resources.
 	 *
-	 * @access public
 	 * @param  mixed    $content
 	 * @param  \Closure $callback
 	 * @return mixed

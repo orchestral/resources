@@ -31,7 +31,6 @@ class Dispatcher {
 	/**
 	 * Construct a new Resources instance.
 	 *
-	 * @access public
 	 * @param  \Illuminate\Foundation\Application   $app
 	 * @param  \Illuminate\Routing\Router           $router
 	 * @param  \Illuminate\Http\Request             $request
@@ -47,7 +46,6 @@ class Dispatcher {
 	/**
 	 * Create a new dispatch.
 	 *
-	 * @access public
 	 * @param  array    $driver
 	 * @param  string   $name
 	 * @param  array    $parameters
@@ -105,7 +103,6 @@ class Dispatcher {
 	/**
 	 * Find nested parameters from route.
 	 *
-	 * @access protected
 	 * @param  string   $name
 	 * @param  array    $parameters
 	 * @return array
@@ -137,7 +134,6 @@ class Dispatcher {
 	 * Find route action and parameters content attributes from either 
 	 * restful or resources routing.
 	 *
-	 * @access protected
 	 * @param  string   $type       Either 'restful' or 'resource'
 	 * @param  integer  $nested
 	 * @param  string   $verb
@@ -170,7 +166,6 @@ class Dispatcher {
 	/**
 	 * Resolve action from resource controller.
 	 * 
-	 * @access protected
 	 * @param  string   $verb
 	 * @param  array    $parameters
 	 * @param  array    $nested
