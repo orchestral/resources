@@ -153,7 +153,7 @@ class Dispatcher {
 				break;
 			
 			case 'resource' :
-				$action = $this->findResourceRoutable($verb, $parameters, $nested);
+				list($action, $parameters) = $this->findResourceRoutable($verb, $parameters, $nested);
 				break;
 
 			default :
@@ -208,6 +208,6 @@ class Dispatcher {
 				break;
 		}
 
-		return $action;
+		return array($action, $parameters);
 	}
 }
