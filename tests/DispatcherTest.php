@@ -48,38 +48,25 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Test Orchestra\Resources\Dispatcher::call() method.
+	 * Test Orchestra\Resources\Dispatcher::call() method using GET verb.
 	 *
 	 * @test
 	 */
-	public function testCallMethod()
+	public function testCallMethodUsingGetVerb()
 	{
-		$app = $this->app;
-		
-		$requestGet    = $this->request;
-		$stubGet       = new Dispatcher($this->app, $this->router, $requestGet);
-		$requestPost   = $this->request;
-		$stubPost      = new Dispatcher($this->app, $this->router, $requestPost);
-		$requestPut    = $this->request;
-		$stubPut       = new Dispatcher($this->app, $this->router, $requestPut);
-		$requestDelete = $this->request;
-		$stubDelete    = new Dispatcher($this->app, $this->router, $requestDelete);
-
-		$requestGet->shouldReceive('getMethod')->times(5)->andReturn('GET');
-		$requestPost->shouldReceive('getMethod')->times(1)->andReturn('POST');
-		$requestPut->shouldReceive('getMethod')->times(1)->andReturn('PUT');
-		$requestDelete->shouldReceive('getMethod')->times(1)->andReturn('DELETE');
-
+		$app       = $this->app;
+		$request   = $this->request;
 		$useApp    = m::mock('AppController');
 		$useFoo    = m::mock('FooController');
 		$useFoobar = m::mock('FoobarController');
 
 		$app->shouldReceive('make')->with('AppController')->once()->andReturn($useApp)
 			->shouldReceive('make')->with('FooController')->once()->andReturn($useFoo)
-			->shouldReceive('make')->with('FoobarController')->times(6)->andReturn($useFoobar);
+			->shouldReceive('make')->times(3)->with('FoobarController')->andReturn($useFoobar);
 		$useApp->shouldReceive('callAction')->once()->andReturn('useApp');
 		$useFoo->shouldReceive('callAction')->once()->andReturn('useFoo');
-		$useFoobar->shouldReceive('callAction')->times(6)->andReturn('useFoobar');
+		$useFoobar->shouldReceive('callAction')->times(3)->andReturn('useFoobar');
+		$request->shouldReceive('getMethod')->times(5)->andReturn('GET');
 
 		$driver = (object) array(
 			'uses'   => 'AppController',
@@ -89,14 +76,96 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase {
 			),
 		);
 
-		$this->assertEquals('useApp', $stubGet->call($driver, null, array('edit')));
-		$this->assertEquals('useFoo', $stubGet->call($driver, 'foo', array('edit')));
-		$this->assertEquals('useFoobar', $stubGet->call($driver, 'foo', array(1, 'bar', 2, 'edit')));
-		$this->assertEquals('useFoobar', $stubGet->call($driver, 'foo', array(1, 'bar')));
-		$this->assertEquals('useFoobar', $stubGet->call($driver, 'foo', array(1, 'bar', 2)));
-		$this->assertEquals('useFoobar', $stubPost->call($driver, 'foo', array(1, 'bar', 2)));
-		$this->assertEquals('useFoobar', $stubPut->call($driver, 'foo', array(1, 'bar', 2)));
-		$this->assertEquals('useFoobar', $stubDelete->call($driver, 'foo', array(1, 'bar', 2)));
+		$stub = new Dispatcher($this->app, $this->router, $request);
+		
+		$this->assertEquals('useApp', $stub->call($driver, null, array('edit')));
+		$this->assertEquals('useFoo', $stub->call($driver, 'foo', array('edit')));
+		$this->assertEquals('useFoobar', $stub->call($driver, 'foo', array(1, 'bar', 2, 'edit')));
+		$this->assertEquals('useFoobar', $stub->call($driver, 'foo', array(1, 'bar')));
+		$this->assertEquals('useFoobar', $stub->call($driver, 'foo', array(1, 'bar', 2)));
+	}
+
+	/**
+	 * Test Orchestra\Resources\Dispatcher::call() method using POST verb.
+	 *
+	 * @test
+	 */
+	public function testCallMethodUsingPostVerb()
+	{
+		$app       = $this->app;
+		$request   = $this->request;
+		$useFoobar = m::mock('FoobarController');
+
+		$app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
+		$useFoobar->shouldReceive('callAction')->once()->andReturn('useFoobar');
+		$request->shouldReceive('getMethod')->once()->andReturn('POST');
+
+		$driver = (object) array(
+			'uses'   => 'AppController',
+			'childs' => array(
+				'foo' => 'restful:FooController',
+				'foo.bar' => 'resource:FoobarController',
+			),
+		);
+		$stub = new Dispatcher($this->app, $this->router, $request);
+		
+		$this->assertEquals('useFoobar', $stub->call($driver, 'foo', array(1, 'bar', 2)));
+	}
+
+	/**
+	 * Test Orchestra\Resources\Dispatcher::call() method using PUT verb.
+	 *
+	 * @test
+	 */
+	public function testCallMethodUsingPutVerb()
+	{
+		$app       = $this->app;
+		$request   = $this->request;
+		$useFoobar = m::mock('FoobarController');
+
+		$app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
+		$useFoobar->shouldReceive('callAction')->once()->andReturn('useFoobar');
+		$request->shouldReceive('getMethod')->once()->andReturn('PUT');
+
+		$driver = (object) array(
+			'uses'   => 'AppController',
+			'childs' => array(
+				'foo' => 'restful:FooController',
+				'foo.bar' => 'resource:FoobarController',
+			),
+		);
+
+		$stub = new Dispatcher($app, $this->router, $request);
+
+		$this->assertEquals('useFoobar', $stub->call($driver, 'foo', array(1, 'bar', 2)));
+	}
+
+	/**
+	 * Test Orchestra\Resources\Dispatcher::call() method using GET verb.
+	 *
+	 * @test
+	 */
+	public function testCallMethodUsingDeleteVerb()
+	{
+		$app       = $this->app;
+		$request   = $this->request;
+		$useFoobar = m::mock('FoobarController');
+
+		$app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
+		$useFoobar->shouldReceive('callAction')->once()->andReturn('useFoobar');
+		$request->shouldReceive('getMethod')->once()->andReturn('DELETE');
+
+		$driver = (object) array(
+			'uses'   => 'AppController',
+			'childs' => array(
+				'foo' => 'restful:FooController',
+				'foo.bar' => 'resource:FoobarController',
+			),
+		);
+
+		$stub = new Dispatcher($app, $this->router, $request);
+
+		$this->assertEquals('useFoobar', $stub->call($driver, 'foo', array(1, 'bar', 2)));
 	}
 
 	/**
