@@ -46,9 +46,9 @@ class Container implements ArrayAccess {
 			);
 		}
 
-		$attributes['id'] = $name;
-
 		$attributes = array_merge($schema, $attributes);
+
+		$attributes['id'] = $name;
 
 		if (empty($attributes['name']) or empty($attributes['uses']))
 		{

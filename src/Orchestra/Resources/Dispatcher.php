@@ -1,6 +1,8 @@
 <?php namespace Orchestra\Resources;
 
 use InvalidArgumentException;
+use Orchestra\Resources\Routing\Route;
+use Orchestra\Resources\Routing\ControllerDispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Orchestra\Support\Str;
@@ -51,7 +53,7 @@ class Dispatcher {
 	 * @param  array    $parameters
 	 * @return mixed
 	 */
-	public function call($driver, $name = null, $parameters)
+	public function call($driver, $name = null, array $parameters)
 	{
 		$nested     = $this->getNestedParameters($name, $parameters);		
 		$nestedName = implode('.', array_keys($nested));
@@ -94,10 +96,13 @@ class Dispatcher {
 		// restful and resource controller.
 		list($action, $parameters) = $this->findRoutableAttributes($type, $nested, $verb, $parameters);
 
-		// Resolve the controller from container.
-		$controller = $this->app->make($controller);
+		$route = new Route($verb, "{$driver->id}/{$name}", array('uses' => $controller));
+		$route->overrideParameters($parameters);
 
-		return $controller->callAction($this->app, $this->router, $action, $parameters);
+		// Resolve the controller from container.
+		$dispatcher = new ControllerDispatcher($this->router, $this->app);
+		
+		return $dispatcher->run($controller, $action, $route, $this->request);
 	}
 
 	/**
