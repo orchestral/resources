@@ -1,6 +1,7 @@
 <?php namespace Orchestra\Resources;
 
 use Closure;
+use RuntimeException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response as IlluminateResponse;
@@ -35,45 +36,67 @@ class Response {
 	 */
 	public function call($content, Closure $callback = null)
 	{
-		$response = null;
-		
-		switch (true)
+		if (false === $content or is_null($content))
 		{
-			case ( ! $content) :
-				return $this->app->abort(404);
-			
-			case ($content instanceof RedirectResponse or $content instanceof JsonResponse) :
-				return $content;
-
-			case ($content instanceof FacileResponse) :
-				return $content->render();
+			return $this->app->abort(404);
+		}
+		elseif ($content instanceof RedirectResponse or $content instanceof JsonResponse) 
+		{
+			return $content;
+		}
+		elseif ($content instanceof FacileResponse)
+		{
+			return $content->render();
+		}
+		elseif ($content instanceof IlluminateResponse)
+		{
+			return $this->handleIlluminateResponse($content, $callback);
+		}
 		
-			case ($content instanceof IlluminateResponse) :
-				$statusCode  = $content->getStatusCode();
-				$response    = $content->getContent();
-				$contentType = $content->headers->get('Content-Type');
-				$isHtml      = starts_with($contentType, 'text/html');
-				
-				if ($response instanceof FacileResponse and $response->getFormat() !== 'html')
-				{
-					return $response->render();
-				}
-				elseif ( ! is_null($contentType) and ! $isHtml)
-				{
-					return $content;
-				}
-				elseif ( ! $content->isSuccessful())
-				{
-					return $this->app->abort($statusCode);
-				}
+		return $this->handleResponseCallback($content, $callback);
+	}
 
-				break;
-			default :
-				$response = $content;
+	/**
+	 * Handle Illuminate\Http\Response content.
+	 * 
+	 * @param  \Illuminate\Http\Response    $content
+	 * @param  \Closure                     $callback
+	 * @return mixed
+	 */
+	protected function handleIlluminateResponse($content, Closure $callback = null)
+	{
+		$statusCode  = $content->getStatusCode();
+		$response    = $content->getContent();
+		$contentType = $content->headers->get('Content-Type');
+		$isHtml      = starts_with($contentType, 'text/html');
+		
+		if ($response instanceof FacileResponse and $response->getFormat() !== 'html')
+		{
+			return $response->render();
+		}
+		elseif ( ! is_null($contentType) and ! $isHtml)
+		{
+			return $content;
+		}
+		elseif ( ! $content->isSuccessful())
+		{
+			return $this->app->abort($statusCode);
 		}
 
-		if ($callback instanceof Closure) $response = call_user_func($callback, $response);
+		return $this->handleResponseCallback($response, $callback);
+	}
 
-		return $response;
+	/**
+	 * Handle response callback.
+	 *
+	 * @param  mixed    $content
+	 * @param  \Closure $callback
+	 * @return mixed
+	 */
+	protected function handleResponseCallback($content, Closure $callback = null)
+	{
+		if ($callback instanceof Closure) return call_user_func($callback, $content);
+
+		return $content;
 	}
 }

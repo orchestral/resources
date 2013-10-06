@@ -30,6 +30,34 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Test Orchestra\Resources\Response::call() method when given empty 
+	 * string.
+	 *
+	 * @test
+	 */
+	public function testCallMethodWhenGivenEmptyString()
+	{
+		$app  = $this->app;
+		$stub = new Response($app);
+
+		$this->assertEquals('', $stub->call(''));
+	}
+
+	/**
+	 * Test Orchestra\Resources\Response::call() method when given null.
+	 *
+	 * @test
+	 */
+	public function testCallMethodWhenGivenNull()
+	{
+		$app  = $this->app;
+		$stub = new Response($app);
+
+		$app->shouldReceive('abort')->once()->with(404)->andReturn('404 foo');
+		$this->assertEquals('404 foo', $stub->call(null));
+	}
+
+	/**
 	 * Test Orchestra\Resources\Response::call() method when given false.
 	 *
 	 * @test
