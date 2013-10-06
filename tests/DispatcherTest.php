@@ -57,24 +57,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase {
 		$app        = $this->app;
 		$router     = $this->router;
 		$request    = $this->request;
-		$useApp     = m::mock('AppController');
-		$useFoo     = m::mock('FooController');
-		$useFoobar  = m::mock('FoobarController');
+		$useApp     = new AppController;
+		$useFoo     = new FooController;
+		$useFoobar  = new FoobarController;
 		
 		$app->shouldReceive('make')->with('AppController')->once()->andReturn($useApp)
 			->shouldReceive('make')->with('FooController')->once()->andReturn($useFoo)
 			->shouldReceive('make')->times(3)->with('FoobarController')->andReturn($useFoobar);
-		$useApp->shouldReceive('getBeforeFilters')->once()->andReturn(array())
-			->shouldReceive('getAfterFilters')->once()->andReturn(array())
-			->shouldReceive('getIndex')->once()->andReturn('AppController@getIndex');
-		$useFoo->shouldReceive('getBeforeFilters')->once()->andReturn(array())
-			->shouldReceive('getAfterFilters')->once()->andReturn(array())
-			->shouldReceive('getEdit')->once()->andReturn('FooController@getEdit');
-		$useFoobar->shouldReceive('getBeforeFilters')->times(3)->andReturn(array())
-			->shouldReceive('getAfterFilters')->times(3)->andReturn(array())
-			->shouldReceive('index')->once()->andReturn('FoobarController@index')
-			->shouldReceive('show')->once()->andReturn('FoobarController@show')
-			->shouldReceive('edit')->once()->andReturn('FoobarController@edit');
 		$request->shouldReceive('getMethod')->times(5)->andReturn('GET');
 
 		$driver = (object) array(
@@ -104,12 +93,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase {
 	{
 		$app       = $this->app;
 		$request   = $this->request;
-		$useFoobar = m::mock('FoobarController');
+		$useFoobar = new FoobarController;
 
 		$app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
-		$useFoobar->shouldReceive('getBeforeFilters')->once()->andReturn(array())
-			->shouldReceive('getAfterFilters')->once()->andReturn(array())
-			->shouldReceive('store')->once()->andReturn('FoobarController@store');
 		$request->shouldReceive('getMethod')->once()->andReturn('POST');
 
 		$driver = (object) array(
@@ -134,12 +120,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase {
 	{
 		$app       = $this->app;
 		$request   = $this->request;
-		$useFoobar = m::mock('FoobarController');
+		$useFoobar = new FoobarController;
 
 		$app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
-		$useFoobar->shouldReceive('getBeforeFilters')->once()->andReturn(array())
-			->shouldReceive('getAfterFilters')->once()->andReturn(array())
-			->shouldReceive('update')->once()->andReturn('FoobarController@update');
 		$request->shouldReceive('getMethod')->once()->andReturn('PUT');
 
 		$driver = (object) array(
@@ -165,12 +148,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase {
 	{
 		$app       = $this->app;
 		$request   = $this->request;
-		$useFoobar = m::mock('FoobarController');
+		$useFoobar = new FoobarController;
 
 		$app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
-		$useFoobar->shouldReceive('getBeforeFilters')->once()->andReturn(array())
-			->shouldReceive('getAfterFilters')->once()->andReturn(array())
-			->shouldReceive('destroy')->once()->andReturn('FoobarController@destroy');
 		$request->shouldReceive('getMethod')->once()->andReturn('DELETE');
 
 		$driver = (object) array(
@@ -205,5 +185,54 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$stub->call($driver, null, array('edit'));
+	}
+}
+
+class AppController extends \Illuminate\Routing\Controller {
+
+	public function getIndex()
+	{
+		return 'AppController@getIndex';
+	}
+}
+
+class FooController extends \Illuminate\Routing\Controller {
+
+	public function getEdit()
+	{
+		return 'FooController@getEdit';
+	}
+}
+
+class FoobarController extends \Illuminate\Routing\Controller {
+
+	public function index()
+	{
+		return 'FoobarController@index';
+	}
+
+	public function show()
+	{
+		return 'FoobarController@show';
+	}
+
+	public function store()
+	{
+		return 'FoobarController@store';
+	}
+
+	public function edit()
+	{
+		return 'FoobarController@edit';
+	}
+
+	public function update()
+	{
+		return 'FoobarController@update';
+	}
+
+	public function destroy()
+	{
+		return 'FoobarController@destroy';
 	}
 }
