@@ -1,7 +1,6 @@
 <?php namespace Orchestra\Resources;
 
 use Closure;
-use RuntimeException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response as IlluminateResponse;
