@@ -145,20 +145,31 @@ class Dispatcher {
 		$action = null;
 		$verb   = Str::lower($verb);
 
-		switch ($type)
+		if (in_array($type, array('restful', 'resource')))
 		{
-			case 'restful' :
-				$action = (count($parameters) > 0 ? array_shift($parameters) : 'index');
-				$action = Str::camel("{$verb}_{$action}");
-				break;
-			
-			case 'resource' :
-				list($action, $parameters) = $this->findResourceRoutable($verb, $parameters, $nested);
-				break;
+			$method = 'find'.Str::studly($type).'Routable';
 
-			default :
-				throw new InvalidArgumentException("Type [{$type}] not implemented.");
+			list($action, $parameters) = call_user_func(array($this, $method), $verb, $parameters, $nested);
 		}
+		else
+		{
+			throw new InvalidArgumentException("Type [{$type}] not implemented.");
+		}
+
+		return array($action, $parameters);
+	}
+
+	/**
+	 * Resolve action from restful controller.
+	 * 
+	 * @param  string   $verb
+	 * @param  array    $parameters
+	 * @return array
+	 */
+	protected function findRestfulRoutable($verb, $parameters = array())
+	{
+		$action = (count($parameters) > 0 ? array_shift($parameters) : 'index');
+		$action = Str::camel("{$verb}_{$action}");
 
 		return array($action, $parameters);
 	}
@@ -169,7 +180,7 @@ class Dispatcher {
 	 * @param  string   $verb
 	 * @param  array    $parameters
 	 * @param  array    $nested
-	 * @return string
+	 * @return array
 	 */
 	protected function findResourceRoutable($verb, $parameters = array(), $nested = array())
 	{
@@ -177,35 +188,29 @@ class Dispatcher {
 		$resources  = array_keys($nested);
 		$parameters = array_values($nested);
 
-		switch ($verb)
-		{
-			case 'get' : 
-				switch (true)
-				{
-					case in_array($last, array('edit', 'create', 'delete')) : 
-						$action = $last;
-						break;
-					case ( ! in_array($last, $resources) and ! empty($nested)) :
-						$action = 'show';
-						break;
-					default :
-						$action = 'index';
-						break;
-				}
-				
-				break;
+		$swappable = array(
+			'post'   => 'store',
+			'put'    => 'update',
+			'patch'  => 'update',
+			'delete' => 'destroy',
+		);
 
-			case 'post' : 
-				$action = 'store'; 
-				break;
-			case 'put' :
-				# passthru;
-			case 'patch' : 
-				$action = 'update'; 
-				break;
-			case 'delete' : 
-				$action = 'destroy'; 
-				break;
+		if (isset($swappable[$verb]))
+		{
+			$action = $swappable[$verb];
+		}
+		// Handle all possible GET routing.
+		elseif (in_array($last, array('edit', 'create', 'delete')))
+		{
+			$action = $last;
+		}
+		elseif ( ! in_array($last, $resources) and ! empty($nested))
+		{
+			$action = 'show';
+		}
+		else 
+		{
+			$action = 'index';
 		}
 
 		return array($action, $parameters);
