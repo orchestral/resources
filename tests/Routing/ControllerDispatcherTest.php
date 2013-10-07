@@ -49,7 +49,6 @@ class ControllerDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$useFoo    = new FooController; 
 
 		$container->shouldReceive('make')->once()->with('FooController')->andReturn($useFoo);
-		$route->shouldReceive('parametersWithoutNulls')->once()->andReturn(array());
 
 		$stub = new ControllerDispatcher($router, $container);
 
