@@ -51,27 +51,9 @@ class Dispatcher {
 	 * @param  array    $parameters
 	 * @return mixed
 	 */
-	public function call($driver, $name = null, $parameters)
+	public function call($driver, $name = null, array $parameters = array())
 	{
-		$nested     = $this->getNestedParameters($name, $parameters);		
-		$nestedName = implode('.', array_keys($nested));
-
-		if ( ! is_null($name))
-		{
-			if (isset($driver->childs[$nestedName]) 
-				and starts_with($driver->childs[$nestedName], 'resource:'))
-			{
-				$uses = $driver->childs[$nestedName];
-			}
-			else 
-			{
-				$uses = (isset($driver->childs[$name]) ? $driver->childs[$name] : null);
-			}
-		}
-		else
-		{
-			$uses = $driver->uses;
-		}
+		list($nested, $uses) = $this->resolveDispatchDependencies($driver, $name, $parameters);		
 
 		// This would cater request to valid resource but pointing to an
 		// invalid child. We should show a 404 response to the user on this
@@ -98,6 +80,36 @@ class Dispatcher {
 		$controller = $this->app->make($controller);
 
 		return $controller->callAction($this->app, $this->router, $action, $parameters);
+	}
+
+	/**
+	 * Resolve dispatcher dependencies.
+	 *
+	 * @param  array    $driver
+	 * @param  string   $name
+	 * @param  array    $parameters
+	 * @return mixed
+	 */
+	public function resolveDispatchDependencies($driver, $name = null, array $parameters = array())
+	{
+		$nested     = $this->getNestedParameters($name, $parameters);
+		$nestedName = implode('.', array_keys($nested));
+		$uses       = $driver->uses;
+
+		if ( ! is_null($name))
+		{
+			if (isset($driver->childs[$nestedName]) 
+				and starts_with($driver->childs[$nestedName], 'resource:'))
+			{
+				$uses = $driver->childs[$nestedName];
+			}
+			else 
+			{
+				$uses = (isset($driver->childs[$name]) ? $driver->childs[$name] : null);
+			}
+		}
+
+		return array($nested, $uses);
 	}
 
 	/**
