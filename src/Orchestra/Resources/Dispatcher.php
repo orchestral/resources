@@ -34,7 +34,6 @@ class Dispatcher {
 	 * @param  \Illuminate\Foundation\Application   $app
 	 * @param  \Illuminate\Routing\Router           $router
 	 * @param  \Illuminate\Http\Request             $request
-	 * @return void
 	 */
 	public function __construct($app, Router $router, Request $request)
 	{

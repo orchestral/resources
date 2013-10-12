@@ -25,7 +25,6 @@ class Container implements ArrayAccess {
 	 *
 	 * @param  string   $name
 	 * @param  mixed    $attributes
-	 * @return void
 	 * @throws \InvalidArgumentException
 	 */
 	public function __construct($name, $attributes)

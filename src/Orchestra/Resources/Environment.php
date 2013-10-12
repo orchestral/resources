@@ -40,7 +40,6 @@ class Environment {
 	 * @param  \Illuminate\Foundation\Application    $app
 	 * @param  \Orchestra\Resources\Dispatcher       $dispatcher
 	 * @param  \Orchestra\Resources\Response         $response
-	 * @return void
 	 */
 	public function __construct($app, Dispatcher $dispatcher, Response $response)
 	{
