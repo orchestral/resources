@@ -19,7 +19,6 @@ class Response {
 	 * Construct a new Resources instance.
 	 *
 	 * @param  \Illuminate\Foundation\Application   $app
-	 * @return void
 	 */
 	public function __construct($app)
 	{
