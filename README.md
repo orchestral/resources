@@ -1,7 +1,7 @@
 Orchestra Platform Resources Component
 ==============
 
-Orchestra\Resources is an adhoc routing manager that allow extension developer to add CRUD interface without touching Orchestra Platform.
+`Orchestra\Resources` is an adhoc routing manager that allow extension developer to add CRUD interface without touching Orchestra Platform.
 
 [![Latest Stable Version](https://poser.pugx.org/orchestra/resources/v/stable.png)](https://packagist.org/packages/orchestra/resources) 
 [![Total Downloads](https://poser.pugx.org/orchestra/resources/downloads.png)](https://packagist.org/packages/orchestra/resources) 
