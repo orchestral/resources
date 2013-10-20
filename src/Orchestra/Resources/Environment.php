@@ -4,130 +4,129 @@ use Closure;
 use InvalidArgumentException;
 use Orchestra\Support\Str;
 
-class Environment {
+class Environment
+{
+    /**
+     * Application instance.
+     *
+     * @var \Illuminate\Foundation\Application
+     */
+    protected $app = null;
 
-	/**
-	 * Application instance.
-	 *
-	 * @var \Illuminate\Foundation\Application
-	 */
-	protected $app = null;
+    /**
+     * Dispatcher instance.
+     *
+     * @var \Orchestra\Resources\Dispatcher
+     */
+    protected $dispatcher = null;
 
-	/**
-	 * Dispatcher instance.
-	 *
-	 * @var \Orchestra\Resources\Dispatcher
-	 */
-	protected $dispatcher = null;
+    /**
+     * Response instance.
+     *
+     * @var \Orchestra\Resources\Response
+     */
+    protected $response = null;
 
-	/**
-	 * Response instance.
-	 *
-	 * @var \Orchestra\Resources\Response
-	 */
-	protected $response = null;
+    /**
+     * The array of created "drivers".
+     *
+     * @var array
+     */
+    protected $drivers = array();
 
-	/**
-	 * The array of created "drivers".
-	 *
-	 * @var array
-	 */
-	protected $drivers = array();
+    /**
+     * Construct a new Resources instance.
+     *
+     * @param  \Illuminate\Foundation\Application    $app
+     * @param  \Orchestra\Resources\Dispatcher       $dispatcher
+     * @param  \Orchestra\Resources\Response         $response
+     */
+    public function __construct($app, Dispatcher $dispatcher, Response $response)
+    {
+        $this->app        = $app;
+        $this->dispatcher = $dispatcher;
+        $this->response   = $response;
+    }
 
-	/**
-	 * Construct a new Resources instance.
-	 *
-	 * @param  \Illuminate\Foundation\Application    $app
-	 * @param  \Orchestra\Resources\Dispatcher       $dispatcher
-	 * @param  \Orchestra\Resources\Response         $response
-	 */
-	public function __construct($app, Dispatcher $dispatcher, Response $response)
-	{
-		$this->app        = $app;
-		$this->dispatcher = $dispatcher;
-		$this->response   = $response;
-	}
+    /**
+     * Register a new resource.
+     *
+     * @param  string   $name
+     * @param  mixed    $attributes
+     * @return \Orchestra\Resources\Container
+     */
+    public function make($name, $attributes)
+    {
+        if (Str::contains($name, '.') or Str::contains($name, '/')) {
+            throw new InvalidArgumentException("Invalid character in resource name [{$name}].");
+        }
 
-	/**
-	 * Register a new resource.
-	 *
-	 * @param  string   $name
-	 * @param  mixed    $attributes
-	 * @return \Orchestra\Resources\Container
-	 */
-	public function make($name, $attributes)
-	{
-		if (Str::contains($name, '.') or Str::contains($name, '/'))
-		{
-			throw new InvalidArgumentException("Invalid character in resource name [{$name}].");
-		}
+        return $this->drivers[$name] = new Container($name, $attributes);
+    }
 
-		return $this->drivers[$name] = new Container($name, $attributes);
-	}
+    /**
+     * Get resource by given name, or create a new one.
+     *
+     * @param  string   $name
+     * @param  mixed    $attributes
+     * @return \Orchestra\Resources\Container
+     */
+    public function of($name, $attributes = null)
+    {
+        if (! isset($this->drivers[$name])) {
+            return $this->make($name, $attributes);
+        }
 
-	/**
-	 * Get resource by given name, or create a new one.
-	 *
-	 * @param  string   $name
-	 * @param  mixed    $attributes
-	 * @return \Orchestra\Resources\Container
-	 */
-	public function of($name, $attributes = null)
-	{
-		if ( ! isset($this->drivers[$name]))
-		{
-			return $this->make($name, $attributes);
-		}
+        return $this->drivers[$name];
+    }
 
-		return $this->drivers[$name];
-	}
+    /**
+     * Call a resource controller and action.
+     *
+     * @param  string   $name
+     * @param  array    $parameters
+     * @return \Orchestra\Resources\Response
+     */
+    public function call($name, $parameters = array())
+    {
+        $child = null;
 
-	/**
-	 * Call a resource controller and action.
-	 *
-	 * @param  string   $name
-	 * @param  array    $parameters
-	 * @return \Orchestra\Resources\Response
-	 */
-	public function call($name, $parameters = array())
-	{
-		$child = null;
+        // Available drivers does not include childs, we should split the
+        // name into two (parent.child) where parent would be the name of
+        // the resource.
+        if (false !== strpos($name, '.')) {
+            list($name, $child) = explode('.', $name, 2);
+        }
 
-		// Available drivers does not include childs, we should split the 
-		// name into two (parent.child) where parent would be the name of 
-		// the resource.
-		if (false !== strpos($name, '.'))
-		{
-			list($name, $child) = explode('.', $name, 2);
-		}
+        // When the resources is not available, or register we should
+        // return false to indicate this status. This would allow the callee
+        // to return 404 abort status.
+        if (! isset($this->drivers[$name])) {
+            return false;
+        }
 
-		// When the resources is not available, or register we should 
-		// return false to indicate this status. This would allow the callee 
-		// to return 404 abort status.
-		if ( ! isset($this->drivers[$name])) return false;
+        return $this->dispatcher->call($this->drivers[$name], $child, $parameters);
+    }
 
-		return $this->dispatcher->call($this->drivers[$name], $child, $parameters);
-	}
+    /**
+     * Handle response from resources.
+     *
+     * @param  mixed    $content
+     * @param  Closure  $callback
+     * @return mixed
+     */
+    public function response($content, Closure $callback = null)
+    {
+        return $this->response->call($content, $callback);
+    }
 
-	/**
-	 * Handle response from resources.
-	 *
-	 * @param  mixed    $content
-	 * @param  Closure  $callback
-	 * @return mixed
-	 */
-	public function response($content, Closure $callback = null)
-	{
-		return $this->response->call($content, $callback);
-	}
-
-	/**
-	 * Get all registered resources.
-	 *
-	 * @return array
-	 */
-	public function all()
-	{
-		return $this->drivers;
-	}
+    /**
+     * Get all registered resources.
+     *
+     * @return array
+     */
+    public function all()
+    {
+        return $this->drivers;
+    }
 }
