@@ -3,44 +3,42 @@
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 
-class ResourcesServiceProvider extends ServiceProvider {
+class ResourcesServiceProvider extends ServiceProvider
+{
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var boolean
+     */
+    protected $defer = true;
 
-	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var boolean
-	 */
-	protected $defer = true;
-	
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register() 
-	{
-		$this->app['orchestra.resources'] = $this->app->share(function ($app)
-		{
-			$dispatcher = new Dispatcher($app, $app['router'], $app['request']);
-			$response   = new Response($app);
-			
-			return new Environment($app, $dispatcher, $response);
-		});
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app['orchestra.resources'] = $this->app->share(function ($app) {
+            $dispatcher = new Dispatcher($app, $app['router'], $app['request']);
+            $response   = new Response($app);
 
-		$this->app->booting(function()
-		{
-			$loader = AliasLoader::getInstance();
-			$loader->alias('Orchestra\Resources', 'Orchestra\Support\Facades\Resources');
-		});
-	}
+            return new Environment($app, $dispatcher, $response);
+        });
 
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
-		return array('orchestra.resources');
-	}
+        $this->app->booting(function () {
+            $loader = AliasLoader::getInstance();
+            $loader->alias('Orchestra\Resources', 'Orchestra\Support\Facades\Resources');
+        });
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return array('orchestra.resources');
+    }
 }
