@@ -150,6 +150,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('FOO', $stub->call('foo.foobar', array()));
         $this->assertEquals('FOOBAR', $stub->call('foobar', array()));
+        $this->assertFalse($stub->call('foo-not-available', array()));
     }
 
     /**

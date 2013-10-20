@@ -82,6 +82,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('FoobarController@edit', $stub->call($driver, 'foo', array(1, 'bar', 2, 'edit')));
         $this->assertEquals('FoobarController@index', $stub->call($driver, 'foo', array(1, 'bar')));
         $this->assertEquals('FoobarController@show', $stub->call($driver, 'foo', array(1, 'bar', 2)));
+        $this->assertFalse($stub->call($driver, 'not-available'));
     }
 
     /**

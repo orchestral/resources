@@ -127,13 +127,17 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
         $app->shouldReceive('abort')->once()->with(404)->andReturn('404 foo');
 
+        $callback = function ($content) {
+            return "<strong>{$content}</strong>";
+        };
+
         $content = m::mock('\Illuminate\Http\Response');
         $content->headers = $headers = m::mock('HeaderBag');
         $content->shouldReceive('getStatusCode')->once()->andReturn(200)
             ->shouldReceive('getContent')->once()->andReturn('foo')
             ->shouldReceive('isSuccessful')->once()->andReturn(true);
         $headers->shouldReceive('get')->with('Content-Type')->once()->andReturn('text/html');
-        $this->assertEquals('foo', $stub->call($content));
+        $this->assertEquals('<strong>foo</strong>', $stub->call($content, $callback));
 
         $content = m::mock('\Illuminate\Http\Response');
         $content->headers = $headers = m::mock('HeaderBag');
