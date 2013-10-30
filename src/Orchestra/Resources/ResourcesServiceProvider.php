@@ -19,7 +19,7 @@ class ResourcesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['orchestra.resources'] = $this->app->share(function ($app) {
+        $this->app->bindShared('orchestra.resources', function ($app) {
             $dispatcher = new Dispatcher($app, $app['router'], $app['request']);
             $response   = new Response($app);
 
