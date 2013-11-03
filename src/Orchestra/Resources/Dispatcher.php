@@ -84,7 +84,7 @@ class Dispatcher
         // Resolve the controller from container.
         $dispatcher = new ControllerDispatcher($this->router, $this->app);
 
-        return $dispatcher->run($controller, $action, $route, $this->request);
+        return $dispatcher->dispatch($route, $this->request, $controller, $action);
     }
 
     /**
