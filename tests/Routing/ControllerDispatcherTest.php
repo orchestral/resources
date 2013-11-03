@@ -14,7 +14,8 @@ class ControllerDispatcherTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Orchestra\Resources\Routing\ControllerDispatcher::run() method.
+     * Test Orchestra\Resources\Routing\ControllerDispatcher::call() method
+     * when method doesn't exist.
      *
      * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
