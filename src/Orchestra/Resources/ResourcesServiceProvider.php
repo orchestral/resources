@@ -25,11 +25,6 @@ class ResourcesServiceProvider extends ServiceProvider
 
             return new Environment($app, $dispatcher, $response);
         });
-
-        $this->app->booting(function () {
-            $loader = AliasLoader::getInstance();
-            $loader->alias('Orchestra\Resources', 'Orchestra\Support\Facades\Resources');
-        });
     }
 
     /**
