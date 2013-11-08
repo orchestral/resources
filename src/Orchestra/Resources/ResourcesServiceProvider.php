@@ -1,7 +1,6 @@
 <?php namespace Orchestra\Resources;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\AliasLoader;
 
 class ResourcesServiceProvider extends ServiceProvider
 {
