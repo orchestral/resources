@@ -1,7 +1,6 @@
 <?php namespace Orchestra\Resources;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\AliasLoader;
 
 class ResourcesServiceProvider extends ServiceProvider
 {
@@ -24,11 +23,6 @@ class ResourcesServiceProvider extends ServiceProvider
             $response   = new Response($app);
 
             return new Environment($app, $dispatcher, $response);
-        });
-
-        $this->app->booting(function () {
-            $loader = AliasLoader::getInstance();
-            $loader->alias('Orchestra\Resources', 'Orchestra\Support\Facades\Resources');
         });
     }
 
