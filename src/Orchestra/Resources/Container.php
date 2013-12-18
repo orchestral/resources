@@ -29,24 +29,7 @@ class Container implements ArrayAccess
      */
     public function __construct($name, $attributes)
     {
-        $schema = array(
-            'name'    => '',
-            'uses'    => '',
-            'childs'  => array(),
-            'visible' => true,
-        );
-
-        if (! is_array($attributes)) {
-            $uses    = $attributes;
-            $attributes = array(
-                'name' => Str::title($name),
-                'uses' => $uses,
-            );
-        }
-
-        $attributes['id'] = $name;
-
-        $attributes = array_merge($schema, $attributes);
+        $attributes = $this->buildResourceSchema($name, $attributes);
 
         if (empty($attributes['name']) or empty($attributes['uses'])) {
             throw new InvalidArgumentException("Required `name` and `uses` are missing.");
@@ -112,6 +95,35 @@ class Container implements ArrayAccess
     public function hide()
     {
         return $this->visibility(false);
+    }
+
+    /**
+     * Build resource schema.
+     *
+     * @param  string   $name
+     * @param  mixed    $attributes
+     * @return array
+     */
+    protected function buildResourceSchema($name, $attributes)
+    {
+        $schema = array(
+            'name'    => '',
+            'uses'    => '',
+            'childs'  => array(),
+            'visible' => true,
+        );
+
+        if (! is_array($attributes)) {
+            $uses    = $attributes;
+            $attributes = array(
+                'name' => Str::title($name),
+                'uses' => $uses,
+            );
+        }
+
+        $attributes['id'] = $name;
+
+        return array_merge($schema, $attributes);
     }
 
     /**

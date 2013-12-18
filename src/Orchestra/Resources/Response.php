@@ -13,7 +13,7 @@ class Response
      *
      * @var \Illuminate\Foundation\Application
      */
-    protected $app = null;
+    protected $app;
 
     /**
      * Construct a new Resources instance.

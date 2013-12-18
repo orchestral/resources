@@ -14,21 +14,21 @@ class Dispatcher
      *
      * @var \Illuminate\Foundation\Application
      */
-    protected $app = null;
+    protected $app;
 
     /**
      * Router instance.
      *
      * @var \Illuminate\Routing\Router
      */
-    protected $router = null;
+    protected $router;
 
     /**
      * Request instance.
      *
      * @var \Illuminate\Http\Request
      */
-    protected $request = null;
+    protected $request;
 
     /**
      * Construct a new Resources instance.
