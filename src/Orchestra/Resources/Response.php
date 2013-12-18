@@ -5,26 +5,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response as IlluminateResponse;
 use Orchestra\Facile\Response as FacileResponse;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Response
 {
-    /**
-     * Application instance.
-     *
-     * @var \Illuminate\Foundation\Application
-     */
-    protected $app;
-
-    /**
-     * Construct a new Resources instance.
-     *
-     * @param  \Illuminate\Foundation\Application   $app
-     */
-    public function __construct($app)
-    {
-        $this->app = $app;
-    }
-
     /**
      * Handle response from resources.
      *
@@ -35,7 +20,7 @@ class Response
     public function call($content, Closure $callback = null)
     {
         if (false === $content or is_null($content)) {
-            return $this->app->abort(404);
+            return $this->abort(404);
         } elseif ($content instanceof RedirectResponse or $content instanceof JsonResponse) {
             return $content;
         } elseif ($content instanceof FacileResponse) {
@@ -50,13 +35,13 @@ class Response
     /**
      * Handle Illuminate\Http\Response content.
      *
-     * @param  \Illuminate\Http\Response    $content
-     * @param  \Closure                     $callback
+     * @param  mixed    $content
+     * @param  \Closure $callback
      * @return mixed
      */
     protected function handleIlluminateResponse($content, Closure $callback = null)
     {
-        $statusCode  = $content->getStatusCode();
+        $code        = $content->getStatusCode();
         $response    = $content->getContent();
         $contentType = $content->headers->get('Content-Type');
         $isHtml      = starts_with($contentType, 'text/html');
@@ -66,7 +51,7 @@ class Response
         } elseif (! is_null($contentType) and ! $isHtml) {
             return $content;
         } elseif (! $content->isSuccessful()) {
-            return $this->app->abort($statusCode);
+            return $this->abort($code);
         }
 
         return $this->handleResponseCallback($response, $callback);
@@ -86,5 +71,25 @@ class Response
         }
 
         return $content;
+    }
+
+    /**
+     * Handle abort response.
+     *
+     * @param  int     $code
+     * @param  string  $message
+     * @param  array   $headers
+     * @return void
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function abort($code, $message = '', array $headers = array())
+    {
+        if ($code == 404) {
+            throw new NotFoundHttpException($message);
+        }
+
+        throw new HttpException($code, $message, null, $headers);
     }
 }
