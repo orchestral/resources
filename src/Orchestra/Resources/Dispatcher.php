@@ -119,7 +119,7 @@ class Dispatcher
      * @param  array    $parameters
      * @return array
      */
-    protected function getNestedParameters($name, $parameters)
+    protected function getNestedParameters($name, array $parameters = array())
     {
         $reserved = array('create', 'show', 'index', 'delete', 'destroy', 'edit');
         $nested   = array();
@@ -148,13 +148,17 @@ class Dispatcher
      * restful or resources routing.
      *
      * @param  string   $type       Either 'restful' or 'resource'
-     * @param  integer  $nested
+     * @param  array    $nested
      * @param  string   $verb
      * @param  array    $parameters
      * @return array
      */
-    protected function findRoutableAttributes($type = 'restful', $nested = array(), $verb = null, array $parameters = array())
-    {
+    protected function findRoutableAttributes(
+        $type = 'restful',
+        array $nested = array(),
+        $verb = null,
+        array $parameters = array()
+    ) {
         $action = null;
         $verb   = Str::lower($verb);
 
@@ -176,7 +180,7 @@ class Dispatcher
      * @param  array    $parameters
      * @return array
      */
-    protected function findRestfulRoutable($verb, $parameters = array())
+    protected function findRestfulRoutable($verb, array $parameters = array())
     {
         $action = (count($parameters) > 0 ? array_shift($parameters) : 'index');
         $action = Str::camel("{$verb}_{$action}");
@@ -192,8 +196,11 @@ class Dispatcher
      * @param  array    $nested
      * @return array
      */
-    protected function findResourceRoutable($verb, $parameters = array(), $nested = array())
-    {
+    protected function findResourceRoutable(
+        $verb,
+        array $parameters = array(),
+        array $nested = array()
+    ) {
         $last       = array_pop($parameters);
         $resources  = array_keys($nested);
         $parameters = array_values($nested);
