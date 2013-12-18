@@ -11,21 +11,21 @@ class Environment
      *
      * @var \Illuminate\Foundation\Application
      */
-    protected $app = null;
+    protected $app;
 
     /**
      * Dispatcher instance.
      *
      * @var \Orchestra\Resources\Dispatcher
      */
-    protected $dispatcher = null;
+    protected $dispatcher;
 
     /**
      * Response instance.
      *
      * @var \Orchestra\Resources\Response
      */
-    protected $response = null;
+    protected $response;
 
     /**
      * The array of created "drivers".
