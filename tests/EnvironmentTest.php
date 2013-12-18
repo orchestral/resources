@@ -7,13 +7,6 @@ use Orchestra\Resources\Response;
 class EnvironmentTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Application instance.
-     *
-     * @var Illuminate\Foundation\Application
-     */
-    private $app = null;
-
-    /**
      * Dispatcher instance.
      *
      * @var Orchestra\Resources\Dispatcher
@@ -32,7 +25,6 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->app        = array();
         $this->dispatcher = m::mock('\Orchestra\Resources\Dispatcher');
         $this->response   = m::mock('\Orchestra\Resources\Response');
     }
@@ -42,7 +34,6 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        unset($this->app);
         unset($this->dispatcher);
         unset($this->response);
         m::close();
@@ -55,7 +46,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public function testMakeMethod()
     {
-        $stub = new Environment($this->app, $this->dispatcher, $this->response);
+        $stub = new Environment($this->dispatcher, $this->response);
 
         $stub->make('foo', 'FooController');
 
@@ -76,7 +67,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public function testMakeMethodGivenNameWithDottedThrowsException()
     {
-        $stub = new Environment($this->app, $this->dispatcher, $this->response);
+        $stub = new Environment($this->dispatcher, $this->response);
 
         $stub->make('foo.bar', 'FooController');
     }
@@ -89,7 +80,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public function testMakeMethodGivenNameWithSlashesThrowsException()
     {
-        $stub = new Environment($this->app, $this->dispatcher, $this->response);
+        $stub = new Environment($this->dispatcher, $this->response);
 
         $stub->make('foo/bar', 'FooController');
     }
@@ -101,7 +92,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public function testMakeMethodThrowsException()
     {
-        $stub = new Environment($this->app, $this->dispatcher, $this->response);
+        $stub = new Environment($this->dispatcher, $this->response);
 
         $stub->make('foo', null);
     }
@@ -113,7 +104,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public function testOfMethod()
     {
-        $stub = new Environment($this->app, $this->dispatcher, $this->response);
+        $stub = new Environment($this->dispatcher, $this->response);
         $stub->of('foobar', 'FoobarController');
 
         $refl    = new \ReflectionObject($stub);
@@ -134,7 +125,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     public function testCallMethod()
     {
         $dispatcher = $this->dispatcher;
-        $stub = new Environment($this->app, $dispatcher, $this->response);
+        $stub = new Environment($dispatcher, $this->response);
 
         $refl    = new \ReflectionObject($stub);
         $drivers = $refl->getProperty('drivers');
@@ -161,7 +152,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     public function testResponseMethod()
     {
         $response = $this->response;
-        $stub = new Environment($this->app, $this->dispatcher, $response);
+        $stub = new Environment($this->dispatcher, $response);
 
         $callback = function () { return ''; };
         $response->shouldReceive('call')->with('foo', $callback)->once()->andReturn(true);
@@ -176,7 +167,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public function testAllMethod()
     {
-        $stub = new Environment($this->app, $this->dispatcher, $this->response);
+        $stub = new Environment($this->dispatcher, $this->response);
 
         $refl    = new \ReflectionObject($stub);
         $drivers = $refl->getProperty('drivers');

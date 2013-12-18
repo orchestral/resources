@@ -7,13 +7,6 @@ use Orchestra\Support\Str;
 class Environment
 {
     /**
-     * Application instance.
-     *
-     * @var \Illuminate\Foundation\Application
-     */
-    protected $app;
-
-    /**
      * Dispatcher instance.
      *
      * @var \Orchestra\Resources\Dispatcher
@@ -37,13 +30,11 @@ class Environment
     /**
      * Construct a new Resources instance.
      *
-     * @param  \Illuminate\Foundation\Application    $app
-     * @param  \Orchestra\Resources\Dispatcher       $dispatcher
-     * @param  \Orchestra\Resources\Response         $response
+     * @param  \Orchestra\Resources\Dispatcher $dispatcher
+     * @param  \Orchestra\Resources\Response   $response
      */
-    public function __construct($app, Dispatcher $dispatcher, Response $response)
+    public function __construct(Dispatcher $dispatcher, Response $response)
     {
-        $this->app        = $app;
         $this->dispatcher = $dispatcher;
         $this->response   = $response;
     }

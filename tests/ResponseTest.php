@@ -6,26 +6,10 @@ use Orchestra\Resources\Response;
 class ResponseTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Application instance.
-     *
-     * @var Illuminate\Foundation\Application
-     */
-    private $app = null;
-
-    /**
-     * Setup the test environment.
-     */
-    public function setUp()
-    {
-        $this->app = m::mock('\Illuminate\Foundation\Application');
-    }
-
-    /**
      * Teardown the test environment.
      */
     public function tearDown()
     {
-        unset($this->app);
         m::close();
     }
 
@@ -37,8 +21,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenEmptyString()
     {
-        $app  = $this->app;
-        $stub = new Response($app);
+        $stub = new Response;
 
         $this->assertEquals('', $stub->call(''));
     }
@@ -46,29 +29,23 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * Test Orchestra\Resources\Response::call() method when given null.
      *
-     * @test
+     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function testCallMethodWhenGivenNull()
     {
-        $app  = $this->app;
-        $stub = new Response($app);
-
-        $app->shouldReceive('abort')->once()->with(404)->andReturn('404 foo');
-        $this->assertEquals('404 foo', $stub->call(null));
+        $stub = new Response;
+        $stub->call(null);
     }
 
     /**
      * Test Orchestra\Resources\Response::call() method when given false.
      *
-     * @test
+     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function testCallMethodWhenGivenFalse()
     {
-        $app  = $this->app;
-        $stub = new Response($app);
-
-        $app->shouldReceive('abort')->once()->with(404)->andReturn('404 foo');
-        $this->assertEquals('404 foo', $stub->call(false));
+        $stub = new Response;
+        $stub->call(false);
     }
 
     /**
@@ -79,7 +56,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenRedirectResponse()
     {
-        $stub = new Response($this->app);
+        $stub = new Response;
 
         $content = m::mock('\Illuminate\Http\RedirectResponse');
         $this->assertEquals($content, $stub->call($content));
@@ -93,7 +70,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenJsonResponse()
     {
-        $stub = new Response($this->app);
+        $stub = new Response;
 
         $content = m::mock('\Illuminate\Http\JsonResponse');
         $this->assertEquals($content, $stub->call($content));
@@ -107,7 +84,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenFacileResponse()
     {
-        $stub = new Response($this->app);
+        $stub = new Response;
 
         $content = m::mock('\Orchestra\Facile\Response');
         $content->shouldReceive('render')->once()->andReturn('foo');
@@ -122,10 +99,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenIlluminateResponse()
     {
-        $app  = $this->app;
-        $stub = new Response($app);
-
-        $app->shouldReceive('abort')->once()->with(404)->andReturn('404 foo');
+        $stub = new Response;
 
         $callback = function ($content) {
             return "<strong>{$content}</strong>";
@@ -157,14 +131,25 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('isSuccessful')->never()->andReturn(true);
         $headers->shouldReceive('get')->with('Content-Type')->once()->andReturn('application/json');
         $this->assertEquals($content, $stub->call($content));
+    }
+
+    /**
+     * Test Orchestra\Resources\Response::call() method when given
+     * Illuminate\Http\Response with 500 status.
+     *
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     */
+    public function testCallMethodWhenGivenIlluminateResponseWith500Status()
+    {
+        $stub = new Response;
 
         $content = m::mock('\Illuminate\Http\Response');
         $content->headers = $headers = m::mock('HeaderBag');
-        $content->shouldReceive('getStatusCode')->once()->andReturn(404)
+        $content->shouldReceive('getStatusCode')->once()->andReturn(500)
             ->shouldReceive('getContent')->once()->andReturn('foo')
             ->shouldReceive('isSuccessful')->once()->andReturn(false);
         $headers->shouldReceive('get')->with('Content-Type')->once()->andReturn('text/html');
-        $this->assertEquals('404 foo', $stub->call($content));
+        $this->assertEquals($content, $stub->call($content));
     }
 
     /**
@@ -174,7 +159,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenString()
     {
-        $stub = new Response($this->app);
+        $stub = new Response;
         $this->assertEquals('Foo', $stub->call('Foo'));
     }
 }
