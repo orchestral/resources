@@ -47,12 +47,12 @@ class Dispatcher
     /**
      * Create a new dispatch.
      *
-     * @param  array|string    $driver
-     * @param  string          $name
-     * @param  array           $parameters
+     * @param  Container   $driver
+     * @param  string      $name
+     * @param  array       $parameters
      * @return mixed
      */
-    public function call($driver, $name = null, array $parameters = array())
+    public function call(Container $driver, $name = null, array $parameters = array())
     {
         list($nested, $uses) = $this->resolveDispatchDependencies($driver, $name, $parameters);
 
@@ -90,13 +90,16 @@ class Dispatcher
     /**
      * Resolve dispatcher dependencies.
      *
-     * @param  array    $driver
-     * @param  string   $name
-     * @param  array    $parameters
+     * @param  Container   $driver
+     * @param  string      $name
+     * @param  array       $parameters
      * @return mixed
      */
-    public function resolveDispatchDependencies($driver, $name = null, array $parameters = array())
-    {
+    public function resolveDispatchDependencies(
+        Container $driver,
+        $name = null,
+        array $parameters = array()
+    ) {
         $nested     = $this->getNestedParameters($name, $parameters);
         $nestedName = implode('.', array_keys($nested));
         $uses       = $driver->uses;

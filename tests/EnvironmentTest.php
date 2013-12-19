@@ -1,6 +1,7 @@
 <?php namespace Orchestra\Resources\Tests;
 
 use Mockery as m;
+use Orchestra\Resources\Container;
 use Orchestra\Resources\Environment;
 use Orchestra\Resources\Response;
 
@@ -127,17 +128,19 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
         $dispatcher = $this->dispatcher;
         $stub = new Environment($dispatcher, $this->response);
 
+        $mock = array(
+            'foo'    => new Container('Foo', 'FooController'),
+            'foobar' => new Container('Foobar', 'FoobarController'),
+        );
+
         $refl    = new \ReflectionObject($stub);
         $drivers = $refl->getProperty('drivers');
         $drivers->setAccessible(true);
 
-        $drivers->setValue($stub, array(
-            'foo'    => 'Foo',
-            'foobar' => 'Foobar',
-        ));
+        $drivers->setValue($stub, $mock);
 
-        $dispatcher->shouldReceive('call')->with('Foo', 'foobar', array())->once()->andReturn('FOO');
-        $dispatcher->shouldReceive('call')->with('Foobar', null, array())->once()->andReturn('FOOBAR');
+        $dispatcher->shouldReceive('call')->with($mock['foo'], 'foobar', array())->once()->andReturn('FOO');
+        $dispatcher->shouldReceive('call')->with($mock['foobar'], null, array())->once()->andReturn('FOOBAR');
 
         $this->assertEquals('FOO', $stub->call('foo.foobar', array()));
         $this->assertEquals('FOOBAR', $stub->call('foobar', array()));
