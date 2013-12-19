@@ -35,11 +35,11 @@ class Response
     /**
      * Handle Illuminate\Http\Response content.
      *
-     * @param  mixed    $content
-     * @param  \Closure $callback
+     * @param  \Illuminate\Http\Response   $content
+     * @param  \Closure                    $callback
      * @return mixed
      */
-    protected function handleIlluminateResponse($content, Closure $callback = null)
+    protected function handleIlluminateResponse(IlluminateResponse $content, Closure $callback = null)
     {
         $code        = $content->getStatusCode();
         $response    = $content->getContent();
@@ -76,7 +76,7 @@ class Response
     /**
      * Handle abort response.
      *
-     * @param  int     $code
+     * @param  integer $code
      * @param  string  $message
      * @param  array   $headers
      * @return void
