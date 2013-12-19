@@ -21,7 +21,7 @@ class ResourcesServiceProvider extends ServiceProvider
         $this->app->bindShared('orchestra.resources', function ($app) {
             $dispatcher = new Dispatcher($app, $app['router'], $app['request']);
 
-            return new Environment($app, $dispatcher, new Response);
+            return new Environment($dispatcher, new Response);
         });
     }
 
