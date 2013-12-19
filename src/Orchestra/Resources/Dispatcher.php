@@ -47,9 +47,9 @@ class Dispatcher
     /**
      * Create a new dispatch.
      *
-     * @param  array    $driver
-     * @param  string   $name
-     * @param  array    $parameters
+     * @param  array|string    $driver
+     * @param  string          $name
+     * @param  array           $parameters
      * @return mixed
      */
     public function call($driver, $name = null, array $parameters = array())

@@ -1,6 +1,7 @@
 <?php namespace Orchestra\Resources\Tests;
 
 use Mockery as m;
+use Orchestra\Resources\Container;
 use Orchestra\Resources\Dispatcher;
 
 class DispatcherTest extends \PHPUnit_Framework_TestCase
@@ -66,14 +67,14 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('make')->times(3)->with('FoobarController')->andReturn($useFoobar);
         $request->shouldReceive('getMethod')->times(5)->andReturn('GET');
 
-        $driver = (object) array(
-            'id'     => 'app',
+        $driver = new Container('app', array(
+            'name'   => 'app',
             'uses'   => 'AppController',
             'childs' => array(
                 'foo' => 'restful:FooController',
                 'foo.bar' => 'resource:FoobarController',
             ),
-        );
+        ));
 
         $stub = new Dispatcher($this->app, $router, $request);
 
@@ -99,14 +100,15 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
         $request->shouldReceive('getMethod')->once()->andReturn('POST');
 
-        $driver = (object) array(
-            'id'     => 'app',
+        $driver = new Container('app', array(
+            'name'   => 'app',
             'uses'   => 'AppController',
             'childs' => array(
                 'foo' => 'restful:FooController',
                 'foo.bar' => 'resource:FoobarController',
             ),
-        );
+        ));
+
         $stub = new Dispatcher($this->app, $this->router, $request);
 
         $this->assertEquals('FoobarController@store', $stub->call($driver, 'foo', array(1, 'bar', 2)));
@@ -126,14 +128,14 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
         $request->shouldReceive('getMethod')->once()->andReturn('PUT');
 
-        $driver = (object) array(
-            'id'     => 'app',
+        $driver = new Container('app', array(
+            'name'   => 'app',
             'uses'   => 'AppController',
             'childs' => array(
                 'foo' => 'restful:FooController',
                 'foo.bar' => 'resource:FoobarController',
             ),
-        );
+        ));
 
         $stub = new Dispatcher($app, $this->router, $request);
 
@@ -154,14 +156,14 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
         $request->shouldReceive('getMethod')->once()->andReturn('DELETE');
 
-        $driver = (object) array(
-            'id'     => 'app',
+        $driver = new Container('app', array(
+            'name'   => 'app',
             'uses'   => 'AppController',
             'childs' => array(
                 'foo' => 'restful:FooController',
                 'foo.bar' => 'resource:FoobarController',
             ),
-        );
+        ));
 
         $stub = new Dispatcher($app, $this->router, $request);
 
@@ -180,10 +182,11 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 
         $request->shouldReceive('getMethod')->once()->andReturn('GET');
 
-        $driver = (object) array(
+        $driver = new Container('app', array(
+            'name'   => 'app',
             'uses'   => 'request:AppController',
             'childs' => array(),
-        );
+        ));
 
         $stub->call($driver, null, array('edit'));
     }
