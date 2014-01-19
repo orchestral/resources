@@ -48,7 +48,7 @@ class Environment
      */
     public function make($name, $attributes)
     {
-        if (Str::contains($name, '.') or Str::contains($name, '/')) {
+        if (Str::contains($name, '.') || Str::contains($name, '/')) {
             throw new InvalidArgumentException("Invalid character in resource name [{$name}].");
         }
 

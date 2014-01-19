@@ -31,7 +31,7 @@ class Container implements ArrayAccess
     {
         $attributes = $this->buildResourceSchema($name, $attributes);
 
-        if (empty($attributes['name']) or empty($attributes['uses'])) {
+        if (empty($attributes['name']) || empty($attributes['uses'])) {
             throw new InvalidArgumentException("Required `name` and `uses` are missing.");
         }
 

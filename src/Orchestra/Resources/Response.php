@@ -19,9 +19,9 @@ class Response
      */
     public function call($content, Closure $callback = null)
     {
-        if (false === $content or is_null($content)) {
+        if (false === $content || is_null($content)) {
             return $this->abort(404);
-        } elseif ($content instanceof RedirectResponse or $content instanceof JsonResponse) {
+        } elseif ($content instanceof RedirectResponse || $content instanceof JsonResponse) {
             return $content;
         } elseif ($content instanceof FacileResponse) {
             return $content->render();
@@ -46,9 +46,9 @@ class Response
         $contentType = $content->headers->get('Content-Type');
         $isHtml      = starts_with($contentType, 'text/html');
 
-        if ($response instanceof FacileResponse and $response->getFormat() !== 'html') {
+        if ($response instanceof FacileResponse && $response->getFormat() !== 'html') {
             return $response->render();
-        } elseif (! is_null($contentType) and ! $isHtml) {
+        } elseif (! is_null($contentType) && ! $isHtml) {
             return $content;
         } elseif (! $content->isSuccessful()) {
             return $this->abort($code);
