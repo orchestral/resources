@@ -105,7 +105,7 @@ class Dispatcher
         $uses       = $driver->uses;
 
         if (! is_null($name)) {
-            if (isset($driver->childs[$nestedName]) and starts_with($driver->childs[$nestedName], 'resource:')) {
+            if (isset($driver->childs[$nestedName]) && starts_with($driver->childs[$nestedName], 'resource:')) {
                 $uses = $driver->childs[$nestedName];
             } else {
                 $uses = (isset($driver->childs[$name]) ? $driver->childs[$name] : null);
@@ -139,7 +139,7 @@ class Dispatcher
 
                 $key = $parameters[$index];
 
-                ! in_array($key, $reserved) and $nested[$key] = $value;
+                ! in_array($key, $reserved) && $nested[$key] = $value;
             }
         }
 
@@ -220,7 +220,7 @@ class Dispatcher
         } elseif (in_array($last, array('edit', 'create', 'delete'))) {
             // Handle all possible GET routing.
             $action = $last;
-        } elseif (! in_array($last, $resources) and ! empty($nested)) {
+        } elseif (! in_array($last, $resources) && ! empty($nested)) {
             $action = 'show';
         } else {
             $action = 'index';
