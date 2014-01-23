@@ -2,10 +2,10 @@
 
 use Mockery as m;
 use Orchestra\Resources\Container;
-use Orchestra\Resources\Environment;
+use Orchestra\Resources\Factory;
 use Orchestra\Resources\Response;
 
-class EnvironmentTest extends \PHPUnit_Framework_TestCase
+class FactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Dispatcher instance.
@@ -41,13 +41,13 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Orchestra\Resources\Environment::make() method.
+     * Test Orchestra\Resources\Factory::make() method.
      *
      * @test
      */
     public function testMakeMethod()
     {
-        $stub = new Environment($this->dispatcher, $this->response);
+        $stub = new Factory($this->dispatcher, $this->response);
 
         $stub->make('foo', 'FooController');
 
@@ -61,51 +61,51 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Orchestra\Resources\Environment::make() method given name with
+     * Test Orchestra\Resources\Factory::make() method given name with
      * "." throw exceptions.
      *
      * @expectedException \InvalidArgumentException
      */
     public function testMakeMethodGivenNameWithDottedThrowsException()
     {
-        $stub = new Environment($this->dispatcher, $this->response);
+        $stub = new Factory($this->dispatcher, $this->response);
 
         $stub->make('foo.bar', 'FooController');
     }
 
     /**
-     * Test Orchestra\Resources\Environment::make() method given name with
+     * Test Orchestra\Resources\Factory::make() method given name with
      * "/" throw exceptions.
      *
      * @expectedException \InvalidArgumentException
      */
     public function testMakeMethodGivenNameWithSlashesThrowsException()
     {
-        $stub = new Environment($this->dispatcher, $this->response);
+        $stub = new Factory($this->dispatcher, $this->response);
 
         $stub->make('foo/bar', 'FooController');
     }
 
     /**
-     * Test Orchestra\Resources\Environment::make() method.
+     * Test Orchestra\Resources\Factory::make() method.
      *
      * @expectedException \InvalidArgumentException
      */
     public function testMakeMethodThrowsException()
     {
-        $stub = new Environment($this->dispatcher, $this->response);
+        $stub = new Factory($this->dispatcher, $this->response);
 
         $stub->make('foo', null);
     }
 
     /**
-     * Test Orchestra\Resources\Environment::of() method.
+     * Test Orchestra\Resources\Factory::of() method.
      *
      * @test
      */
     public function testOfMethod()
     {
-        $stub = new Environment($this->dispatcher, $this->response);
+        $stub = new Factory($this->dispatcher, $this->response);
         $stub->of('foobar', 'FoobarController');
 
         $refl    = new \ReflectionObject($stub);
@@ -119,14 +119,14 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Orchestra\Resources\Environment::call() method.
+     * Test Orchestra\Resources\Factory::call() method.
      *
      * @test
      */
     public function testCallMethod()
     {
         $dispatcher = $this->dispatcher;
-        $stub = new Environment($dispatcher, $this->response);
+        $stub = new Factory($dispatcher, $this->response);
 
         $mock = array(
             'foo'    => new Container('Foo', 'FooController'),
@@ -148,14 +148,14 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Orchestra\Resources\Environment::response() method.
+     * Test Orchestra\Resources\Factory::response() method.
      *
      * @test
      */
     public function testResponseMethod()
     {
         $response = $this->response;
-        $stub = new Environment($this->dispatcher, $response);
+        $stub = new Factory($this->dispatcher, $response);
 
         $callback = function () { return ''; };
         $response->shouldReceive('call')->with('foo', $callback)->once()->andReturn(true);
@@ -164,13 +164,13 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Orchestra\Resources\Environment::all() method.
+     * Test Orchestra\Resources\Factory::all() method.
      *
      * @test
      */
     public function testAllMethod()
     {
-        $stub = new Environment($this->dispatcher, $this->response);
+        $stub = new Factory($this->dispatcher, $this->response);
 
         $refl    = new \ReflectionObject($stub);
         $drivers = $refl->getProperty('drivers');

@@ -4,7 +4,7 @@ use Closure;
 use InvalidArgumentException;
 use Orchestra\Support\Str;
 
-class Environment
+class Factory
 {
     /**
      * Dispatcher instance.
