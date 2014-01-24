@@ -11,7 +11,7 @@ title: Resources Change Log
 
 ## Version 2.1 {#v2-1}
 
-### v2.1.1@dev {#v2-1-1}
+### v2.1.1 {#v2-1-1}
 
 * Return blank `Illuminate\Http\Response` (with `200` HTTP status) when `null` is returned from controller.
 
@@ -22,7 +22,7 @@ title: Resources Change Log
 
 ## Version 2.0 {#v2-0}
 
-### v2.0.5@dev {#v2-0-5}
+### v2.0.5 {#v2-0-5}
 
 * Return blank `Illuminate\Http\Response` (with `200` HTTP status) when `null` is returned from controller.
 
