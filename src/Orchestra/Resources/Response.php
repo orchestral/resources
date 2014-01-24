@@ -34,8 +34,10 @@ class Response
      */
     public function call($content, Closure $callback = null)
     {
-        if (false === $content or is_null($content)) {
+        if (false === $content) {
             return $this->app->abort(404);
+        } elseif (is_null($content)) {
+            return new IlluminateResponse($content, 200);
         } elseif ($content instanceof RedirectResponse or $content instanceof JsonResponse) {
             return $content;
         } elseif ($content instanceof FacileResponse) {

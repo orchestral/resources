@@ -52,9 +52,11 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     {
         $app  = $this->app;
         $stub = new Response($app);
+        $response = $stub->call(null);
 
-        $app->shouldReceive('abort')->once()->with(404)->andReturn('404 foo');
-        $this->assertEquals('404 foo', $stub->call(null));
+        $this->assertInstanceOf('\Illuminate\Http\Response', $response);
+        $this->assertEquals('', $response->getContent());
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     /**
