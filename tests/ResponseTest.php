@@ -29,12 +29,16 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * Test Orchestra\Resources\Response::call() method when given null.
      *
-     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @test
      */
     public function testCallMethodWhenGivenNull()
     {
         $stub = new Response;
-        $stub->call(null);
+        $response = $stub->call(null);
+
+        $this->assertInstanceOf('\Illuminate\Http\Response', $response);
+        $this->assertEquals('', $response->getContent());
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     /**

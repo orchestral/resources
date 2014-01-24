@@ -11,12 +11,20 @@ title: Resources Change Log
 
 ## Version 2.1 {#v2-1}
 
+### v2.1.1@dev {#v2-1-1}
+
+* Return blank `Illuminate\Http\Response` (with `200` HTTP status) when `null` is returned from controller.
+
 ### v2.1.0 {#v2-1-0}
 
 * Update support for Laravel 4.1 controller dispatching.
 * Refactor dependency injection to use specific instance, when applicable.
 
 ## Version 2.0 {#v2-0}
+
+### v2.0.5@dev {#v2-0-5}
+
+* Return blank `Illuminate\Http\Response` (with `200` HTTP status) when `null` is returned from controller.
 
 ### v2.0.4 {#v2-0-4}
 
