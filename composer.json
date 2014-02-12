@@ -21,7 +21,7 @@
 		"orchestra/facile": "2.2.*"
 	},
 	"require-dev": {
-		"mockery/mockery": "0.8.*",
+		"mockery/mockery": "0.9.*",
 		"illuminate/events": "4.2.*",
 		"illuminate/http": "4.2.*",
 		"illuminate/routing": "4.2.*"
