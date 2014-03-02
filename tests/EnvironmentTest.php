@@ -1,4 +1,4 @@
-<?php namespace Orchestra\Resources\Tests;
+<?php namespace Orchestra\Resources\TestCase;
 
 use Mockery as m;
 use Orchestra\Resources\Container;
