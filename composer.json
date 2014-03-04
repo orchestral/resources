@@ -12,8 +12,8 @@
 		}
 	],
 	"autoload": {
-		"psr-0": {
-			"Orchestra\\Resources" : "src/"
+		"psr-4": {
+			"Orchestra\\Resources\\" : "src/Resources/"
 		}
 	},
 	"require": {
