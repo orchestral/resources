@@ -5,7 +5,7 @@ Orchestra Platform Resources Component
 
 [![Latest Stable Version](https://poser.pugx.org/orchestra/resources/v/stable.png)](https://packagist.org/packages/orchestra/resources) 
 [![Total Downloads](https://poser.pugx.org/orchestra/resources/downloads.png)](https://packagist.org/packages/orchestra/resources) 
-[![Build Status](https://travis-ci.org/orchestral/resources.png?branch=2.2)](https://travis-ci.org/orchestral/resources) 
+[![Build Status](https://travis-ci.org/orchestral/resources.svg?branch=2.2)](https://travis-ci.org/orchestral/resources) 
 [![Coverage Status](https://coveralls.io/repos/orchestral/resources/badge.png?branch=2.2)](https://coveralls.io/r/orchestral/resources?branch=2.2) 
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/orchestral/resources/badges/quality-score.png?s=8cbf94cc9944b7c3b039fe635676c4e574be5906)](https://scrutinizer-ci.com/g/orchestral/resources/) 
 
