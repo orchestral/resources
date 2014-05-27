@@ -54,20 +54,13 @@ class Dispatcher
      */
     public function call(Container $driver, $name = null, array $parameters = array())
     {
-        list($nested, $uses) = $this->resolveDispatchDependencies($driver, $name, $parameters);
+        $resolver = $this->resolveDispatchDependencies($driver, $name, $parameters);
 
         // This would cater request to valid resource but pointing to an
         // invalid child. We should show a 404 response to the user on this
         // case.
-        if (is_null($uses)) {
+        if (! $resolver->isValid()) {
             return false;
-        }
-
-        $controller = $uses;
-        $type       = 'restful';
-
-        if (false !== strpos($uses, ':')) {
-            list($type, $controller) = explode(':', $uses, 2);
         }
 
         // Get HTTP verb used in this request.
@@ -76,15 +69,15 @@ class Dispatcher
         // Next we need to the action and parameters before we can call
         // the destination controller, the resolver would determine both
         // restful and resource controller.
-        list($action, $parameters) = $this->findRoutableAttributes($type, $nested, $verb, $parameters);
+        list($action, $parameters) = $this->findRoutableAttributes($resolver->getType(), $verb, $parameters, $resolver->getNestedSegment());
 
-        $route = new Route($verb, "{$driver->id}/{$name}", array('uses' => $controller));
+        $route = new Route($verb, "{$driver->id}/{$name}", array('uses' => $resolver->getController()));
         $route->overrideParameters($parameters);
 
         // Resolve the controller from container.
         $dispatcher = new ControllerDispatcher($this->router, $this->app);
 
-        return $dispatcher->dispatch($route, $this->request, $controller, $action);
+        return $dispatcher->dispatch($route, $this->request, $resolver->getController(), $action);
     }
 
     /**
@@ -93,13 +86,10 @@ class Dispatcher
      * @param  Container   $driver
      * @param  string      $name
      * @param  array       $parameters
-     * @return mixed
+     * @return Resolver
      */
-    public function resolveDispatchDependencies(
-        Container $driver,
-        $name = null,
-        array $parameters = array()
-    ) {
+    public function resolveDispatchDependencies(Container $driver, $name = null, array $parameters)
+    {
         $nested     = $this->getNestedParameters($name, $parameters);
         $nestedName = implode('.', array_keys($nested));
         $uses       = $driver->uses;
@@ -112,7 +102,7 @@ class Dispatcher
             }
         }
 
-        return array($nested, $uses);
+        return new Resolver($nested, $uses);
     }
 
     /**
@@ -122,7 +112,7 @@ class Dispatcher
      * @param  array    $parameters
      * @return array
      */
-    protected function getNestedParameters($name, array $parameters = array())
+    protected function getNestedParameters($name, array $parameters)
     {
         $reserved = array('create', 'show', 'index', 'delete', 'destroy', 'edit');
         $nested   = array();
@@ -151,17 +141,13 @@ class Dispatcher
      * restful or resources routing.
      *
      * @param  string   $type       Either 'restful' or 'resource'
-     * @param  array    $nested
      * @param  string   $verb
      * @param  array    $parameters
+     * @param  array    $nested
      * @return array
      */
-    protected function findRoutableAttributes(
-        $type = 'restful',
-        array $nested = array(),
-        $verb = null,
-        array $parameters = array()
-    ) {
+    protected function findRoutableAttributes($type = 'restful', $verb = null, array $parameters, array $nested)
+    {
         $action = null;
         $verb   = Str::lower($verb);
 
@@ -183,7 +169,7 @@ class Dispatcher
      * @param  array    $parameters
      * @return array
      */
-    protected function findRestfulRoutable($verb, array $parameters = array())
+    protected function findRestfulRoutable($verb, array $parameters)
     {
         $action = (count($parameters) > 0 ? array_shift($parameters) : 'index');
         $action = Str::camel("{$verb}_{$action}");
@@ -199,33 +185,45 @@ class Dispatcher
      * @param  array    $nested
      * @return array
      */
-    protected function findResourceRoutable(
-        $verb,
-        array $parameters = array(),
-        array $nested = array()
-    ) {
-        $last       = array_pop($parameters);
-        $resources  = array_keys($nested);
-        $parameters = array_values($nested);
-
+    protected function findResourceRoutable($verb, array $parameters, array $nested)
+    {
         $swappable = array(
-            'post'   => 'store',
-            'put'    => 'update',
-            'patch'  => 'update',
+            'post' => 'store',
+            'put' => 'update',
+            'patch' => 'update',
             'delete' => 'destroy',
         );
 
-        if (isset($swappable[$verb])) {
-            $action = $swappable[$verb];
-        } elseif (in_array($last, array('edit', 'create', 'delete'))) {
-            // Handle all possible GET routing.
-            $action = $last;
-        } elseif (! in_array($last, $resources) && ! empty($nested)) {
-            $action = 'show';
+        if (! isset($swappable[$verb])) {
+            $action = $this->getAlternativeResourceAction($parameters, $nested);
         } else {
-            $action = 'index';
+            $action = $swappable[$verb];
         }
 
+        $parameters = array_values($nested);
+
         return array($action, $parameters);
+    }
+
+    /**
+     * Get action name.
+     *
+     * @param  array    $parameters
+     * @param  array    $nested
+     * @return string
+     */
+    protected function getAlternativeResourceAction(array $parameters, array $nested)
+    {
+        $last = array_pop($parameters);
+        $resources = array_keys($nested);
+
+        if (in_array($last, array('edit', 'create', 'delete'))) {
+            // Handle all possible GET routing.
+            return $last;
+        } elseif (!in_array($last, $resources) && !empty($nested)) {
+            return 'show';
+        }
+
+        return 'index';
     }
 }
