@@ -63,18 +63,7 @@ class Dispatcher
             return false;
         }
 
-        // Next we need to the action and parameters before we can call
-        // the destination controller, the resolver would determine both
-        // restful and resource controller.
-        list($action, $parameters) = $this->findRoutableAttributes($resolver);
-
-        $route = new Route($resolver->getVerb(), "{$driver->id}/{$name}", array('uses' => $resolver->getController()));
-        $route->overrideParameters($parameters);
-
-        // Resolve the controller from container.
-        $dispatcher = new ControllerDispatcher($this->router, $this->app);
-
-        return $dispatcher->dispatch($route, $this->request, $resolver->getController(), $action);
+        return $this->dispatch($driver, $name, $resolver);
     }
 
     /**
@@ -221,5 +210,29 @@ class Dispatcher
         }
 
         return 'index';
+    }
+
+    /**
+     * Dispatch the resource.
+     * 
+     * @param Container $driver
+     * @param string    $name
+     * @param Resolver  $resolver
+     * @return mixed
+     */
+    protected function dispatch(Container $driver, $name, Resolver $resolver)
+    {
+        // Next we need to the action and parameters before we can call
+        // the destination controller, the resolver would determine both
+        // restful and resource controller.
+        list($action, $parameters) = $this->findRoutableAttributes($resolver);
+
+        $route = new Route($resolver->getVerb(), "{$driver->id}/{$name}", array('uses' => $resolver->getController()));
+        $route->overrideParameters($parameters);
+
+        // Resolve the controller from container.
+        $dispatcher = new ControllerDispatcher($this->router, $this->app);
+
+        return $dispatcher->dispatch($route, $this->request, $resolver->getController(), $action);
     }
 }
