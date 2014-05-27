@@ -65,7 +65,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $app->shouldReceive('make')->with('AppController')->once()->andReturn($useApp)
             ->shouldReceive('make')->with('FooController')->once()->andReturn($useFoo)
             ->shouldReceive('make')->times(3)->with('FoobarController')->andReturn($useFoobar);
-        $request->shouldReceive('getMethod')->times(5)->andReturn('GET');
+        $request->shouldReceive('getMethod')->times(6)->andReturn('GET');
 
         $driver = new Container('app', array(
             'name'   => 'app',
