@@ -43,14 +43,12 @@ class Response
      */
     protected function handleIlluminateResponse(IlluminateResponse $content, Closure $callback = null)
     {
-        $code        = $content->getStatusCode();
-        $response    = $content->getContent();
-        $contentType = $content->headers->get('Content-Type');
-        $isHtml      = starts_with($contentType, 'text/html');
+        $code     = $content->getStatusCode();
+        $response = $content->getContent();
 
-        if ($response instanceof FacileResponse && $response->getFormat() !== 'html') {
+        if ($this->isRenderableResponse($response)) {
             return $response->render();
-        } elseif (! is_null($contentType) && ! $isHtml) {
+        } elseif ($this->isNoneHtmlResponse($content)) {
             return $content;
         } elseif (! $content->isSuccessful()) {
             return $this->abort($code);
@@ -93,5 +91,30 @@ class Response
         }
 
         throw new HttpException($code, $message, null, $headers);
+    }
+
+    /**
+     * Is response renderable.
+     *
+     * @param  object   $response
+     * @return boolean
+     */
+    protected function isRenderableResponse($response)
+    {
+        return $response instanceof FacileResponse && $response->getFormat() !== 'html';
+    }
+
+    /**
+     * Is response none html.
+     *
+     * @param  \Illuminate\Http\Response   $content
+     * @return boolean
+     */
+    protected function isNoneHtmlResponse(IlluminateResponse $content)
+    {
+        $contentType = $content->headers->get('Content-Type');
+        $isHtml      = starts_with($contentType, 'text/html');
+
+        return ! is_null($content) && ! $isHtml;
     }
 }

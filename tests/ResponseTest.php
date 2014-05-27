@@ -125,7 +125,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $content->shouldReceive('getStatusCode')->once()->andReturn(200)
             ->shouldReceive('getContent')->once()->andReturn($facile)
             ->shouldReceive('isSuccessful')->never()->andReturn(true);
-        $headers->shouldReceive('get')->with('Content-Type')->once()->andReturn('text/json');
+        $headers->shouldReceive('get')->with('Content-Type')->never()->andReturn('text/json');
         $this->assertEquals('foo', $stub->call($content));
 
         $content = m::mock('\Illuminate\Http\Response');
