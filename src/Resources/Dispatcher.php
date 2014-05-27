@@ -199,33 +199,43 @@ class Dispatcher
      * @param  array    $nested
      * @return array
      */
-    protected function findResourceRoutable(
-        $verb,
-        array $parameters = array(),
-        array $nested = array()
-    ) {
-        $last       = array_pop($parameters);
-        $resources  = array_keys($nested);
+    protected function findResourceRoutable($verb, array $parameters = array(), array $nested = array())
+    {
+        $action = $this->getActionName($verb, $parameters, $nested);
         $parameters = array_values($nested);
 
+        return array($action, $parameters);
+    }
+
+    /**
+     * Get action name.
+     *
+     * @param  string   $verb
+     * @param  array    $parameters
+     * @param  array    $nested
+     * @return string
+     */
+    protected function getActionName($verb, array $parameters = array(), array $nested = array())
+    {
+        $last = array_pop($parameters);
+        $resources = array_keys($nested);
+
         $swappable = array(
-            'post'   => 'store',
-            'put'    => 'update',
-            'patch'  => 'update',
+            'post' => 'store',
+            'put' => 'update',
+            'patch' => 'update',
             'delete' => 'destroy',
         );
 
         if (isset($swappable[$verb])) {
-            $action = $swappable[$verb];
+            return $swappable[$verb];
         } elseif (in_array($last, array('edit', 'create', 'delete'))) {
             // Handle all possible GET routing.
-            $action = $last;
-        } elseif (! in_array($last, $resources) && ! empty($nested)) {
-            $action = 'show';
-        } else {
-            $action = 'index';
+            return $last;
+        } elseif (!in_array($last, $resources) && !empty($nested)) {
+            return 'show';
         }
 
-        return array($action, $parameters);
+        return 'index';
     }
 }
