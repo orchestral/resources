@@ -48,7 +48,7 @@ class Dispatcher
      * Create a new dispatch.
      *
      * @param  Container   $driver
-     * @param  string      $name
+     * @param  string|null $name
      * @param  array       $parameters
      * @return mixed
      */
@@ -63,15 +63,12 @@ class Dispatcher
             return false;
         }
 
-        // Get HTTP verb used in this request.
-        $verb = $this->request->getMethod();
-
         // Next we need to the action and parameters before we can call
         // the destination controller, the resolver would determine both
         // restful and resource controller.
-        list($action, $parameters) = $this->findRoutableAttributes($resolver->getType(), $verb, $parameters, $resolver->getNestedSegment());
+        list($action, $parameters) = $this->findRoutableAttributes($resolver);
 
-        $route = new Route($verb, "{$driver->id}/{$name}", array('uses' => $resolver->getController()));
+        $route = new Route($resolver->getVerb(), "{$driver->id}/{$name}", array('uses' => $resolver->getController()));
         $route->overrideParameters($parameters);
 
         // Resolve the controller from container.
@@ -88,21 +85,21 @@ class Dispatcher
      * @param  array       $parameters
      * @return Resolver
      */
-    public function resolveDispatchDependencies(Container $driver, $name = null, array $parameters)
+    public function resolveDispatchDependencies(Container $driver, $name, array $parameters)
     {
-        $nested     = $this->getNestedParameters($name, $parameters);
-        $nestedName = implode('.', array_keys($nested));
-        $uses       = $driver->uses;
+        $segments = $this->getNestedParameters($name, $parameters);
+        $key      = implode('.', array_keys($segments));
+        $uses     = $driver->uses;
 
         if (! is_null($name)) {
-            if (isset($driver->childs[$nestedName]) && starts_with($driver->childs[$nestedName], 'resource:')) {
-                $uses = $driver->childs[$nestedName];
+            if (isset($driver->childs[$key]) && starts_with($driver->childs[$key], 'resource:')) {
+                $uses = $driver->childs[$key];
             } else {
                 $uses = (isset($driver->childs[$name]) ? $driver->childs[$name] : null);
             }
         }
 
-        return new Resolver($nested, $uses);
+        return new Resolver($uses, $this->request->getMethod(), $parameters, $segments);
     }
 
     /**
@@ -140,21 +137,17 @@ class Dispatcher
      * Find route action and parameters content attributes from either
      * restful or resources routing.
      *
-     * @param  string   $type       Either 'restful' or 'resource'
-     * @param  string   $verb
-     * @param  array    $parameters
-     * @param  array    $nested
+     * @param  Resolver $resolver
      * @return array
      */
-    protected function findRoutableAttributes($type = 'restful', $verb = null, array $parameters, array $nested)
+    protected function findRoutableAttributes(Resolver $resolver)
     {
-        $action = null;
-        $verb   = Str::lower($verb);
+        $type = $resolver->getType();
 
         if (in_array($type, array('restful', 'resource'))) {
             $method = 'find'.Str::studly($type).'Routable';
 
-            list($action, $parameters) = call_user_func(array($this, $method), $verb, $parameters, $nested);
+            list($action, $parameters) = call_user_func(array($this, $method), $resolver);
         } else {
             throw new InvalidArgumentException("Type [{$type}] not implemented.");
         }
@@ -165,12 +158,14 @@ class Dispatcher
     /**
      * Resolve action from restful controller.
      *
-     * @param  string   $verb
-     * @param  array    $parameters
+     * @param  Resolver $resolver
      * @return array
      */
-    protected function findRestfulRoutable($verb, array $parameters)
+    protected function findRestfulRoutable(Resolver $resolver)
     {
+        $parameters = $resolver->getParameters();
+        $verb       = $resolver->getVerb();
+
         $action = (count($parameters) > 0 ? array_shift($parameters) : 'index');
         $action = Str::camel("{$verb}_{$action}");
 
@@ -180,13 +175,12 @@ class Dispatcher
     /**
      * Resolve action from resource controller.
      *
-     * @param  string   $verb
-     * @param  array    $parameters
-     * @param  array    $nested
+     * @param  Resolver $resolver
      * @return array
      */
-    protected function findResourceRoutable($verb, array $parameters, array $nested)
+    protected function findResourceRoutable(Resolver $resolver)
     {
+        $verb      = $resolver->getVerb();
         $swappable = array(
             'post' => 'store',
             'put' => 'update',
@@ -195,12 +189,12 @@ class Dispatcher
         );
 
         if (! isset($swappable[$verb])) {
-            $action = $this->getAlternativeResourceAction($parameters, $nested);
+            $action = $this->getAlternativeResourceAction($resolver);
         } else {
             $action = $swappable[$verb];
         }
 
-        $parameters = array_values($nested);
+        $parameters = array_values($resolver->getSegments());
 
         return array($action, $parameters);
     }
@@ -208,19 +202,21 @@ class Dispatcher
     /**
      * Get action name.
      *
-     * @param  array    $parameters
-     * @param  array    $nested
+     * @param  Resolver $resolver
      * @return string
      */
-    protected function getAlternativeResourceAction(array $parameters, array $nested)
+    protected function getAlternativeResourceAction(Resolver $resolver)
     {
-        $last = array_pop($parameters);
-        $resources = array_keys($nested);
+        $parameters = $resolver->getParameters();
+        $segments   = $resolver->getSegments();
+
+        $last       = array_pop($parameters);
+        $resources  = array_keys($segments);
 
         if (in_array($last, array('edit', 'create', 'delete'))) {
             // Handle all possible GET routing.
             return $last;
-        } elseif (!in_array($last, $resources) && !empty($nested)) {
+        } elseif (!in_array($last, $resources) && !empty($segments)) {
             return 'show';
         }
 

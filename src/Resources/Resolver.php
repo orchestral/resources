@@ -1,5 +1,7 @@
 <?php namespace Orchestra\Resources;
 
+use Orchestra\Support\Str;
+
 class Resolver
 {
     /**
@@ -10,11 +12,18 @@ class Resolver
     protected $controller;
 
     /**
-     * Nested URL.
+     * URL Parameters.
      *
      * @var array
      */
-    protected $nestedSegment = array();
+    protected $parameters = array();
+
+    /**
+     * URL segments.
+     *
+     * @var array
+     */
+    protected $segments = array();
 
     /**
      * 'resource' or 'restful' type.
@@ -31,11 +40,21 @@ class Resolver
     protected $valid;
 
     /**
+     * HTTP verb.
+     *
+     * @var string
+     */
+    protected $verb;
+
+    /**
      * Construct a new resolver.
      *
-     * @param string|null   $uses
+     * @param  string|null  $uses
+     * @param  string       $verb
+     * @param  array        $parameters
+     * @param  array        $segments
      */
-    public function __construct(array $nested, $uses = null)
+    public function __construct($uses = null, $verb = 'get', array $parameters = array(), array $segments = array())
     {
         $controller   = $uses;
         $type         = 'restful';
@@ -44,10 +63,12 @@ class Resolver
             list($type, $controller) = explode(':', $uses, 2);
         }
 
-        $this->controller    = $controller;
-        $this->nestedSegment = $nested;
-        $this->type          = $type;
-        $this->valid         = ! is_null($uses);
+        $this->controller = $controller;
+        $this->parameters = $parameters;
+        $this->segments   = $segments;
+        $this->type       = $type;
+        $this->valid      = ! is_null($uses);
+        $this->verb       = Str::lower($verb);
     }
 
     /**
@@ -61,13 +82,23 @@ class Resolver
     }
 
     /**
-     * Get nested.
+     * Get URL parameters.
      *
      * @return array
      */
-    public function getNestedSegment()
+    public function getParameters()
     {
-        return $this->nestedSegment;
+        return $this->parameters;
+    }
+
+    /**
+     * Get URL segments.
+     *
+     * @return array
+     */
+    public function getSegments()
+    {
+        return $this->segments;
     }
 
     /**
@@ -78,6 +109,16 @@ class Resolver
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Get HTTP Verb.
+     *
+     * @return string
+     */
+    public function getVerb()
+    {
+        return $this->verb;
     }
 
     /**
