@@ -4,7 +4,7 @@ use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response as IlluminateResponse;
-use Orchestra\Facile\Response as FacileResponse;
+use Orchestra\Facile\Container as FacileContainer;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -25,7 +25,7 @@ class Response
             return new IlluminateResponse($content, 200);
         } elseif ($content instanceof RedirectResponse || $content instanceof JsonResponse) {
             return $content;
-        } elseif ($content instanceof FacileResponse) {
+        } elseif ($content instanceof FacileContainer) {
             return $content->render();
         } elseif ($content instanceof IlluminateResponse) {
             return $this->handleIlluminateResponse($content, $callback);
@@ -101,7 +101,7 @@ class Response
      */
     protected function isRenderableResponse($response)
     {
-        return $response instanceof FacileResponse && $response->getFormat() !== 'html';
+        return $response instanceof FacileContainer && $response->getFormat() !== 'html';
     }
 
     /**
