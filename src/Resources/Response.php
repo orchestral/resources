@@ -96,7 +96,7 @@ class Response
     /**
      * Is response renderable.
      *
-     * @param  object   $response
+     * @param  object|string    $response
      * @return boolean
      */
     protected function isRenderableResponse($response)
