@@ -54,7 +54,7 @@ class Container implements ArrayAccess
             throw new InvalidArgumentException("Invalid character in resource name [{$name}].");
         }
 
-        $this->attributes['childs'][$name] = $uses;
+        $this->set("childs.{$name}", $uses);
 
         return $this;
     }
@@ -72,7 +72,7 @@ class Container implements ArrayAccess
             throw new InvalidArgumentException("Inpecting a boolean, [{$value}] given.");
         }
 
-        $this->attributes['visible'] = $value;
+        $this->set('visible', $value);
 
         return $this;
     }
@@ -98,26 +98,40 @@ class Container implements ArrayAccess
     }
 
     /**
-     *  Set attribute
+     * Get attribute.
      *
-     * @param $key
-     * @param $value
+     * @param  string   $key
+     * @param  mixed    $default
+     * @return mixed
      */
-    public function set($key, $value)
+    public function get($key, $default = null)
     {
-        $this->attributes[$key] = $value;
+        return array_get($this->attributes, $key, $default);
     }
 
     /**
-     * Get attribute
+     * Set attribute.
      *
-     * @param $key
-     * @return mixed
+     * @param  string   $key
+     * @param  mixed    $value
+     * @return void
      */
-    public function get($key)
+    public function set($key, $value)
     {
-        return $this->attributes[$key];
+        array_set($this->attributes, $key, $value);
     }
+
+    /**
+     * Forget attribute.
+     *
+     * @param  string   $key
+     * @return void
+     */
+    public function forget($key)
+    {
+        array_forget($this->attributes, $key);
+    }
+
     /**
      * Build resource schema.
      *
@@ -155,7 +169,7 @@ class Container implements ArrayAccess
      */
     public function __get($key)
     {
-        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
+        return $this->get($key);
     }
 
     /**
@@ -181,7 +195,7 @@ class Container implements ArrayAccess
     public function __call($method, $parameters)
     {
         if (! empty($parameters)) {
-            throw new InvalidArgumentException("Unexpected parameters.");
+            throw new InvalidArgumentException("Parameters is not available.");
         }
 
         return $this->attributes[$method] ?: null;
@@ -206,7 +220,7 @@ class Container implements ArrayAccess
      */
     public function offsetGet($key)
     {
-        return $this->attributes['childs'][$key];
+        return $this->get("childs.{$key}");
     }
 
     /**
@@ -229,6 +243,6 @@ class Container implements ArrayAccess
      */
     public function offsetUnset($key)
     {
-        unset($this->attributes['childs'][$key]);
+        $this->forget("childs.{$key}");
     }
 }
