@@ -103,7 +103,7 @@ class Container implements ArrayAccess
      * @param $key
      * @param $value
      */
-    public function setAttribute($key, $value)
+    public function set($key, $value)
     {
         $this->attributes[$key] = $value;
     }
@@ -114,7 +114,7 @@ class Container implements ArrayAccess
      * @param $key
      * @return mixed
      */
-    public function getAttribute($key)
+    public function get($key)
     {
         return $this->attributes[$key];
     }
