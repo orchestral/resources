@@ -9,21 +9,21 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * Application instance.
      *
-     * @var Illuminate\Foundation\Application
+     * @var \Illuminate\Container\Container
      */
     private $app = null;
 
     /**
      * Router instance.
      *
-     * @var Illuminate\Routing\Router
+     * @var \Illuminate\Routing\Router
      */
     private $router = null;
 
     /**
      * Request instance.
      *
-     * @var Illuminate\Http\Request
+     * @var \Illuminate\Http\Request
      */
     private $request = null;
 
