@@ -45,6 +45,7 @@ class Factory
      * @param  string   $name
      * @param  mixed    $attributes
      * @return \Orchestra\Resources\Container
+     * @throws \InvalidArgumentException
      */
     public function make($name, $attributes)
     {

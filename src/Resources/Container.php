@@ -98,6 +98,27 @@ class Container implements ArrayAccess
     }
 
     /**
+     *  Set attribute
+     *
+     * @param $key
+     * @param $value
+     */
+    public function set($key, $value)
+    {
+        $this->attributes[$key] = $value;
+    }
+
+    /**
+     * Get attribute
+     *
+     * @param $key
+     * @return mixed
+     */
+    public function get($key)
+    {
+        return $this->attributes[$key];
+    }
+    /**
      * Build resource schema.
      *
      * @param  string   $name
