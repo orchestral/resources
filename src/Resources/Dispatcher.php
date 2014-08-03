@@ -82,10 +82,10 @@ class Dispatcher
         $uses     = $driver->uses;
 
         if (! is_null($name)) {
-            if (isset($driver->childs[$key]) && starts_with($driver->childs[$key], 'resource:')) {
-                $uses = $driver->childs[$key];
+            if (isset($driver->routes[$key]) && Str::startsWith($driver->routes[$key], 'resource:')) {
+                $uses = $driver->routes[$key];
             } else {
-                $uses = (isset($driver->childs[$name]) ? $driver->childs[$name] : null);
+                $uses = (isset($driver->routes[$name]) ? $driver->routes[$name] : null);
             }
         }
 

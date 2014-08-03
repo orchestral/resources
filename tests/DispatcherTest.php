@@ -70,7 +70,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $driver = new Container('app', array(
             'name'   => 'app',
             'uses'   => 'AppController',
-            'childs' => array(
+            'routes' => array(
                 'foo' => 'restful:FooController',
                 'foo.bar' => 'resource:FoobarController',
             ),
@@ -103,7 +103,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $driver = new Container('app', array(
             'name'   => 'app',
             'uses'   => 'AppController',
-            'childs' => array(
+            'routes' => array(
                 'foo' => 'restful:FooController',
                 'foo.bar' => 'resource:FoobarController',
             ),
@@ -131,7 +131,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $driver = new Container('app', array(
             'name'   => 'app',
             'uses'   => 'AppController',
-            'childs' => array(
+            'routes' => array(
                 'foo' => 'restful:FooController',
                 'foo.bar' => 'resource:FoobarController',
             ),
@@ -159,7 +159,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $driver = new Container('app', array(
             'name'   => 'app',
             'uses'   => 'AppController',
-            'childs' => array(
+            'routes' => array(
                 'foo' => 'restful:FooController',
                 'foo.bar' => 'resource:FoobarController',
             ),
