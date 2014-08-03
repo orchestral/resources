@@ -1,10 +1,11 @@
 <?php namespace Orchestra\Resources;
 
 use InvalidArgumentException;
-use Orchestra\Resources\Routing\Route;
-use Orchestra\Resources\Routing\ControllerDispatcher;
+use Illuminate\Container\Container as IlluminateContainer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
+use Orchestra\Resources\Routing\Route;
+use Orchestra\Resources\Routing\ControllerDispatcher;
 use Orchestra\Support\Str;
 
 class Dispatcher
@@ -12,7 +13,7 @@ class Dispatcher
     /**
      * Application instance.
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Container\Container
      */
     protected $app;
 
@@ -33,11 +34,11 @@ class Dispatcher
     /**
      * Construct a new Resources instance.
      *
-     * @param  \Illuminate\Foundation\Application   $app
-     * @param  \Illuminate\Routing\Router           $router
-     * @param  \Illuminate\Http\Request             $request
+     * @param  \Illuminate\Container\Container  $app
+     * @param  \Illuminate\Routing\Router       $router
+     * @param  \Illuminate\Http\Request         $request
      */
-    public function __construct($app, Router $router, Request $request)
+    public function __construct(IlluminateContainer $app, Router $router, Request $request)
     {
         $this->app     = $app;
         $this->router  = $router;
@@ -81,10 +82,10 @@ class Dispatcher
         $uses     = $driver->uses;
 
         if (! is_null($name)) {
-            if (isset($driver->childs[$key]) && starts_with($driver->childs[$key], 'resource:')) {
-                $uses = $driver->childs[$key];
+            if (isset($driver->routes[$key]) && Str::startsWith($driver->routes[$key], 'resource:')) {
+                $uses = $driver->routes[$key];
             } else {
-                $uses = (isset($driver->childs[$name]) ? $driver->childs[$name] : null);
+                $uses = (isset($driver->routes[$name]) ? $driver->routes[$name] : null);
             }
         }
 
@@ -128,6 +129,7 @@ class Dispatcher
      *
      * @param  Resolver $resolver
      * @return array
+     * @throws \InvalidArgumentException
      */
     protected function findRoutableAttributes(Resolver $resolver)
     {
@@ -214,7 +216,7 @@ class Dispatcher
 
     /**
      * Dispatch the resource.
-     * 
+     *
      * @param Container $driver
      * @param string    $name
      * @param Resolver  $resolver

@@ -20,7 +20,7 @@ class Response
     public function call($content, Closure $callback = null)
     {
         if (false === $content) {
-            return $this->abort(404);
+            $this->abort(404);
         } elseif (is_null($content)) {
             return new IlluminateResponse($content, 200);
         } elseif ($content instanceof RedirectResponse || $content instanceof JsonResponse) {
@@ -51,7 +51,7 @@ class Response
         } elseif ($this->isNoneHtmlResponse($content)) {
             return $content;
         } elseif (! $content->isSuccessful()) {
-            return $this->abort($code);
+            $this->abort($code);
         }
 
         return $this->handleResponseCallback($response, $callback);

@@ -21,13 +21,21 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $expected = array(
             'name'    => 'Foo',
             'id'      => 'foo',
-            'childs'  => array(),
+            'routes'  => array(),
             'uses'    => 'FooController',
             'visible' => true,
         );
 
         $this->assertEquals($expected, $attributes->getValue($stub));
         $this->assertEquals('FooController', $stub->uses());
+
+        $stub->set('foo', 'foobar');
+
+        $this->assertEquals('foobar', $stub->get('foo'));
+
+        $stub->forget('foo');
+
+        $this->assertNull($stub->get('foo'));
     }
 
     /**
@@ -72,11 +80,20 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
         $stub->second = 'SecondController';
         $stub['third'] = 'ThirdController';
+        $stub['third.fourth'] = 'ForthController';
 
-        $this->assertEquals('SecondController', $stub['second']);
-        $this->assertTrue(isset($stub['second']));
-        $this->assertFalse(isset($stub['ten']));
+        $expected = array(
+            'first' => 'FirstController',
+            'second' => 'SecondController',
+            'third' => 'ThirdController',
+            'third.fourth' => 'ForthController',
+        );
+
+        $this->assertEquals($expected, $stub->get('routes'));
+
         unset($stub['first']);
+
+        $this->assertEquals('ForthController', $stub['third.fourth']);
         $this->assertFalse(isset($stub['first']));
     }
 
