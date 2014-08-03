@@ -15,6 +15,9 @@ Resources Component is an adhoc routing manager that allow extension developer t
 * [Installation](#installation)
 * [Configuration](#configuration)
 * [Usage](#usage)
+  - [Adding a Resource](#adding-a-resource)
+  - [Adding a Child Resource](#adding-a-child-resource)
+  - [Returning Response from a Resource](#returning-response-from-a-resource)
 * [Change Log](http://orchestraplatform.com/docs/latest/components/resources/changes#v2-1)
 
 ## Version Compatibility
