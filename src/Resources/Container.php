@@ -54,7 +54,7 @@ class Container implements ArrayAccess
             throw new InvalidArgumentException("Invalid character in resource name [{$name}].");
         }
 
-        $this->set("childs.{$name}", $uses);
+        $this->attributes['routes'][$name] = $uses;
 
         return $this;
     }
@@ -144,7 +144,7 @@ class Container implements ArrayAccess
         $schema = array(
             'name'    => '',
             'uses'    => '',
-            'childs'  => array(),
+            'routes'  => array(),
             'visible' => true,
         );
 
@@ -209,7 +209,7 @@ class Container implements ArrayAccess
      */
     public function offsetExists($key)
     {
-        return isset($this->attributes['childs'][$key]);
+        return isset($this->attributes['routes'][$key]);
     }
 
     /**
@@ -220,7 +220,7 @@ class Container implements ArrayAccess
      */
     public function offsetGet($key)
     {
-        return $this->get("childs.{$key}");
+        return $this->attributes['routes'][$key];
     }
 
     /**
@@ -243,6 +243,6 @@ class Container implements ArrayAccess
      */
     public function offsetUnset($key)
     {
-        $this->forget("childs.{$key}");
+        unset($this->attributes['routes'][$key]);
     }
 }
