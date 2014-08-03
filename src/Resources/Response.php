@@ -50,11 +50,11 @@ class Response
             return $response->render();
         } elseif ($this->isNoneHtmlResponse($content)) {
             return $content;
-        } elseif (! $content->isSuccessful()) {
-            $this->abort($code);
+        } elseif ($content->isSuccessful()) {
+            return $this->handleResponseCallback($response, $callback);
         }
 
-        return $this->handleResponseCallback($response, $callback);
+        $this->abort($code);
     }
 
     /**
