@@ -5,7 +5,7 @@ title: Resources Change Log
 
 ## Version 2.1 {#v2-1}
 
-### v2.1.4@dev {#v2-1-4}
+### v2.1.4 {#v2-1-4}
 
 * Add `get()`, `set()` and `forget()` helper method on `Orchestra\Facile\Container` to allow direct manipulation to it's attributes value.
 
