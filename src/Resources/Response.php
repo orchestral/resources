@@ -20,11 +20,7 @@ class Response
      */
     public function call($content, Closure $callback = null)
     {
-        if (false === $content) {
-            $this->abort(404);
-        } elseif (is_null($content)) {
-            return new IlluminateResponse($content, 200);
-        } elseif ($content instanceof RedirectResponse || $content instanceof JsonResponse) {
+        if ($content instanceof RedirectResponse || $content instanceof JsonResponse) {
             return $content;
         } elseif ($content instanceof FacileContainer) {
             return $content->render();
@@ -70,7 +66,13 @@ class Response
     protected function handleResponseCallback($content, Closure $callback = null)
     {
         if ($callback instanceof Closure) {
-            return call_user_func($callback, $content);
+            $content = call_user_func($callback, $content);
+        }
+
+        if (false === $content) {
+            return $this->abort(404);
+        } elseif (is_null($content)) {
+            return new IlluminateResponse($content, 200);
         }
 
         return $content;
