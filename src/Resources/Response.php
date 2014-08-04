@@ -5,6 +5,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response as IlluminateResponse;
 use Orchestra\Facile\Container as FacileContainer;
+use Orchestra\Support\Str;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -13,9 +14,9 @@ class Response
     /**
      * Handle response from resources.
      *
-     * @param  mixed    $content
-     * @param  \Closure $callback
-     * @return mixed
+     * @param  mixed            $content
+     * @param  \Closure|null    $callback
+     * @return \Illuminate\Http\Response|string
      */
     public function call($content, Closure $callback = null)
     {
@@ -39,7 +40,9 @@ class Response
      *
      * @param  \Illuminate\Http\Response   $content
      * @param  \Closure                    $callback
-     * @return mixed
+     * @return \Illuminate\Http\Response|string
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function handleIlluminateResponse(IlluminateResponse $content, Closure $callback = null)
     {
@@ -54,14 +57,14 @@ class Response
             return $this->handleResponseCallback($response, $callback);
         }
 
-        $this->abort($code);
+        return $this->abort($code);
     }
 
     /**
      * Handle response callback.
      *
-     * @param  mixed    $content
-     * @param  \Closure $callback
+     * @param  mixed            $content
+     * @param  \Closure|null    $callback
      * @return mixed
      */
     protected function handleResponseCallback($content, Closure $callback = null)
@@ -80,7 +83,6 @@ class Response
      * @param  string  $message
      * @param  array   $headers
      * @return void
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
@@ -97,7 +99,7 @@ class Response
      * Is response renderable.
      *
      * @param  object|string    $response
-     * @return boolean
+     * @return bool
      */
     protected function isRenderableResponse($response)
     {
@@ -108,12 +110,12 @@ class Response
      * Is response none html.
      *
      * @param  \Illuminate\Http\Response   $content
-     * @return boolean
+     * @return bool
      */
     protected function isNoneHtmlResponse(IlluminateResponse $content)
     {
         $contentType = $content->headers->get('Content-Type');
-        $isHtml      = starts_with($contentType, 'text/html');
+        $isHtml      = Str::startsWith($contentType, 'text/html');
 
         return ! is_null($content) && ! $isHtml;
     }
