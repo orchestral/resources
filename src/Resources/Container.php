@@ -1,7 +1,8 @@
 <?php namespace Orchestra\Resources;
 
-use InvalidArgumentException;
 use ArrayAccess;
+use InvalidArgumentException;
+use Illuminate\Support\Arr;
 use Orchestra\Support\Str;
 
 class Container implements ArrayAccess
@@ -106,7 +107,7 @@ class Container implements ArrayAccess
      */
     public function get($key, $default = null)
     {
-        return array_get($this->attributes, $key, $default);
+        return Arr::get($this->attributes, $key, $default);
     }
 
     /**
@@ -118,7 +119,7 @@ class Container implements ArrayAccess
      */
     public function set($key, $value)
     {
-        array_set($this->attributes, $key, $value);
+        Arr::set($this->attributes, $key, $value);
     }
 
     /**
@@ -129,7 +130,7 @@ class Container implements ArrayAccess
      */
     public function forget($key)
     {
-        array_forget($this->attributes, $key);
+        Arr::forget($this->attributes, $key);
     }
 
     /**
