@@ -207,7 +207,7 @@ class Dispatcher
         if (in_array($last, array('edit', 'create', 'delete'))) {
             // Handle all possible GET routing.
             return $last;
-        } elseif (!in_array($last, $resources) && !empty($segments)) {
+        } elseif (! in_array($last, $resources) && ! empty($segments)) {
             return 'show';
         }
 
