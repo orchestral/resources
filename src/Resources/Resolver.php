@@ -56,8 +56,8 @@ class Resolver
      */
     public function __construct($uses = null, $verb = 'get', array $parameters = array(), array $segments = array())
     {
-        $controller   = $uses;
-        $type         = 'restful';
+        $controller = $uses;
+        $type       = 'restful';
 
         if (false !== strpos($uses, ':')) {
             list($type, $controller) = explode(':', $uses, 2);
