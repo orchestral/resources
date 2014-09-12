@@ -1,4 +1,4 @@
-Resources Component for Orchestra Platform 2
+Resources Component for Orchestra Platform
 ==============
 
 Resources Component is an adhoc routing manager that allow extension developer to add CRUD interface without touching Orchestra Platform 2. The idea is to allow controllers to be map to specific URL in Orchestra Platform Administrator Interface.
@@ -27,7 +27,7 @@ Laravel    | Resources
  4.0.x     | 2.0.x
  4.1.x     | 2.1.x
  4.2.x     | 2.2.x
- 4.3.x     | 2.3.x@dev
+ 5.0.x     | 3.0.x@dev
 
 ## Installation
 
@@ -36,7 +36,7 @@ To install through composer, simply put the following in your `composer.json` fi
 ```json
 {
     "require": {
-        "orchestra/resources": "2.3.*"
+        "orchestra/resources": "3.0.*"
     }
 }
 ```
@@ -47,7 +47,7 @@ And then run `composer install` from the terminal.
 
 Above installation can also be simplify by using the following command:
 
-    composer require "orchestra/resources=2.3.*"
+    composer require "orchestra/resources=3.0.*"
 
 ## Configuration
 

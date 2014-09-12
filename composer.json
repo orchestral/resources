@@ -1,6 +1,6 @@
 {
 	"name": "orchestra/resources",
-	"description": "Resources Component for Orchestra Platform 2",
+	"description": "Resources Component for Orchestra Platform",
 	"homepage": "http://orchestraplatform.com/docs/latest/components/resources/",
 	"keywords": ["orchestra-platform", "orchestral", "laravel"],
 	"license": "MIT",
@@ -18,21 +18,21 @@
 	},
 	"require": {
 		"php": ">=5.4.0",
-		"orchestra/facile": "2.3.*"
+		"orchestra/facile": "3.0.*"
 	},
 	"require-dev": {
 		"mockery/mockery": "0.9.*",
-		"illuminate/events": "4.3.*",
-		"illuminate/http": "4.3.*",
-		"illuminate/routing": "4.3.*"
+		"illuminate/events": "5.0.*",
+		"illuminate/http": "5.0.*",
+		"illuminate/routing": "5.0.*"
 	},
 	"suggest": {
-		"laravel/framework": "Allow using orchestra/resources component outside of Orchestra Platform 2",
-		"orchestra/foundation": "Allow using orchestra/resources with Orchestra Platform 2"
+		"laravel/framework": "Allow using orchestra/resources component outside of Orchestra Platform",
+		"orchestra/foundation": "Allow using orchestra/resources with Orchestra Platform"
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "2.3-dev"
+			"dev-master": "3.0-dev"
 		}
 	},
 	"minimum-stability": "dev"
