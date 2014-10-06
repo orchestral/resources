@@ -3,6 +3,7 @@
 use Mockery as m;
 use Orchestra\Resources\Container;
 use Orchestra\Resources\Dispatcher;
+use Orchestra\Resources\Routing\Controller;
 
 class DispatcherTest extends \PHPUnit_Framework_TestCase
 {
@@ -192,7 +193,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class AppController extends \Illuminate\Routing\Controller
+class AppController extends Controller
 {
     public function getIndex()
     {
@@ -200,7 +201,7 @@ class AppController extends \Illuminate\Routing\Controller
     }
 }
 
-class FooController extends \Illuminate\Routing\Controller
+class FooController extends Controller
 {
     public function getEdit()
     {
@@ -208,7 +209,7 @@ class FooController extends \Illuminate\Routing\Controller
     }
 }
 
-class FoobarController extends \Illuminate\Routing\Controller
+class FoobarController extends Controller
 {
     public function index()
     {

@@ -1,6 +1,7 @@
 <?php namespace Orchestra\Resources\Routing\TestCase;
 
 use Mockery as m;
+use Orchestra\Resources\Routing\Controller;
 use Orchestra\Resources\Routing\ControllerDispatcher;
 
 class ControllerDispatcherTest extends \PHPUnit_Framework_TestCase
@@ -22,7 +23,7 @@ class ControllerDispatcherTest extends \PHPUnit_Framework_TestCase
     public function testRunMethodThrowsException()
     {
         $container = m::mock('\Illuminate\Container\Container');
-        $router    = m::mock('\Illuminate\Routing\RouteFiltererInterface');
+        $router    = m::mock('\Illuminate\Routing\Router');
         $route     = m::mock('\Illuminate\Routing\Route');
         $request   = m::mock('\Illuminate\Http\Request');
         $useFoo    = new FooController;
@@ -31,12 +32,11 @@ class ControllerDispatcherTest extends \PHPUnit_Framework_TestCase
 
         $stub = new ControllerDispatcher($router, $container);
 
-        $this->assertInstanceOf('\Illuminate\Routing\ControllerDispatcher', $stub);
         $stub->dispatch($route, $request, 'FooController', 'getMissingMethod');
     }
 }
 
-class FooController extends \Illuminate\Routing\Controller
+class FooController extends Controller
 {
     public function getIndex()
     {
