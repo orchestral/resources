@@ -1,11 +1,11 @@
 <?php namespace Orchestra\Resources;
 
 use Closure;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response as IlluminateResponse;
-use Orchestra\Facile\Container as FacileContainer;
 use Orchestra\Support\Str;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Orchestra\Facile\Container as FacileContainer;
+use Illuminate\Http\Response as IlluminateResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -81,9 +81,9 @@ class Response
     /**
      * Handle abort response.
      *
-     * @param  integer $code
-     * @param  string  $message
-     * @param  array   $headers
+     * @param  int      $code
+     * @param  string   $message
+     * @param  array    $headers
      * @return void
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException

@@ -124,7 +124,7 @@ class Resolver
     /**
      * Is valid resource request.
      *
-     * @return boolean
+     * @return bool
      */
     public function isValid()
     {

@@ -1,9 +1,9 @@
 <?php namespace Orchestra\Resources;
 
 use ArrayAccess;
-use InvalidArgumentException;
-use Illuminate\Support\Arr;
 use Orchestra\Support\Str;
+use Illuminate\Support\Arr;
+use InvalidArgumentException;
 
 class Container implements ArrayAccess
 {

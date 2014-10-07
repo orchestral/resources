@@ -1,8 +1,8 @@
 <?php namespace Orchestra\Resources;
 
 use Closure;
-use InvalidArgumentException;
 use Orchestra\Support\Str;
+use InvalidArgumentException;
 
 class Factory
 {
@@ -104,7 +104,7 @@ class Factory
      * Handle response from resources.
      *
      * @param  mixed    $content
-     * @param  Closure  $callback
+     * @param  \Closure $callback
      * @return mixed
      */
     public function response($content, Closure $callback = null)
