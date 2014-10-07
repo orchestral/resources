@@ -3,9 +3,9 @@
 use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Routing\Route as IlluminateRoute;
 use Illuminate\Routing\RouteDependencyResolverTrait;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -49,7 +49,7 @@ class ControllerDispatcher
      * @return mixed
      */
     public function dispatch(
-        \Illuminate\Routing\Route $route,
+        IlluminateRoute $route,
         Request $request,
         $controller,
         $method
