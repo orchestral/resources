@@ -10,7 +10,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ControllerDispatcher
 {
-
     use RouteDependencyResolverTrait;
 
     /**
@@ -48,8 +47,12 @@ class ControllerDispatcher
      * @param  string  $method
      * @return mixed
      */
-    public function dispatch(Route $route, Request $request, $controller, $method)
-    {
+    public function dispatch(
+        \Illuminate\Routing\Route $route,
+        Request $request,
+        $controller,
+        $method
+    ) {
         // First we will make an instance of this controller via the IoC container instance
         // so that we can call the methods on it. We will also apply any "after" filters
         // to the route so that they will be run by the routers after this processing.
@@ -62,8 +65,7 @@ class ControllerDispatcher
         // If no before filters returned a response we'll call the method on the controller
         // to get the response to be returned to the router. We will then return it back
         // out for processing by this router and the after filters can be called then.
-        if (is_null($response))
-        {
+        if (is_null($response)) {
             $response = $this->call($instance, $route, $method);
         }
 
@@ -100,7 +102,9 @@ class ControllerDispatcher
         }
 
         $parameters = $this->resolveClassMethodDependencies(
-            $route->parametersWithoutNulls(), $instance, $method
+            $route->parametersWithoutNulls(),
+            $instance,
+            $method
         );
 
         return $instance->callAction($method, $parameters);
@@ -117,16 +121,16 @@ class ControllerDispatcher
      */
     protected function before($instance, $route, $request, $method)
     {
-        foreach ($instance->getBeforeFilters() as $filter)
-        {
-            if ($this->filterApplies($filter, $request, $method))
-            {
+        foreach ($instance->getBeforeFilters() as $filter) {
+            if ($this->filterApplies($filter, $request, $method)) {
                 // Here we will just check if the filter applies. If it does we will call the filter
                 // and return the responses if it isn't null. If it is null, we will keep hitting
                 // them until we get a response or are finished iterating through this filters.
                 $response = $this->callFilter($filter, $route, $request);
 
-                if ( ! is_null($response)) return $response;
+                if (! is_null($response)) {
+                    return $response;
+                }
             }
         }
     }
@@ -142,13 +146,11 @@ class ControllerDispatcher
      */
     protected function assignAfter($instance, $route, $request, $method)
     {
-        foreach ($instance->getAfterFilters() as $filter)
-        {
+        foreach ($instance->getAfterFilters() as $filter) {
             // If the filter applies, we will add it to the route, since it has already been
             // registered on the filterer by the controller, and will just let the normal
             // router take care of calling these filters so we do not duplicate logics.
-            if ($this->filterApplies($filter, $request, $method))
-            {
+            if ($this->filterApplies($filter, $request, $method)) {
                 $route->after($this->getAssignableAfter($filter));
             }
         }
@@ -175,10 +177,8 @@ class ControllerDispatcher
      */
     protected function filterApplies($filter, $request, $method)
     {
-        foreach (array('Only', 'Except', 'On') as $type)
-        {
-            if ($this->{"filterFails{$type}"}($filter, $request, $method))
-            {
+        foreach (array('Only', 'Except', 'On') as $type) {
+            if ($this->{"filterFails{$type}"}($filter, $request, $method)) {
                 return false;
             }
         }
@@ -196,7 +196,9 @@ class ControllerDispatcher
      */
     protected function filterFailsOnly($filter, $request, $method)
     {
-        if ( ! isset($filter['options']['only'])) return false;
+        if (! isset($filter['options']['only'])) {
+            return false;
+        }
 
         return ! in_array($method, (array) $filter['options']['only']);
     }
@@ -211,7 +213,9 @@ class ControllerDispatcher
      */
     protected function filterFailsExcept($filter, $request, $method)
     {
-        if ( ! isset($filter['options']['except'])) return false;
+        if (! isset($filter['options']['except'])) {
+            return false;
+        }
 
         return in_array($method, (array) $filter['options']['except']);
     }
@@ -228,12 +232,16 @@ class ControllerDispatcher
     {
         $on = array_get($filter, 'options.on');
 
-        if (is_null($on)) return false;
+        if (is_null($on)) {
+            return false;
+        }
 
         // If the "on" is a string, we will explode it on the pipe so you can set any
         // amount of methods on the filter constraints and it will still work like
         // you specified an array. Then we will check if the method is in array.
-        if (is_string($on)) $on = explode('|', $on);
+        if (is_string($on)) {
+            $on = explode('|', $on);
+        }
 
         return ! in_array(strtolower($request->getMethod()), $on);
     }

@@ -13,14 +13,14 @@ class Controller
      *
      * @var array
      */
-    protected $beforeFilters = array();
+    protected $beforeFilters = [];
 
     /**
      * The "after" filters registered on the controller.
      *
      * @var array
      */
-    protected $afterFilters = array();
+    protected $afterFilters = [];
 
     /**
      * The container instance.
@@ -73,16 +73,11 @@ class Controller
 
         $original = $filter;
 
-        if ($filter instanceof Closure)
-        {
+        if ($filter instanceof Closure) {
             $filter = $this->registerClosureFilter($filter);
-        }
-        elseif ($this->isInstanceFilter($filter))
-        {
+        } elseif ($this->isInstanceFilter($filter)) {
             $filter = $this->registerInstanceFilter($filter);
-        }
-        else
-        {
+        } else {
             list($filter, $parameters) = Route::parseFilter($filter);
         }
 
@@ -125,9 +120,10 @@ class Controller
      */
     protected function isInstanceFilter($filter)
     {
-        if (is_string($filter) && starts_with($filter, '@'))
-        {
-            if (method_exists($this, substr($filter, 1))) return true;
+        if (is_string($filter) && starts_with($filter, '@')) {
+            if (method_exists($this, substr($filter, 1))) {
+                return true;
+            }
 
             throw new \InvalidArgumentException("Filter method [$filter] does not exist.");
         }
@@ -166,10 +162,9 @@ class Controller
      */
     protected function removeFilter($removing, $current)
     {
-        return array_filter($current, function($filter) use ($removing)
-            {
-                return $filter['original'] != $removing;
-            });
+        return array_filter($current, function ($filter) use ($removing) {
+            return $filter['original'] != $removing;
+        });
     }
 
     /**
