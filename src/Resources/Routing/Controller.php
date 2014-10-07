@@ -2,11 +2,12 @@
 
 use Closure;
 use BadMethodCallException;
-use Illuminate\Contracts\Container\Container;
+use InvalidArgumentException;
 use Illuminate\Routing\Router;
+use Illuminate\Contracts\Container\Container;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class Controller
+abstract class Controller
 {
     /**
      * The "before" filters registered on the controller.
@@ -32,7 +33,7 @@ class Controller
     /**
      * The route filterer implementation.
      *
-     * @var \Illuminate\Routing\RouteFiltererInterface
+     * @var \Illuminate\Routing\Router
      */
     protected static $filterer;
 
@@ -43,7 +44,7 @@ class Controller
      * @param  array  $options
      * @return void
      */
-    public function beforeFilter($filter, array $options = array())
+    public function beforeFilter($filter, array $options = [])
     {
         $this->beforeFilters[] = $this->parseFilter($filter, $options);
     }
@@ -55,7 +56,7 @@ class Controller
      * @param  array  $options
      * @return void
      */
-    public function afterFilter($filter, array $options = array())
+    public function afterFilter($filter, array $options = [])
     {
         $this->afterFilters[] = $this->parseFilter($filter, $options);
     }
@@ -69,7 +70,7 @@ class Controller
      */
     protected function parseFilter($filter, array $options)
     {
-        $parameters = array();
+        $parameters = [];
 
         $original = $filter;
 
@@ -105,7 +106,7 @@ class Controller
      */
     protected function registerInstanceFilter($filter)
     {
-        $this->getFilterer()->filter($filter, array($this, substr($filter, 1)));
+        $this->getFilterer()->filter($filter, [$this, substr($filter, 1)]);
 
         return $filter;
     }
@@ -125,7 +126,7 @@ class Controller
                 return true;
             }
 
-            throw new \InvalidArgumentException("Filter method [$filter] does not exist.");
+            throw new InvalidArgumentException("Filter method [$filter] does not exist.");
         }
 
         return false;
@@ -190,7 +191,7 @@ class Controller
     /**
      * Get the route filterer implementation.
      *
-     * @return \Illuminate\Routing\RouteFiltererInterface
+     * @return \Illuminate\Routing\Router
      */
     public static function getFilterer()
     {
@@ -217,7 +218,7 @@ class Controller
      */
     public function callAction($method, $parameters)
     {
-        return call_user_func_array(array($this, $method), $parameters);
+        return call_user_func_array([$this, $method], $parameters);
     }
 
     /**
@@ -228,7 +229,7 @@ class Controller
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function missingMethod($parameters = array())
+    public function missingMethod($parameters = [])
     {
         throw new NotFoundHttpException("Controller method not found.");
     }

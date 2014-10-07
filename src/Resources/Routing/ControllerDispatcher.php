@@ -1,11 +1,12 @@
 <?php namespace Orchestra\Resources\Routing;
 
 use Closure;
-use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
-use Illuminate\Routing\RouteDependencyResolverTrait;
 use Illuminate\Routing\Router;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Routing\RouteDependencyResolverTrait;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ControllerDispatcher
@@ -177,7 +178,7 @@ class ControllerDispatcher
      */
     protected function filterApplies($filter, $request, $method)
     {
-        foreach (array('Only', 'Except', 'On') as $type) {
+        foreach (['Only', 'Except', 'On'] as $type) {
             if ($this->{"filterFails{$type}"}($filter, $request, $method)) {
                 return false;
             }
@@ -230,7 +231,7 @@ class ControllerDispatcher
      */
     protected function filterFailsOn($filter, $request, $method)
     {
-        $on = array_get($filter, 'options.on');
+        $on = Arr::get($filter, 'options.on');
 
         if (is_null($on)) {
             return false;
