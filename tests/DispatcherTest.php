@@ -1,9 +1,9 @@
 <?php namespace Orchestra\Resources\TestCase;
 
 use Mockery as m;
+use Orchestra\Routing\Controller;
 use Orchestra\Resources\Container;
 use Orchestra\Resources\Dispatcher;
-use Orchestra\Resources\Routing\Controller;
 
 class DispatcherTest extends \PHPUnit_Framework_TestCase
 {
