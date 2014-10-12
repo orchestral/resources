@@ -1,7 +1,7 @@
 <?php namespace Orchestra\Resources\TestCase;
 
 use Mockery as m;
-use Orchestra\Routing\Controller;
+use Illuminate\Routing\Controller;
 use Orchestra\Resources\Container;
 use Orchestra\Resources\Dispatcher;
 
@@ -67,6 +67,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('make')->with('FooController')->once()->andReturn($useFoo)
             ->shouldReceive('make')->times(3)->with('FoobarController')->andReturn($useFoobar);
         $request->shouldReceive('getMethod')->times(6)->andReturn('GET');
+        $router->shouldReceive('getMiddleware')->times(5)->andReturn([]);
 
         $driver = new Container('app', array(
             'name'   => 'app',
@@ -77,7 +78,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
             ),
         ));
 
-        $stub = new Dispatcher($this->app, $router, $request);
+        $stub = new Dispatcher($app, $router, $request);
 
         $this->assertEquals('AppController@getIndex', $stub->call($driver, null, array('index')));
         $this->assertEquals('FooController@getEdit', $stub->call($driver, 'foo', array('edit')));
@@ -95,11 +96,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     public function testCallMethodUsingPostVerb()
     {
         $app       = $this->app;
+        $router    = $this->router;
         $request   = $this->request;
         $useFoobar = new FoobarController;
 
         $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
         $request->shouldReceive('getMethod')->once()->andReturn('POST');
+        $router->shouldReceive('getMiddleware')->once()->andReturn([]);
 
         $driver = new Container('app', array(
             'name'   => 'app',
@@ -110,7 +113,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
             ),
         ));
 
-        $stub = new Dispatcher($this->app, $this->router, $request);
+        $stub = new Dispatcher($app, $router, $request);
 
         $this->assertEquals('FoobarController@store', $stub->call($driver, 'foo', array(1, 'bar', 2)));
     }
@@ -123,11 +126,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     public function testCallMethodUsingPutVerb()
     {
         $app       = $this->app;
+        $router    = $this->router;
         $request   = $this->request;
         $useFoobar = new FoobarController;
 
         $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
         $request->shouldReceive('getMethod')->once()->andReturn('PUT');
+        $router->shouldReceive('getMiddleware')->once()->andReturn([]);
 
         $driver = new Container('app', array(
             'name'   => 'app',
@@ -138,7 +143,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
             ),
         ));
 
-        $stub = new Dispatcher($app, $this->router, $request);
+        $stub = new Dispatcher($app, $router, $request);
 
         $this->assertEquals('FoobarController@update', $stub->call($driver, 'foo', array(1, 'bar', 2)));
     }
@@ -151,11 +156,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     public function testCallMethodUsingDeleteVerb()
     {
         $app       = $this->app;
+        $router    = $this->router;
         $request   = $this->request;
         $useFoobar = new FoobarController;
 
         $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
         $request->shouldReceive('getMethod')->once()->andReturn('DELETE');
+        $router->shouldReceive('getMiddleware')->once()->andReturn([]);
 
         $driver = new Container('app', array(
             'name'   => 'app',
@@ -166,7 +173,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
             ),
         ));
 
-        $stub = new Dispatcher($app, $this->router, $request);
+        $stub = new Dispatcher($app, $router, $request);
 
         $this->assertEquals('FoobarController@destroy', $stub->call($driver, 'foo', array(1, 'bar', 2)));
     }
@@ -179,7 +186,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     public function testCallMethodThrowsException()
     {
         $request = $this->request;
-        $stub    = new Dispatcher($this->app, $this->router, $request);
+        $router  = $this->router;
+        $stub    = new Dispatcher($this->app, $router, $request);
 
         $request->shouldReceive('getMethod')->once()->andReturn('GET');
 

@@ -1,7 +1,7 @@
 <?php namespace Orchestra\Resources\Routing\TestCase;
 
 use Mockery as m;
-use Orchestra\Routing\Controller;
+use Illuminate\Routing\Controller;
 use Orchestra\Resources\Routing\ControllerDispatcher;
 
 class ControllerDispatcherTest extends \PHPUnit_Framework_TestCase
@@ -27,6 +27,8 @@ class ControllerDispatcherTest extends \PHPUnit_Framework_TestCase
         $route     = m::mock('\Illuminate\Routing\Route');
         $request   = m::mock('\Illuminate\Http\Request');
         $useFoo    = new FooController;
+
+        $router->shouldReceive('getMiddleware')->once()->andReturn([]);
 
         $container->shouldReceive('make')->once()->with('FooController')->andReturn($useFoo);
 
