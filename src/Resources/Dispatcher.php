@@ -3,8 +3,8 @@
 use Orchestra\Support\Str;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
-use Illuminate\Routing\Router;
 use Orchestra\Resources\Routing\Route;
+use Illuminate\Routing\Router as IlluminateRouter;
 use Orchestra\Resources\Routing\ControllerDispatcher;
 use Illuminate\Contracts\Container\Container as IlluminateContainer;
 
@@ -34,11 +34,11 @@ class Dispatcher
     /**
      * Construct a new Resources instance.
      *
-     * @param  \Illuminate\Contracts\Container\Container    $app
-     * @param  \Illuminate\Routing\Router                   $router
-     * @param  \Illuminate\Http\Request                     $request
+     * @param  \Illuminate\Contracts\Container\Container  $app
+     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Http\Request  $request
      */
-    public function __construct(IlluminateContainer $app, Router $router, Request $request)
+    public function __construct(IlluminateContainer $app, IlluminateRouter $router, Request $request)
     {
         $this->app     = $app;
         $this->router  = $router;
@@ -48,12 +48,12 @@ class Dispatcher
     /**
      * Create a new dispatch.
      *
-     * @param  \Orchestra\Resources\Container   $driver
-     * @param  string|null                      $name
-     * @param  array                            $parameters
+     * @param  \Orchestra\Resources\Router  $driver
+     * @param  string|null  $name
+     * @param  array  $parameters
      * @return mixed
      */
-    public function call(Container $driver, $name = null, array $parameters = array())
+    public function call(Router $driver, $name = null, array $parameters = array())
     {
         $resolver = $this->resolveDispatchDependencies($driver, $name, $parameters);
 
@@ -70,12 +70,12 @@ class Dispatcher
     /**
      * Resolve dispatcher dependencies.
      *
-     * @param  \Orchestra\Resources\Container   $driver
-     * @param  string                           $name
-     * @param  array                            $parameters
+     * @param  \Orchestra\Resources\Router  $driver
+     * @param  string  $name
+     * @param  array  $parameters
      * @return \Orchestra\Resources\Resolver
      */
-    public function resolveDispatchDependencies(Container $driver, $name, array $parameters)
+    public function resolveDispatchDependencies(Router $driver, $name, array $parameters)
     {
         $segments = $this->getNestedParameters($name, $parameters);
         $key      = implode('.', array_keys($segments));
@@ -95,8 +95,8 @@ class Dispatcher
     /**
      * Find nested parameters from route.
      *
-     * @param  string   $name
-     * @param  array    $parameters
+     * @param  string  $name
+     * @param  array  $parameters
      * @return array
      */
     protected function getNestedParameters($name, array $parameters)
@@ -127,7 +127,7 @@ class Dispatcher
      * Find route action and parameters content attributes from either
      * restful or resources routing.
      *
-     * @param  \Orchestra\Resources\Resolver    $resolver
+     * @param  \Orchestra\Resources\Resolver  $resolver
      * @return array
      * @throws \InvalidArgumentException
      */
@@ -149,7 +149,7 @@ class Dispatcher
     /**
      * Resolve action from restful controller.
      *
-     * @param  \Orchestra\Resources\Resolver    $resolver
+     * @param  \Orchestra\Resources\Resolver  $resolver
      * @return array
      */
     protected function findRestfulRoutable(Resolver $resolver)
@@ -166,7 +166,7 @@ class Dispatcher
     /**
      * Resolve action from resource controller.
      *
-     * @param  \Orchestra\Resources\Resolver    $resolver
+     * @param  \Orchestra\Resources\Resolver  $resolver
      * @return array
      */
     protected function findResourceRoutable(Resolver $resolver)
@@ -193,7 +193,7 @@ class Dispatcher
     /**
      * Get action name.
      *
-     * @param  \Orchestra\Resources\Resolver    $resolver
+     * @param  \Orchestra\Resources\Resolver  $resolver
      * @return string
      */
     protected function getAlternativeResourceAction(Resolver $resolver)
@@ -217,12 +217,12 @@ class Dispatcher
     /**
      * Dispatch the resource.
      *
-     * @param  \Orchestra\Resources\Container   $driver
-     * @param  string                           $name
-     * @param  \Orchestra\Resources\Resolver    $resolver
+     * @param  \Orchestra\Resources\Router  $driver
+     * @param  string  $name
+     * @param  \Orchestra\Resources\Resolver  $resolver
      * @return mixed
      */
-    protected function dispatch(Container $driver, $name, Resolver $resolver)
+    protected function dispatch(Router $driver, $name, Resolver $resolver)
     {
         // Next we need to the action and parameters before we can call
         // the destination controller, the resolver would determine both

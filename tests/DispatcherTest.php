@@ -2,7 +2,7 @@
 
 use Mockery as m;
 use Illuminate\Routing\Controller;
-use Orchestra\Resources\Container;
+use Orchestra\Resources\Router;
 use Orchestra\Resources\Dispatcher;
 
 class DispatcherTest extends \PHPUnit_Framework_TestCase
@@ -69,7 +69,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $request->shouldReceive('getMethod')->times(6)->andReturn('GET');
         $router->shouldReceive('getMiddleware')->times(5)->andReturn([]);
 
-        $driver = new Container('app', array(
+        $driver = new Router('app', array(
             'name'   => 'app',
             'uses'   => 'AppController',
             'routes' => array(
@@ -104,7 +104,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $request->shouldReceive('getMethod')->once()->andReturn('POST');
         $router->shouldReceive('getMiddleware')->once()->andReturn([]);
 
-        $driver = new Container('app', array(
+        $driver = new Router('app', array(
             'name'   => 'app',
             'uses'   => 'AppController',
             'routes' => array(
@@ -134,7 +134,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $request->shouldReceive('getMethod')->once()->andReturn('PUT');
         $router->shouldReceive('getMiddleware')->once()->andReturn([]);
 
-        $driver = new Container('app', array(
+        $driver = new Router('app', array(
             'name'   => 'app',
             'uses'   => 'AppController',
             'routes' => array(
@@ -164,7 +164,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $request->shouldReceive('getMethod')->once()->andReturn('DELETE');
         $router->shouldReceive('getMiddleware')->once()->andReturn([]);
 
-        $driver = new Container('app', array(
+        $driver = new Router('app', array(
             'name'   => 'app',
             'uses'   => 'AppController',
             'routes' => array(
@@ -191,7 +191,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 
         $request->shouldReceive('getMethod')->once()->andReturn('GET');
 
-        $driver = new Container('app', array(
+        $driver = new Router('app', array(
             'name'   => 'app',
             'uses'   => 'request:AppController',
             'childs' => array(),

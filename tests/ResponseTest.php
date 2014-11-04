@@ -82,7 +82,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test Orchestra\Resources\Response::call() method when given
-     * Orchestra\Facile\Container.
+     * Orchestra\Facile\Facile.
      *
      * @test
      */
@@ -90,7 +90,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     {
         $stub = new Response;
 
-        $content = m::mock('\Orchestra\Facile\Container');
+        $content = m::mock('\Orchestra\Facile\Facile');
         $content->shouldReceive('render')->once()->andReturn('foo');
         $this->assertEquals('foo', $stub->call($content));
     }
@@ -119,7 +119,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
         $content = m::mock('\Illuminate\Http\Response');
         $content->headers = $headers = m::mock('HeaderBag');
-        $facile = m::mock('\Orchestra\Facile\Container');
+        $facile = m::mock('\Orchestra\Facile\Facile');
         $facile->shouldReceive('getFormat')->andReturn('json')
             ->shouldReceive('render')->once()->andReturn('foo');
         $content->shouldReceive('getStatusCode')->once()->andReturn(200)

@@ -30,8 +30,8 @@ class Factory
     /**
      * Construct a new Resources instance.
      *
-     * @param  \Orchestra\Resources\Dispatcher $dispatcher
-     * @param  \Orchestra\Resources\Response   $response
+     * @param  \Orchestra\Resources\Dispatcher  $dispatcher
+     * @param  \Orchestra\Resources\Response  $response
      */
     public function __construct(Dispatcher $dispatcher, Response $response)
     {
@@ -42,9 +42,9 @@ class Factory
     /**
      * Register a new resource.
      *
-     * @param  string   $name
-     * @param  mixed    $attributes
-     * @return \Orchestra\Resources\Container
+     * @param  string  $name
+     * @param  mixed  $attributes
+     * @return \Orchestra\Resources\Router
      * @throws \InvalidArgumentException
      */
     public function make($name, $attributes)
@@ -53,15 +53,15 @@ class Factory
             throw new InvalidArgumentException("Invalid character in resource name [{$name}].");
         }
 
-        return $this->drivers[$name] = new Container($name, $attributes);
+        return $this->drivers[$name] = new Router($name, $attributes);
     }
 
     /**
      * Get resource by given name, or create a new one.
      *
-     * @param  string   $name
-     * @param  mixed    $attributes
-     * @return \Orchestra\Resources\Container
+     * @param  string  $name
+     * @param  mixed  $attributes
+     * @return \Orchestra\Resources\Router
      */
     public function of($name, $attributes = null)
     {
@@ -75,8 +75,8 @@ class Factory
     /**
      * Call a resource controller and action.
      *
-     * @param  string   $name
-     * @param  array    $parameters
+     * @param  string  $name
+     * @param  array  $parameters
      * @return \Orchestra\Resources\Response
      */
     public function call($name, $parameters = array())
@@ -103,8 +103,8 @@ class Factory
     /**
      * Handle response from resources.
      *
-     * @param  mixed    $content
-     * @param  \Closure $callback
+     * @param  mixed  $content
+     * @param  \Closure  $callback
      * @return mixed
      */
     public function response($content, Closure $callback = null)

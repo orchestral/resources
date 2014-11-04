@@ -32,6 +32,6 @@ class ResourcesServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array('orchestra.resources');
+        return ['orchestra.resources'];
     }
 }

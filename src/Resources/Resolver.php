@@ -50,9 +50,9 @@ class Resolver
      * Construct a new resolver.
      *
      * @param  string|null  $uses
-     * @param  string       $verb
-     * @param  array        $parameters
-     * @param  array        $segments
+     * @param  string  $verb
+     * @param  array  $parameters
+     * @param  array  $segments
      */
     public function __construct($uses = null, $verb = 'get', array $parameters = array(), array $segments = array())
     {

@@ -1,7 +1,7 @@
 <?php namespace Orchestra\Resources\TestCase;
 
 use Mockery as m;
-use Orchestra\Resources\Container;
+use Orchestra\Resources\Router;
 use Orchestra\Resources\Factory;
 use Orchestra\Resources\Response;
 
@@ -57,7 +57,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
 
         $output = $drivers->getValue($stub);
 
-        $this->assertInstanceOf('\Orchestra\Resources\Container', $output['foo']);
+        $this->assertInstanceOf('\Orchestra\Resources\Router', $output['foo']);
     }
 
     /**
@@ -114,7 +114,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
 
         $output = $drivers->getValue($stub);
 
-        $this->assertInstanceOf('\Orchestra\Resources\Container', $output['foobar']);
+        $this->assertInstanceOf('\Orchestra\Resources\Router', $output['foobar']);
         $this->assertEquals($output['foobar'], $stub->of('foobar'));
     }
 
@@ -129,8 +129,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $stub = new Factory($dispatcher, $this->response);
 
         $mock = array(
-            'foo'    => new Container('Foo', 'FooController'),
-            'foobar' => new Container('Foobar', 'FoobarController'),
+            'foo'    => new Router('Foo', 'FooController'),
+            'foobar' => new Router('Foobar', 'FoobarController'),
         );
 
         $refl    = new \ReflectionObject($stub);

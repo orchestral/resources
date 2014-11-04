@@ -2,9 +2,9 @@
 
 use Closure;
 use Orchestra\Support\Str;
+use Orchestra\Facile\Facile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Orchestra\Facile\Container as FacileContainer;
 use Illuminate\Http\Response as IlluminateResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -14,15 +14,15 @@ class Response
     /**
      * Handle response from resources.
      *
-     * @param  mixed            $content
-     * @param  \Closure|null    $callback
+     * @param  mixed  $content
+     * @param  \Closure|null  $callback
      * @return \Illuminate\Http\Response|string
      */
     public function call($content, Closure $callback = null)
     {
         if ($content instanceof RedirectResponse || $content instanceof JsonResponse) {
             return $content;
-        } elseif ($content instanceof FacileContainer) {
+        } elseif ($content instanceof Facile) {
             return $content->render();
         } elseif ($content instanceof IlluminateResponse) {
             return $this->handleIlluminateResponse($content, $callback);
@@ -34,8 +34,8 @@ class Response
     /**
      * Handle Illuminate\Http\Response content.
      *
-     * @param  \Illuminate\Http\Response   $content
-     * @param  \Closure                    $callback
+     * @param  \Illuminate\Http\Response  $content
+     * @param  \Closure  $callback
      * @return \Illuminate\Http\Response|string
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -59,8 +59,8 @@ class Response
     /**
      * Handle response callback.
      *
-     * @param  mixed            $content
-     * @param  \Closure|null    $callback
+     * @param  mixed  $content
+     * @param  \Closure|null  $callback
      * @return mixed
      */
     protected function handleResponseCallback($content, Closure $callback = null)
@@ -81,9 +81,9 @@ class Response
     /**
      * Handle abort response.
      *
-     * @param  int      $code
-     * @param  string   $message
-     * @param  array    $headers
+     * @param  int  $code
+     * @param  string  $message
+     * @param  array  $headers
      * @return void
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -100,18 +100,18 @@ class Response
     /**
      * Is response renderable.
      *
-     * @param  object|string    $response
+     * @param  object|string  $response
      * @return bool
      */
     protected function isRenderableResponse($response)
     {
-        return $response instanceof FacileContainer && $response->getFormat() !== 'html';
+        return $response instanceof Facile && $response->getFormat() !== 'html';
     }
 
     /**
      * Is response none html.
      *
-     * @param  \Illuminate\Http\Response   $content
+     * @param  \Illuminate\Http\Response  $content
      * @return bool
      */
     protected function isNoneHtmlResponse(IlluminateResponse $content)

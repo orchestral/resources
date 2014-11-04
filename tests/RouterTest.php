@@ -1,18 +1,18 @@
 <?php namespace Orchestra\Resources\TestCase;
 
 use Mockery as m;
-use Orchestra\Resources\Container;
+use Orchestra\Resources\Router;
 
-class ContainerTest extends \PHPUnit_Framework_TestCase
+class RouterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test constructing Orchestra\Resources\Container::route() method.
+     * Test constructing Orchestra\Resources\Router::route() method.
      *
      * @test
      */
     public function testConstructMethod()
     {
-        $stub = new Container('foo', 'FooController');
+        $stub = new Router('foo', 'FooController');
 
         $refl       = new \ReflectionObject($stub);
         $attributes = $refl->getProperty('attributes');
@@ -39,13 +39,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Orchestra\Resources\Container visibility methods.
+     * Test Orchestra\Resources\Router visibility methods.
      *
      * @test
      */
     public function testVisibilityMethods()
     {
-        $stub = new Container('foo', 'FooController');
+        $stub = new Router('foo', 'FooController');
 
         $this->assertTrue($stub->visible);
 
@@ -57,24 +57,24 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Orchestra\Resources\Container::visibility() method
+     * Test Orchestra\Resources\Router::visibility() method
      * throws exception.
      *
      * @expectedException \InvalidArgumentException
      */
     public function testVisibilityMethodThrowsException()
     {
-        with(new Container('foo', 'FooController'))->visibility('foo');
+        with(new Router('foo', 'FooController'))->visibility('foo');
     }
 
     /**
-     * Test Orchestra\Resources\Container routing methods.
+     * Test Orchestra\Resources\Router routing methods.
      *
      * @test
      */
     public function testRoutingMethods()
     {
-        $stub = new Container('foo', 'FooController');
+        $stub = new Router('foo', 'FooController');
 
         $this->assertEquals($stub, $stub->route('first', 'FirstController'));
 
@@ -98,35 +98,35 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Orchestra\Resources\Container::route() method given reserved
+     * Test Orchestra\Resources\Router::route() method given reserved
      * name throws exception.
      *
      * @expectedException \InvalidArgumentException
      */
     public function testRouteMethodGivenReservedNameThrowsException()
     {
-        with(new Container('foo', 'FooController'))->route('visible', 'FirstController');
+        with(new Router('foo', 'FooController'))->route('visible', 'FirstController');
     }
 
     /**
-     * Test Orchestra\Resources\Container::route() method given name with
+     * Test Orchestra\Resources\Router::route() method given name with
      * "/" throws exception.
      *
      * @expectedException \InvalidArgumentException
      */
     public function testRouteMethodGivenNameWithSlashesThrowsException()
     {
-        with(new Container('foo', 'FooController'))->route('first/foo', 'FirstController');
+        with(new Router('foo', 'FooController'))->route('first/foo', 'FirstController');
     }
 
     /**
-     * Test Orchestra\Resources\Container::__call() method
+     * Test Orchestra\Resources\Router::__call() method
      * throws exception.
      *
      * @expectedException \InvalidArgumentException
      */
     public function testMagicMethodCallThrowsException()
     {
-        with(new Container('foo', 'FooController'))->uses('FoobarController');
+        with(new Router('foo', 'FooController'))->uses('FoobarController');
     }
 }
