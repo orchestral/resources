@@ -114,7 +114,7 @@ class Resolver
     /**
      * Get HTTP Verb.
      *
-     * @return string
+     * @return string|array
      */
     public function getVerb()
     {

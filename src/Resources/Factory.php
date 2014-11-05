@@ -77,7 +77,7 @@ class Factory
      *
      * @param  string  $name
      * @param  array  $parameters
-     * @return \Orchestra\Resources\Response
+     * @return \Orchestra\Resources\Response|bool
      */
     public function call($name, $parameters = array())
     {
