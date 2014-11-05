@@ -12,7 +12,7 @@ class Router implements ArrayAccess
      *
      * @var array
      */
-    protected $attributes = array();
+    protected $attributes = [];
 
     /**
      * Reserved keywords.

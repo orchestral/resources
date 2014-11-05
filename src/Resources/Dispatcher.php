@@ -53,7 +53,7 @@ class Dispatcher
      * @param  array  $parameters
      * @return mixed
      */
-    public function call(Router $driver, $name = null, array $parameters = array())
+    public function call(Router $driver, $name = null, array $parameters = [])
     {
         $resolver = $this->resolveDispatchDependencies($driver, $name, $parameters);
 
@@ -79,13 +79,13 @@ class Dispatcher
     {
         $segments = $this->getNestedParameters($name, $parameters);
         $key      = implode('.', array_keys($segments));
-        $uses     = $driver->uses;
+        $uses     = $driver->get('uses');
 
         if (! is_null($name)) {
-            if (isset($driver->routes[$key]) && Str::startsWith($driver->routes[$key], 'resource:')) {
-                $uses = $driver->routes[$key];
+            if (isset($driver[$key]) && Str::startsWith($driver[$key], 'resource:')) {
+                $uses = $driver[$key];
             } else {
-                $uses = (isset($driver->routes[$name]) ? $driver->routes[$name] : null);
+                $uses = (isset($driver[$name]) ? $driver[$name] : null);
             }
         }
 
@@ -101,11 +101,11 @@ class Dispatcher
      */
     protected function getNestedParameters($name, array $parameters)
     {
-        $reserved = array('create', 'show', 'index', 'delete', 'destroy', 'edit');
-        $nested   = array();
+        $reserved = ['create', 'show', 'index', 'delete', 'destroy', 'edit'];
+        $nested   = [];
 
         if (($nestedCount = count($parameters)) > 0) {
-            $nested = array($name => $parameters[0]);
+            $nested = [$name => $parameters[0]];
 
             for ($index = 1; $index < $nestedCount; $index += 2) {
                 $value = null;
@@ -135,15 +135,15 @@ class Dispatcher
     {
         $type = $resolver->getType();
 
-        if (in_array($type, array('restful', 'resource'))) {
+        if (in_array($type, ['restful', 'resource'])) {
             $method = 'find'.Str::studly($type).'Routable';
 
-            list($action, $parameters) = call_user_func(array($this, $method), $resolver);
+            list($action, $parameters) = call_user_func([$this, $method], $resolver);
         } else {
             throw new InvalidArgumentException("Type [{$type}] not implemented.");
         }
 
-        return array($action, $parameters);
+        return [$action, $parameters];
     }
 
     /**
@@ -160,7 +160,7 @@ class Dispatcher
         $action = (count($parameters) > 0 ? array_shift($parameters) : 'index');
         $action = Str::camel("{$verb}_{$action}");
 
-        return array($action, $parameters);
+        return [$action, $parameters];
     }
 
     /**
@@ -172,12 +172,12 @@ class Dispatcher
     protected function findResourceRoutable(Resolver $resolver)
     {
         $verb      = $resolver->getVerb();
-        $swappable = array(
+        $swappable = [
             'post' => 'store',
             'put' => 'update',
             'patch' => 'update',
             'delete' => 'destroy',
-        );
+        ];
 
         if (! isset($swappable[$verb])) {
             $action = $this->getAlternativeResourceAction($resolver);
@@ -187,7 +187,7 @@ class Dispatcher
 
         $parameters = array_values($resolver->getSegments());
 
-        return array($action, $parameters);
+        return [$action, $parameters];
     }
 
     /**
@@ -204,7 +204,7 @@ class Dispatcher
         $last       = array_pop($parameters);
         $resources  = array_keys($segments);
 
-        if (in_array($last, array('edit', 'create', 'delete'))) {
+        if (in_array($last, ['edit', 'create', 'delete'])) {
             // Handle all possible GET routing.
             return $last;
         } elseif (! in_array($last, $resources) && ! empty($segments)) {
@@ -229,7 +229,7 @@ class Dispatcher
         // restful and resource controller.
         list($action, $parameters) = $this->findRoutableAttributes($resolver);
 
-        $route = new Route($resolver->getVerb(), "{$driver->id}/{$name}", array('uses' => $resolver->getController()));
+        $route = new Route($resolver->getVerb(), "{$driver->id}/{$name}", ['uses' => $resolver->getController()]);
         $route->overrideParameters($parameters);
 
         // Resolve the controller from container.
