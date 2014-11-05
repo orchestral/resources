@@ -16,7 +16,7 @@ class Response
      *
      * @param  mixed  $content
      * @param  \Closure|null  $callback
-     * @return \Illuminate\Http\Response|string
+     * @return mixed
      */
     public function call($content, Closure $callback = null)
     {
