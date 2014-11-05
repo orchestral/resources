@@ -18,7 +18,7 @@ class ResourcesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bindShared('orchestra.resources', function ($app) {
+        $this->app->singleton('orchestra.resources', function ($app) {
             $dispatcher = new Dispatcher($app, $app['router'], $app['request']);
 
             return new Factory($dispatcher, new Response);
