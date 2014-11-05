@@ -36,7 +36,7 @@ class Response
      *
      * @param  \Illuminate\Http\Response  $content
      * @param  \Closure  $callback
-     * @return \Illuminate\Http\Response|string
+     * @return mixed
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
