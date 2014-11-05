@@ -18,7 +18,8 @@
 	},
 	"require": {
 		"php": ">=5.4.0",
-		"orchestra/routing": "3.0.*"
+		"orchestra/routing": "3.0.*",
+		"orchestra/support-facades": "3.0.*"
 	},
 	"require-dev": {
 		"mockery/mockery": "0.9.*",
