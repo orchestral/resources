@@ -1,7 +1,7 @@
 <?php namespace Orchestra\Resources;
 
 use ArrayAccess;
-use Orchestra\Support\Str;
+use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
 
@@ -142,19 +142,19 @@ class Router implements ArrayAccess
      */
     protected function buildResourceSchema($name, $attributes)
     {
-        $schema = array(
+        $schema = [
             'name'    => '',
             'uses'    => '',
-            'routes'  => array(),
+            'routes'  => [],
             'visible' => true,
-        );
+        ];
 
         if (! is_array($attributes)) {
             $uses    = $attributes;
-            $attributes = array(
+            $attributes = [
                 'name' => Str::title($name),
                 'uses' => $uses,
-            );
+            ];
         }
 
         $attributes['id'] = $name;

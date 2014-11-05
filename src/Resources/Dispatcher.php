@@ -1,6 +1,6 @@
 <?php namespace Orchestra\Resources;
 
-use Orchestra\Support\Str;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 use Orchestra\Resources\Routing\Route;

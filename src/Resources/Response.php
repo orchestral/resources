@@ -1,7 +1,7 @@
 <?php namespace Orchestra\Resources;
 
 use Closure;
-use Orchestra\Support\Str;
+use Illuminate\Support\Str;
 use Orchestra\Facile\Facile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;

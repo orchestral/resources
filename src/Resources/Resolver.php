@@ -1,6 +1,6 @@
 <?php namespace Orchestra\Resources;
 
-use Orchestra\Support\Str;
+use Illuminate\Support\Str;
 
 class Resolver
 {

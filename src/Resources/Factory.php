@@ -1,7 +1,7 @@
 <?php namespace Orchestra\Resources;
 
 use Closure;
-use Orchestra\Support\Str;
+use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 class Factory
