@@ -1,14 +1,14 @@
 Resources Component for Orchestra Platform
 ==============
 
-Resources Component is an adhoc routing manager that allow extension developer to add CRUD interface without touching Orchestra Platform 2. The idea is to allow controllers to be map to specific URL in Orchestra Platform Administrator Interface.
+Resources Component is an optional adhoc routing manager that allow extension developer to add CRUD interface without touching Orchestra Platform 2. The idea is to allow controllers to be map to specific URL in Orchestra Platform Administrator Interface.
 
 [![Latest Stable Version](https://img.shields.io/github/release/orchestral/resources.svg?style=flat)](https://packagist.org/packages/orchestra/resources)
 [![Total Downloads](https://img.shields.io/packagist/dt/orchestra/resources.svg?style=flat)](https://packagist.org/packages/orchestra/resources)
 [![MIT License](https://img.shields.io/packagist/l/orchestra/resources.svg?style=flat)](https://packagist.org/packages/orchestra/resources)
-[![Build Status](https://img.shields.io/travis/orchestral/resources/master.svg?style=flat)](https://travis-ci.org/orchestral/resources)
-[![Coverage Status](https://img.shields.io/coveralls/orchestral/resources/master.svg?style=flat)](https://coveralls.io/r/orchestral/resources?branch=master)
-[![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/orchestral/resources/master.svg?style=flat)](https://scrutinizer-ci.com/g/orchestral/resources/)
+[![Build Status](https://img.shields.io/travis/orchestral/resources/3.0.svg?style=flat)](https://travis-ci.org/orchestral/resources)
+[![Coverage Status](https://img.shields.io/coveralls/orchestral/resources/3.0.svg?style=flat)](https://coveralls.io/r/orchestral/resources?branch=3.0)
+[![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/orchestral/resources/3.0.svg?style=flat)](https://scrutinizer-ci.com/g/orchestral/resources/)
 
 ## Table of Content
 
@@ -19,7 +19,7 @@ Resources Component is an adhoc routing manager that allow extension developer t
   - [Adding a Resource](#adding-a-resource)
   - [Adding a Child Resource](#adding-a-child-resource)
   - [Returning Response from a Resource](#returning-response-from-a-resource)
-* [Change Log](http://orchestraplatform.com/docs/latest/components/resources/changes#v2-3)
+* [Change Log](http://orchestraplatform.com/docs/latest/components/resources/changes#v3-0)
 
 ## Version Compatibility
 
@@ -28,7 +28,7 @@ Laravel    | Resources
  4.0.x     | 2.0.x
  4.1.x     | 2.1.x
  4.2.x     | 2.2.x
- 5.0.x     | 3.0.x@dev
+ 5.0.x     | 3.0.x
 
 ## Installation
 
@@ -56,12 +56,12 @@ Add `Orchestra\Resources\ResourcesServiceProvider` service provider in `app/conf
 
 
 ```php
-'providers' => array(
+'providers' => [
 
     // ...
 
     'Orchestra\Resources\ResourcesServiceProvider',
-),
+],
 ```
 
 ### Aliases
@@ -69,12 +69,12 @@ Add `Orchestra\Resources\ResourcesServiceProvider` service provider in `app/conf
 You might want to add `Orchestra\Support\Facades\Resources` to class aliases in `app/config/app.php`:
 
 ```php
-'aliases' => array(
+'aliases' => [
 
     // ...
 
-    'Orchestra\Resources' => 'Orchestra\Support\Facades\Resources',
-),
+    'Resources' => 'Orchestra\Support\Facades\Resources',
+],
 ```
 
 ## Usage
@@ -85,14 +85,14 @@ Normally we would identify an extension to a resource for ease of use, however O
 
 ```php
 
-use Orchestra\Support\Facades\App;
+use Orchestra\Support\Facades\Foundation;
 
 Event::listen('orchestra.started: admin', function () {
-    $robots = Orchestra\Resources::make('robotix', [
+    $robots = Resources::make('robotix', [
         'name'    => 'Robots.txt',
         'uses'    => 'Robotix\ApiController',
         'visible' => function () {
-            return (App::acl()->can('manage orchestra'));
+            return (Foundation::acl()->can('manage orchestra'));
         },
     ]);
 });
