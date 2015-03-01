@@ -16,14 +16,14 @@ class Resolver
      *
      * @var array
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * URL segments.
      *
      * @var array
      */
-    protected $segments = array();
+    protected $segments = [];
 
     /**
      * 'resource' or 'restful' type.
@@ -54,7 +54,7 @@ class Resolver
      * @param  array  $parameters
      * @param  array  $segments
      */
-    public function __construct($uses = null, $verb = 'get', array $parameters = array(), array $segments = array())
+    public function __construct($uses = null, $verb = 'get', array $parameters = [], array $segments = [])
     {
         $controller = $uses;
         $type       = 'restful';

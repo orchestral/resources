@@ -25,7 +25,7 @@ class Factory
      *
      * @var array
      */
-    protected $drivers = array();
+    protected $drivers = [];
 
     /**
      * Construct a new Resources instance.
@@ -79,7 +79,7 @@ class Factory
      * @param  array  $parameters
      * @return mixed
      */
-    public function call($name, $parameters = array())
+    public function call($name, $parameters = [])
     {
         $child = null;
 
