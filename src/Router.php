@@ -26,6 +26,7 @@ class Router implements ArrayAccess
      *
      * @param  string  $name
      * @param  mixed  $attributes
+     *
      * @throws \InvalidArgumentException
      */
     public function __construct($name, $attributes)
@@ -44,7 +45,9 @@ class Router implements ArrayAccess
      *
      * @param  string  $name
      * @param  string  $uses
+     *
      * @return $this
+     *
      * @throws \InvalidArgumentException
      */
     public function route($name, $uses)
@@ -64,7 +67,9 @@ class Router implements ArrayAccess
      * Set visibility state based on parameter.
      *
      * @param  boolean  $value
+     *
      * @return $this
+     *
      * @throws \InvalidArgumentException
      */
     public function visibility($value)
@@ -103,6 +108,7 @@ class Router implements ArrayAccess
      *
      * @param  string  $key
      * @param  mixed  $default
+     *
      * @return mixed
      */
     public function get($key, $default = null)
@@ -115,6 +121,7 @@ class Router implements ArrayAccess
      *
      * @param  string  $key
      * @param  mixed  $value
+     *
      * @return void
      */
     public function set($key, $value)
@@ -126,6 +133,7 @@ class Router implements ArrayAccess
      * Forget attribute.
      *
      * @param  string  $key
+     *
      * @return void
      */
     public function forget($key)
@@ -138,6 +146,7 @@ class Router implements ArrayAccess
      *
      * @param  string  $name
      * @param  mixed  $attributes
+     *
      * @return array
      */
     protected function buildResourceSchema($name, $attributes)
@@ -150,7 +159,7 @@ class Router implements ArrayAccess
         ];
 
         if (! is_array($attributes)) {
-            $uses    = $attributes;
+            $uses       = $attributes;
             $attributes = [
                 'name' => Str::title($name),
                 'uses' => $uses,
@@ -166,6 +175,7 @@ class Router implements ArrayAccess
      * Dynamically retrieve the value of an attributes.
      *
      * @param  string  $key
+     *
      * @return mixed
      */
     public function __get($key)
@@ -178,6 +188,7 @@ class Router implements ArrayAccess
      *
      * @param  string  $key
      * @param  mixed  $value
+     *
      * @return void
      */
     public function __set($key, $value)
@@ -190,7 +201,9 @@ class Router implements ArrayAccess
      *
      * @param  string  $method
      * @param  array  $parameters
+     *
      * @return mixed
+     *
      * @throws \InvalidArgumentException
      */
     public function __call($method, $parameters)
@@ -206,6 +219,7 @@ class Router implements ArrayAccess
      * Determine if a given offset exists.
      *
      * @param  string  $key
+     *
      * @return boolean
      */
     public function offsetExists($key)
@@ -217,6 +231,7 @@ class Router implements ArrayAccess
      * Get the value at a given offset.
      *
      * @param  string  $key
+     *
      * @return mixed
      */
     public function offsetGet($key)
@@ -229,6 +244,7 @@ class Router implements ArrayAccess
      *
      * @param  string  $key
      * @param  mixed  $value
+     *
      * @return void
      */
     public function offsetSet($key, $value)
@@ -240,6 +256,7 @@ class Router implements ArrayAccess
      * Unset the value at a given offset.
      *
      * @param  string  $key
+     *
      * @return void
      */
     public function offsetUnset($key)

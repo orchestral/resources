@@ -21,7 +21,7 @@ class ResourcesServiceProvider extends ServiceProvider
         $this->app->singleton('orchestra.resources', function ($app) {
             $dispatcher = new Dispatcher($app, $app['router'], $app['request']);
 
-            return new Factory($dispatcher, new Response);
+            return new Factory($dispatcher, new Response());
         });
     }
 

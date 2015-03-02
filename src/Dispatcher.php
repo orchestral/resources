@@ -51,6 +51,7 @@ class Dispatcher
      * @param  \Orchestra\Resources\Router  $driver
      * @param  string|null  $name
      * @param  array  $parameters
+     *
      * @return mixed
      */
     public function call(Router $driver, $name = null, array $parameters = [])
@@ -73,6 +74,7 @@ class Dispatcher
      * @param  \Orchestra\Resources\Router  $driver
      * @param  string  $name
      * @param  array  $parameters
+     *
      * @return \Orchestra\Resources\Resolver
      */
     public function resolveDispatchDependencies(Router $driver, $name, array $parameters)
@@ -97,6 +99,7 @@ class Dispatcher
      *
      * @param  string  $name
      * @param  array  $parameters
+     *
      * @return array
      */
     protected function getNestedParameters($name, array $parameters)
@@ -128,7 +131,9 @@ class Dispatcher
      * restful or resources routing.
      *
      * @param  \Orchestra\Resources\Resolver  $resolver
+     *
      * @return array
+     *
      * @throws \InvalidArgumentException
      */
     protected function findRoutableAttributes(Resolver $resolver)
@@ -150,6 +155,7 @@ class Dispatcher
      * Resolve action from restful controller.
      *
      * @param  \Orchestra\Resources\Resolver  $resolver
+     *
      * @return array
      */
     protected function findRestfulRoutable(Resolver $resolver)
@@ -167,15 +173,16 @@ class Dispatcher
      * Resolve action from resource controller.
      *
      * @param  \Orchestra\Resources\Resolver  $resolver
+     *
      * @return array
      */
     protected function findResourceRoutable(Resolver $resolver)
     {
         $verb      = $resolver->getVerb();
         $swappable = [
-            'post' => 'store',
-            'put' => 'update',
-            'patch' => 'update',
+            'post'   => 'store',
+            'put'    => 'update',
+            'patch'  => 'update',
             'delete' => 'destroy',
         ];
 
@@ -194,6 +201,7 @@ class Dispatcher
      * Get action name.
      *
      * @param  \Orchestra\Resources\Resolver  $resolver
+     *
      * @return string
      */
     protected function getAlternativeResourceAction(Resolver $resolver)
@@ -220,6 +228,7 @@ class Dispatcher
      * @param  \Orchestra\Resources\Router  $driver
      * @param  string  $name
      * @param  \Orchestra\Resources\Resolver  $resolver
+     *
      * @return mixed
      */
     protected function dispatch(Router $driver, $name, Resolver $resolver)
