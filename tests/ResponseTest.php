@@ -21,7 +21,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenEmptyString()
     {
-        $stub = new Response;
+        $stub = new Response();
 
         $this->assertEquals('', $stub->call(''));
     }
@@ -33,7 +33,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenNull()
     {
-        $stub = new Response;
+        $stub     = new Response();
         $response = $stub->call(null);
 
         $this->assertInstanceOf('\Illuminate\Http\Response', $response);
@@ -48,7 +48,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenFalse()
     {
-        $stub = new Response;
+        $stub = new Response();
         $stub->call(false);
     }
 
@@ -60,7 +60,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenRedirectResponse()
     {
-        $stub = new Response;
+        $stub = new Response();
 
         $content = m::mock('\Illuminate\Http\RedirectResponse');
         $this->assertEquals($content, $stub->call($content));
@@ -74,7 +74,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenJsonResponse()
     {
-        $stub = new Response;
+        $stub = new Response();
 
         $content = m::mock('\Illuminate\Http\JsonResponse');
         $this->assertEquals($content, $stub->call($content));
@@ -88,7 +88,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenFacileResponse()
     {
-        $stub = new Response;
+        $stub = new Response();
 
         $content = m::mock('\Orchestra\Facile\Facile');
         $content->shouldReceive('render')->once()->andReturn('foo');
@@ -103,13 +103,13 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenIlluminateResponse()
     {
-        $stub = new Response;
+        $stub = new Response();
 
         $callback = function ($content) {
             return "<strong>{$content}</strong>";
         };
 
-        $content = m::mock('\Illuminate\Http\Response');
+        $content          = m::mock('\Illuminate\Http\Response');
         $content->headers = $headers = m::mock('HeaderBag');
         $content->shouldReceive('getStatusCode')->once()->andReturn(200)
             ->shouldReceive('getContent')->once()->andReturn('foo')
@@ -117,9 +117,9 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $headers->shouldReceive('get')->with('Content-Type')->once()->andReturn('text/html');
         $this->assertEquals('<strong>foo</strong>', $stub->call($content, $callback));
 
-        $content = m::mock('\Illuminate\Http\Response');
+        $content          = m::mock('\Illuminate\Http\Response');
         $content->headers = $headers = m::mock('HeaderBag');
-        $facile = m::mock('\Orchestra\Facile\Facile');
+        $facile           = m::mock('\Orchestra\Facile\Facile');
         $facile->shouldReceive('getFormat')->andReturn('json')
             ->shouldReceive('render')->once()->andReturn('foo');
         $content->shouldReceive('getStatusCode')->once()->andReturn(200)
@@ -128,7 +128,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $headers->shouldReceive('get')->with('Content-Type')->never()->andReturn('text/json');
         $this->assertEquals('foo', $stub->call($content));
 
-        $content = m::mock('\Illuminate\Http\Response');
+        $content          = m::mock('\Illuminate\Http\Response');
         $content->headers = $headers = m::mock('HeaderBag');
         $content->shouldReceive('getStatusCode')->once()->andReturn(200)
             ->shouldReceive('getContent')->once()->andReturn('foo')
@@ -145,9 +145,9 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenIlluminateResponseWith500Status()
     {
-        $stub = new Response;
+        $stub = new Response();
 
-        $content = m::mock('\Illuminate\Http\Response');
+        $content          = m::mock('\Illuminate\Http\Response');
         $content->headers = $headers = m::mock('HeaderBag');
         $content->shouldReceive('getStatusCode')->once()->andReturn(500)
             ->shouldReceive('getContent')->once()->andReturn('foo')
@@ -163,7 +163,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodWhenGivenString()
     {
-        $stub = new Response;
+        $stub = new Response();
         $this->assertEquals('Foo', $stub->call('Foo'));
     }
 }

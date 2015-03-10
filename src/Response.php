@@ -16,6 +16,7 @@ class Response
      *
      * @param  mixed  $content
      * @param  \Closure|null  $callback
+     *
      * @return mixed
      */
     public function call($content, Closure $callback = null)
@@ -36,7 +37,9 @@ class Response
      *
      * @param  \Illuminate\Http\Response  $content
      * @param  \Closure  $callback
+     *
      * @return mixed
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
@@ -61,6 +64,7 @@ class Response
      *
      * @param  mixed  $content
      * @param  \Closure|null  $callback
+     *
      * @return mixed
      */
     protected function handleResponseCallback($content, Closure $callback = null)
@@ -84,11 +88,13 @@ class Response
      * @param  int  $code
      * @param  string  $message
      * @param  array  $headers
+     *
      * @return void
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    protected function abort($code, $message = '', array $headers = array())
+    protected function abort($code, $message = '', array $headers = [])
     {
         if ($code == 404) {
             throw new NotFoundHttpException($message);
@@ -101,6 +107,7 @@ class Response
      * Is response renderable.
      *
      * @param  object|string  $response
+     *
      * @return bool
      */
     protected function isRenderableResponse($response)
@@ -112,6 +119,7 @@ class Response
      * Is response none html.
      *
      * @param  \Illuminate\Http\Response  $content
+     *
      * @return bool
      */
     protected function isNoneHtmlResponse(IlluminateResponse $content)

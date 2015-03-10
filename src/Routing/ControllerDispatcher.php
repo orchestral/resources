@@ -10,6 +10,7 @@ class ControllerDispatcher extends \Orchestra\Routing\ControllerDispatcher
      * @param  \Orchestra\Routing\Controller    $instance
      * @param  \Illuminate\Routing\Route        $route
      * @param  string                           $method
+     *
      * @return mixed
      */
     protected function call($instance, $route, $method)

@@ -59,9 +59,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $app        = $this->app;
         $router     = $this->router;
         $request    = $this->request;
-        $useApp     = new AppController;
-        $useFoo     = new FooController;
-        $useFoobar  = new FoobarController;
+        $useApp     = new AppController();
+        $useFoo     = new FooController();
+        $useFoobar  = new FoobarController();
 
         $app->shouldReceive('make')->with('AppController')->once()->andReturn($useApp)
             ->shouldReceive('make')->with('FooController')->once()->andReturn($useFoo)
@@ -69,22 +69,22 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $request->shouldReceive('getMethod')->times(6)->andReturn('GET');
         $router->shouldReceive('getMiddleware')->times(5)->andReturn([]);
 
-        $driver = new Router('app', array(
+        $driver = new Router('app', [
             'name'   => 'app',
             'uses'   => 'AppController',
-            'routes' => array(
-                'foo' => 'restful:FooController',
+            'routes' => [
+                'foo'     => 'restful:FooController',
                 'foo.bar' => 'resource:FoobarController',
-            ),
-        ));
+            ],
+        ]);
 
         $stub = new Dispatcher($app, $router, $request);
 
-        $this->assertEquals('AppController@getIndex', $stub->call($driver, null, array('index')));
-        $this->assertEquals('FooController@getEdit', $stub->call($driver, 'foo', array('edit')));
-        $this->assertEquals('FoobarController@edit', $stub->call($driver, 'foo', array(1, 'bar', 2, 'edit')));
-        $this->assertEquals('FoobarController@index', $stub->call($driver, 'foo', array(1, 'bar')));
-        $this->assertEquals('FoobarController@show', $stub->call($driver, 'foo', array(1, 'bar', 2)));
+        $this->assertEquals('AppController@getIndex', $stub->call($driver, null, ['index']));
+        $this->assertEquals('FooController@getEdit', $stub->call($driver, 'foo', ['edit']));
+        $this->assertEquals('FoobarController@edit', $stub->call($driver, 'foo', [1, 'bar', 2, 'edit']));
+        $this->assertEquals('FoobarController@index', $stub->call($driver, 'foo', [1, 'bar']));
+        $this->assertEquals('FoobarController@show', $stub->call($driver, 'foo', [1, 'bar', 2]));
         $this->assertFalse($stub->call($driver, 'not-available'));
     }
 
@@ -98,24 +98,24 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $app       = $this->app;
         $router    = $this->router;
         $request   = $this->request;
-        $useFoobar = new FoobarController;
+        $useFoobar = new FoobarController();
 
         $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
         $request->shouldReceive('getMethod')->once()->andReturn('POST');
         $router->shouldReceive('getMiddleware')->once()->andReturn([]);
 
-        $driver = new Router('app', array(
+        $driver = new Router('app', [
             'name'   => 'app',
             'uses'   => 'AppController',
-            'routes' => array(
-                'foo' => 'restful:FooController',
+            'routes' => [
+                'foo'     => 'restful:FooController',
                 'foo.bar' => 'resource:FoobarController',
-            ),
-        ));
+            ],
+        ]);
 
         $stub = new Dispatcher($app, $router, $request);
 
-        $this->assertEquals('FoobarController@store', $stub->call($driver, 'foo', array(1, 'bar', 2)));
+        $this->assertEquals('FoobarController@store', $stub->call($driver, 'foo', [1, 'bar', 2]));
     }
 
     /**
@@ -128,24 +128,24 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $app       = $this->app;
         $router    = $this->router;
         $request   = $this->request;
-        $useFoobar = new FoobarController;
+        $useFoobar = new FoobarController();
 
         $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
         $request->shouldReceive('getMethod')->once()->andReturn('PUT');
         $router->shouldReceive('getMiddleware')->once()->andReturn([]);
 
-        $driver = new Router('app', array(
+        $driver = new Router('app', [
             'name'   => 'app',
             'uses'   => 'AppController',
-            'routes' => array(
-                'foo' => 'restful:FooController',
+            'routes' => [
+                'foo'     => 'restful:FooController',
                 'foo.bar' => 'resource:FoobarController',
-            ),
-        ));
+            ],
+        ]);
 
         $stub = new Dispatcher($app, $router, $request);
 
-        $this->assertEquals('FoobarController@update', $stub->call($driver, 'foo', array(1, 'bar', 2)));
+        $this->assertEquals('FoobarController@update', $stub->call($driver, 'foo', [1, 'bar', 2]));
     }
 
     /**
@@ -158,24 +158,24 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $app       = $this->app;
         $router    = $this->router;
         $request   = $this->request;
-        $useFoobar = new FoobarController;
+        $useFoobar = new FoobarController();
 
         $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
         $request->shouldReceive('getMethod')->once()->andReturn('DELETE');
         $router->shouldReceive('getMiddleware')->once()->andReturn([]);
 
-        $driver = new Router('app', array(
+        $driver = new Router('app', [
             'name'   => 'app',
             'uses'   => 'AppController',
-            'routes' => array(
-                'foo' => 'restful:FooController',
+            'routes' => [
+                'foo'     => 'restful:FooController',
                 'foo.bar' => 'resource:FoobarController',
-            ),
-        ));
+            ],
+        ]);
 
         $stub = new Dispatcher($app, $router, $request);
 
-        $this->assertEquals('FoobarController@destroy', $stub->call($driver, 'foo', array(1, 'bar', 2)));
+        $this->assertEquals('FoobarController@destroy', $stub->call($driver, 'foo', [1, 'bar', 2]));
     }
 
     /**
@@ -191,13 +191,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 
         $request->shouldReceive('getMethod')->once()->andReturn('GET');
 
-        $driver = new Router('app', array(
+        $driver = new Router('app', [
             'name'   => 'app',
             'uses'   => 'request:AppController',
-            'childs' => array(),
-        ));
+            'childs' => [],
+        ]);
 
-        $stub->call($driver, null, array('edit'));
+        $stub->call($driver, null, ['edit']);
     }
 }
 

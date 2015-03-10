@@ -20,7 +20,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
      */
     public function testOverrideParametersMethod()
     {
-        $stub = new Route('GET', 'laravel/framework', array('uses' => 'FooController'));
+        $stub = new Route('GET', 'laravel/framework', ['uses' => 'FooController']);
 
         $refl       = new \ReflectionObject($stub);
         $parameters = $refl->getProperty('parameters');
@@ -28,7 +28,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($parameters->getValue($stub));
 
-        $expected = array('foo' => 'bar');
+        $expected = ['foo' => 'bar'];
 
         $stub->overrideParameters($expected);
 

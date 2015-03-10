@@ -25,7 +25,7 @@ class Factory
      *
      * @var array
      */
-    protected $drivers = array();
+    protected $drivers = [];
 
     /**
      * Construct a new Resources instance.
@@ -44,7 +44,9 @@ class Factory
      *
      * @param  string  $name
      * @param  mixed  $attributes
+     *
      * @return \Orchestra\Resources\Router
+     *
      * @throws \InvalidArgumentException
      */
     public function make($name, $attributes)
@@ -61,6 +63,7 @@ class Factory
      *
      * @param  string  $name
      * @param  mixed  $attributes
+     *
      * @return \Orchestra\Resources\Router
      */
     public function of($name, $attributes = null)
@@ -77,9 +80,10 @@ class Factory
      *
      * @param  string  $name
      * @param  array  $parameters
+     *
      * @return mixed
      */
-    public function call($name, $parameters = array())
+    public function call($name, $parameters = [])
     {
         $child = null;
 
@@ -105,6 +109,7 @@ class Factory
      *
      * @param  mixed  $content
      * @param  \Closure  $callback
+     *
      * @return mixed
      */
     public function response($content, Closure $callback = null)
