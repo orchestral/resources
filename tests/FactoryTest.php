@@ -126,12 +126,12 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testCallMethod()
     {
         $dispatcher = $this->dispatcher;
-        $stub = new Factory($dispatcher, $this->response);
+        $stub       = new Factory($dispatcher, $this->response);
 
-        $mock = array(
+        $mock = [
             'foo'    => new Router('Foo', 'FooController'),
             'foobar' => new Router('Foobar', 'FoobarController'),
-        );
+        ];
 
         $refl    = new \ReflectionObject($stub);
         $drivers = $refl->getProperty('drivers');
@@ -139,12 +139,12 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
 
         $drivers->setValue($stub, $mock);
 
-        $dispatcher->shouldReceive('call')->with($mock['foo'], 'foobar', array())->once()->andReturn('FOO');
-        $dispatcher->shouldReceive('call')->with($mock['foobar'], null, array())->once()->andReturn('FOOBAR');
+        $dispatcher->shouldReceive('call')->with($mock['foo'], 'foobar', [])->once()->andReturn('FOO');
+        $dispatcher->shouldReceive('call')->with($mock['foobar'], null, [])->once()->andReturn('FOOBAR');
 
-        $this->assertEquals('FOO', $stub->call('foo.foobar', array()));
-        $this->assertEquals('FOOBAR', $stub->call('foobar', array()));
-        $this->assertFalse($stub->call('foo-not-available', array()));
+        $this->assertEquals('FOO', $stub->call('foo.foobar', []));
+        $this->assertEquals('FOOBAR', $stub->call('foobar', []));
+        $this->assertFalse($stub->call('foo-not-available', []));
     }
 
     /**
@@ -155,7 +155,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testResponseMethod()
     {
         $response = $this->response;
-        $stub = new Factory($this->dispatcher, $response);
+        $stub     = new Factory($this->dispatcher, $response);
 
         $callback = function () { return ''; };
         $response->shouldReceive('call')->with('foo', $callback)->once()->andReturn(true);
@@ -176,10 +176,10 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $drivers = $refl->getProperty('drivers');
         $drivers->setAccessible(true);
 
-        $expected = array(
+        $expected = [
             'foo'    => 'Foo',
             'foobar' => 'Foobar',
-        );
+        ];
 
         $drivers->setValue($stub, $expected);
 

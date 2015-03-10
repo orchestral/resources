@@ -26,7 +26,7 @@ class ControllerDispatcherTest extends \PHPUnit_Framework_TestCase
         $router    = m::mock('\Illuminate\Routing\Router');
         $route     = m::mock('\Illuminate\Routing\Route');
         $request   = m::mock('\Illuminate\Http\Request');
-        $useFoo    = new FooController;
+        $useFoo    = new FooController();
 
         $router->shouldReceive('getMiddleware')->once()->andReturn([]);
 

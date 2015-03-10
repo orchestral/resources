@@ -1,6 +1,5 @@
 <?php namespace Orchestra\Resources\TestCase;
 
-use Mockery as m;
 use Orchestra\Resources\Router;
 
 class RouterTest extends \PHPUnit_Framework_TestCase
@@ -18,13 +17,13 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $attributes = $refl->getProperty('attributes');
         $attributes->setAccessible(true);
 
-        $expected = array(
+        $expected = [
             'name'    => 'Foo',
             'id'      => 'foo',
-            'routes'  => array(),
+            'routes'  => [],
             'uses'    => 'FooController',
             'visible' => true,
-        );
+        ];
 
         $this->assertEquals($expected, $attributes->getValue($stub));
         $this->assertEquals('FooController', $stub->uses());
@@ -78,16 +77,16 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($stub, $stub->route('first', 'FirstController'));
 
-        $stub->second = 'SecondController';
-        $stub['third'] = 'ThirdController';
+        $stub->second         = 'SecondController';
+        $stub['third']        = 'ThirdController';
         $stub['third.fourth'] = 'ForthController';
 
-        $expected = array(
-            'first' => 'FirstController',
-            'second' => 'SecondController',
-            'third' => 'ThirdController',
+        $expected = [
+            'first'        => 'FirstController',
+            'second'       => 'SecondController',
+            'third'        => 'ThirdController',
             'third.fourth' => 'ForthController',
-        );
+        ];
 
         $this->assertEquals($expected, $stub->get('routes'));
 
