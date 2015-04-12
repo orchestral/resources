@@ -35,7 +35,7 @@ class Resolver
     /**
      * Valid resource.
      *
-     * @var boolean
+     * @var bool
      */
     protected $valid;
 
