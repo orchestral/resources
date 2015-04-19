@@ -34,7 +34,7 @@ class Router implements ArrayAccess
         $attributes = $this->buildResourceSchema($name, $attributes);
 
         if (empty($attributes['name']) || empty($attributes['uses'])) {
-            throw new InvalidArgumentException("Required `name` and `uses` are missing.");
+            throw new InvalidArgumentException('Required `name` and `uses` are missing.');
         }
 
         $this->attributes = $attributes;
@@ -66,7 +66,7 @@ class Router implements ArrayAccess
     /**
      * Set visibility state based on parameter.
      *
-     * @param  boolean  $value
+     * @param  bool  $value
      *
      * @return $this
      *
@@ -209,7 +209,7 @@ class Router implements ArrayAccess
     public function __call($method, $parameters)
     {
         if (! empty($parameters)) {
-            throw new InvalidArgumentException("Parameters is not available.");
+            throw new InvalidArgumentException('Parameters is not available.');
         }
 
         return $this->attributes[$method] ?: null;
@@ -220,7 +220,7 @@ class Router implements ArrayAccess
      *
      * @param  string  $key
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($key)
     {
