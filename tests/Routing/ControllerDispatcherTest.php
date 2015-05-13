@@ -30,7 +30,8 @@ class ControllerDispatcherTest extends \PHPUnit_Framework_TestCase
 
         $router->shouldReceive('getMiddleware')->once()->andReturn([]);
 
-        $container->shouldReceive('make')->once()->with('FooController')->andReturn($useFoo);
+        $container->shouldReceive('make')->once()->with('FooController')->andReturn($useFoo)
+            ->shouldReceive('bound')->once()->with('middleware.disable')->andReturn(false);
 
         $stub = new ControllerDispatcher($router, $container);
 

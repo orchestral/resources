@@ -65,9 +65,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 
         $app->shouldReceive('make')->with('AppController')->once()->andReturn($useApp)
             ->shouldReceive('make')->with('FooController')->once()->andReturn($useFoo)
-            ->shouldReceive('make')->times(3)->with('FoobarController')->andReturn($useFoobar);
+            ->shouldReceive('make')->times(3)->with('FoobarController')->andReturn($useFoobar)
+            ->shouldReceive('bound')->with('middleware.disable')->andReturn(false);
         $request->shouldReceive('getMethod')->times(6)->andReturn('GET');
-        $router->shouldReceive('getMiddleware')->times(5)->andReturn([]);
+        $router->shouldReceive('prepareResponse')->times(5)->with($request, m::type('String'))
+                ->andReturnUsing(function($request, $response) {
+                    return $response;
+                });
 
         $driver = new Router('app', [
             'name'   => 'app',
@@ -100,9 +104,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $request   = $this->request;
         $useFoobar = new FoobarController();
 
-        $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
+        $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar)
+            ->shouldReceive('bound')->with('middleware.disable')->andReturn(false);
         $request->shouldReceive('getMethod')->once()->andReturn('POST');
-        $router->shouldReceive('getMiddleware')->once()->andReturn([]);
+        $router->shouldReceive('prepareResponse')->once()->with($request, m::type('String'))
+                ->andReturnUsing(function($request, $response) {
+                    return $response;
+                });
 
         $driver = new Router('app', [
             'name'   => 'app',
@@ -130,9 +138,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $request   = $this->request;
         $useFoobar = new FoobarController();
 
-        $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
+        $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar)
+            ->shouldReceive('bound')->with('middleware.disable')->andReturn(false);
         $request->shouldReceive('getMethod')->once()->andReturn('PUT');
-        $router->shouldReceive('getMiddleware')->once()->andReturn([]);
+        $router->shouldReceive('prepareResponse')->once()->with($request, m::type('String'))
+                ->andReturnUsing(function($request, $response) {
+                    return $response;
+                });
 
         $driver = new Router('app', [
             'name'   => 'app',
@@ -160,9 +172,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $request   = $this->request;
         $useFoobar = new FoobarController();
 
-        $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar);
+        $app->shouldReceive('make')->once()->with('FoobarController')->andReturn($useFoobar)
+            ->shouldReceive('bound')->with('middleware.disable')->andReturn(false);
         $request->shouldReceive('getMethod')->once()->andReturn('DELETE');
-        $router->shouldReceive('getMiddleware')->once()->andReturn([]);
+        $router->shouldReceive('prepareResponse')->once()->with($request, m::type('String'))
+                ->andReturnUsing(function($request, $response) {
+                    return $response;
+                });
 
         $driver = new Router('app', [
             'name'   => 'app',
@@ -185,9 +201,10 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodThrowsException()
     {
+        $app     = $this->app;
         $request = $this->request;
         $router  = $this->router;
-        $stub    = new Dispatcher($this->app, $router, $request);
+        $stub    = new Dispatcher($app, $router, $request);
 
         $request->shouldReceive('getMethod')->once()->andReturn('GET');
 
