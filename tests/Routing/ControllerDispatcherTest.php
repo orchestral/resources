@@ -28,8 +28,6 @@ class ControllerDispatcherTest extends \PHPUnit_Framework_TestCase
         $request   = m::mock('\Illuminate\Http\Request');
         $useFoo    = new FooController();
 
-        $router->shouldReceive('getMiddleware')->once()->andReturn([]);
-
         $container->shouldReceive('make')->once()->with('FooController')->andReturn($useFoo)
             ->shouldReceive('bound')->once()->with('middleware.disable')->andReturn(false);
 
