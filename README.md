@@ -37,7 +37,7 @@ To install through composer, simply put the following in your `composer.json` fi
 ```json
 {
     "require": {
-        "orchestra/resources": "3.0.*"
+        "orchestra/resources": "~3.0"
     }
 }
 ```
@@ -48,11 +48,11 @@ And then run `composer install` from the terminal.
 
 Above installation can also be simplify by using the following command:
 
-    composer require "orchestra/resources=3.0.*"
+    composer require "orchestra/resources=~3.0"
 
 ## Configuration
 
-Add `Orchestra\Resources\ResourcesServiceProvider` service provider in `app/config/app.php`.
+Add `Orchestra\Resources\ResourcesServiceProvider` service provider in `config/app.php`.
 
 
 ```php
@@ -66,7 +66,7 @@ Add `Orchestra\Resources\ResourcesServiceProvider` service provider in `app/conf
 
 ### Aliases
 
-You might want to add `Orchestra\Support\Facades\Resources` to class aliases in `app/config/app.php`:
+You might want to add `Orchestra\Support\Facades\Resources` to class aliases in `config/app.php`:
 
 ```php
 'aliases' => [
