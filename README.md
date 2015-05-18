@@ -6,9 +6,9 @@ Resources Component is an optional adhoc routing manager that allow extension de
 [![Latest Stable Version](https://img.shields.io/github/release/orchestral/resources.svg?style=flat)](https://packagist.org/packages/orchestra/resources)
 [![Total Downloads](https://img.shields.io/packagist/dt/orchestra/resources.svg?style=flat)](https://packagist.org/packages/orchestra/resources)
 [![MIT License](https://img.shields.io/packagist/l/orchestra/resources.svg?style=flat)](https://packagist.org/packages/orchestra/resources)
-[![Build Status](https://img.shields.io/travis/orchestral/resources/3.1.svg?style=flat)](https://travis-ci.org/orchestral/resources)
-[![Coverage Status](https://img.shields.io/coveralls/orchestral/resources/3.1.svg?style=flat)](https://coveralls.io/r/orchestral/resources?branch=3.1)
-[![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/orchestral/resources/3.1.svg?style=flat)](https://scrutinizer-ci.com/g/orchestral/resources/)
+[![Build Status](https://img.shields.io/travis/orchestral/resources/master.svg?style=flat)](https://travis-ci.org/orchestral/resources)
+[![Coverage Status](https://img.shields.io/coveralls/orchestral/resources/master.svg?style=flat)](https://coveralls.io/r/orchestral/resources?branch=master)
+[![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/orchestral/resources/master.svg?style=flat)](https://scrutinizer-ci.com/g/orchestral/resources/)
 
 ## Table of Content
 
