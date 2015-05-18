@@ -6,9 +6,9 @@ Resources Component is an optional adhoc routing manager that allow extension de
 [![Latest Stable Version](https://img.shields.io/github/release/orchestral/resources.svg?style=flat)](https://packagist.org/packages/orchestra/resources)
 [![Total Downloads](https://img.shields.io/packagist/dt/orchestra/resources.svg?style=flat)](https://packagist.org/packages/orchestra/resources)
 [![MIT License](https://img.shields.io/packagist/l/orchestra/resources.svg?style=flat)](https://packagist.org/packages/orchestra/resources)
-[![Build Status](https://img.shields.io/travis/orchestral/resources/master.svg?style=flat)](https://travis-ci.org/orchestral/resources)
-[![Coverage Status](https://img.shields.io/coveralls/orchestral/resources/master.svg?style=flat)](https://coveralls.io/r/orchestral/resources?branch=master)
-[![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/orchestral/resources/master.svg?style=flat)](https://scrutinizer-ci.com/g/orchestral/resources/)
+[![Build Status](https://img.shields.io/travis/orchestral/resources/3.1.svg?style=flat)](https://travis-ci.org/orchestral/resources)
+[![Coverage Status](https://img.shields.io/coveralls/orchestral/resources/3.1.svg?style=flat)](https://coveralls.io/r/orchestral/resources?branch=3.1)
+[![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/orchestral/resources/3.1.svg?style=flat)](https://scrutinizer-ci.com/g/orchestral/resources/)
 
 ## Table of Content
 
@@ -38,7 +38,7 @@ To install through composer, simply put the following in your `composer.json` fi
 ```json
 {
     "require": {
-        "orchestra/resources": "3.1.*"
+        "orchestra/resources": "~3.0"
     }
 }
 ```
@@ -49,11 +49,11 @@ And then run `composer install` from the terminal.
 
 Above installation can also be simplify by using the following command:
 
-    composer require "orchestra/resources=3.1.*"
+    composer require "orchestra/resources=~3.0"
 
 ## Configuration
 
-Add `Orchestra\Resources\ResourcesServiceProvider` service provider in `app/config/app.php`.
+Add `Orchestra\Resources\ResourcesServiceProvider` service provider in `config/app.php`.
 
 
 ```php
@@ -67,7 +67,7 @@ Add `Orchestra\Resources\ResourcesServiceProvider` service provider in `app/conf
 
 ### Aliases
 
-You might want to add `Orchestra\Support\Facades\Resources` to class aliases in `app/config/app.php`:
+You might want to add `Orchestra\Support\Facades\Resources` to class aliases in `config/app.php`:
 
 ```php
 'aliases' => [
