@@ -19,7 +19,7 @@ Resources Component is an optional adhoc routing manager that allow extension de
   - [Adding a Resource](#adding-a-resource)
   - [Adding a Child Resource](#adding-a-child-resource)
   - [Returning Response from a Resource](#returning-response-from-a-resource)
-* [Change Log](http://orchestraplatform.com/docs/latest/components/resources/changes#v3-0)
+* [Change Log](http://orchestraplatform.com/docs/latest/components/resources/changes#v3-1)
 
 ## Version Compatibility
 
@@ -29,7 +29,7 @@ Laravel    | Resources
  4.1.x     | 2.1.x
  4.2.x     | 2.2.x
  5.0.x     | 3.0.x
- 5.1.x     | 3.1.x@dev
+ 5.1.x     | 3.1.x
 
 ## Installation
 
