@@ -238,7 +238,10 @@ class Dispatcher
         // restful and resource controller.
         list($action, $parameters) = $this->findRoutableAttributes($resolver);
 
-        $route = new Route((array) $resolver->getVerb(), "{$driver->get('id')}/{$name}", ['uses' => $resolver->getController()]);
+        $route = new Route((array) $resolver->getVerb(), "{$driver->get('id')}/{$name}", [
+            'uses' => $resolver->getController()."@{$action}"
+        ]);
+
         $route->overrideParameters($parameters);
 
         // Resolve the controller from container.

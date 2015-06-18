@@ -18,14 +18,14 @@
 	},
 	"require": {
 		"php": ">=5.5.0",
-		"orchestra/routing": "3.2.*",
-		"orchestra/support-facades": "3.2.*"
+		"orchestra/routing": "~3.2.0",
+		"orchestra/support-facades": "~3.2.0"
 	},
 	"require-dev": {
 		"mockery/mockery": "0.9.*",
-		"illuminate/events": "5.2.*",
-		"illuminate/http": "5.2.*",
-		"orchestra/facile": "3.2.*"
+		"illuminate/events": "~5.2.0",
+		"illuminate/http": "~5.2.0",
+		"orchestra/facile": "~3.2.0"
 	},
 	"suggest": {
 		"laravel/framework": "Allow using orchestra/resources component outside of Orchestra Platform (~5.2).",
