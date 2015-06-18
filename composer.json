@@ -18,6 +18,7 @@
 	},
 	"require": {
 		"php": ">=5.5.0",
+		"illuminate/routing": "~5.1.2",
 		"orchestra/routing": "~3.1.0",
 		"orchestra/support-facades": "~3.1.0"
 	},
