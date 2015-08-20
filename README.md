@@ -1,14 +1,16 @@
 Resources Component for Orchestra Platform
 ==============
 
+[![Join the chat at https://gitter.im/orchestral/platform/components](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/orchestral/platform/components?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Resources Component is an optional adhoc routing manager that allow extension developer to add CRUD interface without touching Orchestra Platform 2. The idea is to allow controllers to be map to specific URL in Orchestra Platform Administrator Interface.
 
-[![Latest Stable Version](https://img.shields.io/github/release/orchestral/resources.svg?style=flat)](https://packagist.org/packages/orchestra/resources)
-[![Total Downloads](https://img.shields.io/packagist/dt/orchestra/resources.svg?style=flat)](https://packagist.org/packages/orchestra/resources)
-[![MIT License](https://img.shields.io/packagist/l/orchestra/resources.svg?style=flat)](https://packagist.org/packages/orchestra/resources)
-[![Build Status](https://img.shields.io/travis/orchestral/resources/3.1.svg?style=flat)](https://travis-ci.org/orchestral/resources)
-[![Coverage Status](https://img.shields.io/coveralls/orchestral/resources/3.1.svg?style=flat)](https://coveralls.io/r/orchestral/resources?branch=3.1)
-[![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/orchestral/resources/3.1.svg?style=flat)](https://scrutinizer-ci.com/g/orchestral/resources/)
+[![Latest Stable Version](https://img.shields.io/github/release/orchestral/resources.svg?style=flat-square)](https://packagist.org/packages/orchestra/resources)
+[![Total Downloads](https://img.shields.io/packagist/dt/orchestra/resources.svg?style=flat-square)](https://packagist.org/packages/orchestra/resources)
+[![MIT License](https://img.shields.io/packagist/l/orchestra/resources.svg?style=flat-square)](https://packagist.org/packages/orchestra/resources)
+[![Build Status](https://img.shields.io/travis/orchestral/resources/3.1.svg?style=flat-square)](https://travis-ci.org/orchestral/resources)
+[![Coverage Status](https://img.shields.io/coveralls/orchestral/resources/3.1.svg?style=flat-square)](https://coveralls.io/r/orchestral/resources?branch=3.1)
+[![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/orchestral/resources/3.1.svg?style=flat-square)](https://scrutinizer-ci.com/g/orchestral/resources/)
 
 ## Table of Content
 
@@ -61,7 +63,7 @@ Add `Orchestra\Resources\ResourcesServiceProvider` service provider in `config/a
 
     // ...
 
-    'Orchestra\Resources\ResourcesServiceProvider',
+    Orchestra\Resources\ResourcesServiceProvider::class,
 ],
 ```
 
@@ -74,7 +76,7 @@ You might want to add `Orchestra\Support\Facades\Resources` to class aliases in 
 
     // ...
 
-    'Resources' => 'Orchestra\Support\Facades\Resources',
+    'Resources' => Orchestra\Support\Facades\Resources::class,
 ],
 ```
 
