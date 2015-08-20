@@ -1,6 +1,8 @@
 Resources Component for Orchestra Platform
 ==============
 
+[![Join the chat at https://gitter.im/orchestral/platform/components](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/orchestral/platform/components?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Resources Component is an optional adhoc routing manager that allow extension developer to add CRUD interface without touching Orchestra Platform 2. The idea is to allow controllers to be map to specific URL in Orchestra Platform Administrator Interface.
 
 [![Latest Stable Version](https://img.shields.io/github/release/orchestral/resources.svg?style=flat-square)](https://packagist.org/packages/orchestra/resources)
@@ -19,7 +21,7 @@ Resources Component is an optional adhoc routing manager that allow extension de
   - [Adding a Resource](#adding-a-resource)
   - [Adding a Child Resource](#adding-a-child-resource)
   - [Returning Response from a Resource](#returning-response-from-a-resource)
-* [Change Log](http://orchestraplatform.com/docs/latest/components/resources/changes#v3-1)
+* [Change Log](http://orchestraplatform.com/docs/latest/components/resources/changes#v3-2)
 
 ## Version Compatibility
 
@@ -62,7 +64,7 @@ Add `Orchestra\Resources\ResourcesServiceProvider` service provider in `config/a
 
     // ...
 
-    'Orchestra\Resources\ResourcesServiceProvider',
+    Orchestra\Resources\ResourcesServiceProvider::class,
 ],
 ```
 
@@ -75,7 +77,7 @@ You might want to add `Orchestra\Support\Facades\Resources` to class aliases in 
 
     // ...
 
-    'Resources' => 'Orchestra\Support\Facades\Resources',
+    'Resources' => Orchestra\Support\Facades\Resources::class,
 ],
 ```
 

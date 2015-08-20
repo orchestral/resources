@@ -1,6 +1,7 @@
 <?php namespace Orchestra\Resources;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Foundation\Application;
 
 class ResourcesServiceProvider extends ServiceProvider
 {
@@ -18,7 +19,7 @@ class ResourcesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('orchestra.resources', function ($app) {
+        $this->app->singleton('orchestra.resources', function (Application $app) {
             $dispatcher = new Dispatcher($app, $app->make('router'), $app->make('request'));
 
             return new Factory($dispatcher, new Response());
