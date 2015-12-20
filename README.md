@@ -21,7 +21,7 @@ Resources Component is an optional adhoc routing manager that allow extension de
   - [Adding a Resource](#adding-a-resource)
   - [Adding a Child Resource](#adding-a-child-resource)
   - [Returning Response from a Resource](#returning-response-from-a-resource)
-* [Change Log](http://orchestraplatform.com/docs/latest/components/resources/changes#v3-2)
+* [Change Log](https://github.com/orchestral/resources/releases)
 
 ## Version Compatibility
 
@@ -32,7 +32,7 @@ Laravel    | Resources
  4.2.x     | 2.2.x
  5.0.x     | 3.0.x
  5.1.x     | 3.1.x
- 5.2.x     | 3.2.x@dev
+ ~5.2      | 3.2.x
 
 ## Installation
 
@@ -128,6 +128,3 @@ $robots['pages.comments'] = 'resource:Robotix\Pages\CommentController';
 
 Controllers mapped as Orchestra Platform Resources is no different from any other controller except the layout is using Orchestra Platform Administrator Interface. You can use `View`, `Response` and `Redirect` normally as you would without Orchestra Platform integration.
 
-## Resources
-
-* [Documentation](http://orchestraplatform.com/docs/latest/components/resources)

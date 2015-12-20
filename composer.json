@@ -1,6 +1,6 @@
 {
     "name": "orchestra/resources",
-    "description": "[Deprecated] Resources Component for Orchestra Platform",
+    "description": "[DEPRECATED] Resources Component for Orchestra Platform",
     "homepage": "http://orchestraplatform.com/docs/latest/components/resources/",
     "keywords": ["orchestra-platform", "orchestral", "laravel"],
     "license": "MIT",
@@ -22,7 +22,7 @@
         "orchestra/support-facades": "~3.2"
     },
     "require-dev": {
-        "mockery/mockery": "0.9.*",
+        "mockery/mockery": "^0.9.1",
         "illuminate/events": "~5.2",
         "illuminate/http": "~5.2",
         "orchestra/facile": "~3.2"
