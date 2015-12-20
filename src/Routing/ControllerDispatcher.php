@@ -2,7 +2,7 @@
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ControllerDispatcher extends \Orchestra\Routing\ControllerDispatcher
+class ControllerDispatcher extends \Illuminate\Routing\ControllerDispatcher
 {
     /**
      * Call the given controller instance method.
