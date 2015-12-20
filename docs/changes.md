@@ -3,6 +3,14 @@ title: Resources Change Log
 
 ---
 
+## Version 3.2 {#v3-2}
+
+### v3.2.0 {#v3-2-0}
+
+* Mark project as DEPRECATED.
+* Update support to Laravel Framework ~5.2.
+* Add `Orchestra\Resources\Facade` as `Orchestra\Support\Facades\Resources` will be removed in the future.
+
 ## Version 3.1 {#v3-1}
 
 ### v3.1.1 {#v3-1-1}
