@@ -77,7 +77,7 @@ You might want to add `Orchestra\Support\Facades\Resources` to class aliases in 
 
     // ...
 
-    'Resources' => Orchestra\Support\Facades\Resources::class,
+    'Resources' => Orchestra\Resources\Facade::class,
 ],
 ```
 
